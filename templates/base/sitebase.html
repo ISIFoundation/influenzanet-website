@@ -50,9 +50,9 @@
 	<div id="user-account">
 		<ul>
 		{% if user|user_login %}
-		<li>{% if user.username == user.email %}<i class="icon icon-mail tooltip" title="Cet email est utilisé pour vous contacter et comme identifiant utilisateur (login)"></i>{% endif %}<a href="/accounts/settings/"><span class="user-login">{{ user.username }}</span></a></li>
+		<li>{% if user.username == user.email %}<i class="icon icon-email tooltip" title="Cet email est utilisé pour vous contacter et comme identifiant utilisateur (login)"></i>{% endif %}<a href="/accounts/settings/"><span class="user-login">{{ user.username }}</span></a></li>
 		{% if user.username != user.email %}
-	    <li><i class="icon icon-mail tooltip" title="Cet email est utilisé pour vous contacter"></i><span class="user-email">{{ user.email }}</span></li>
+	    <li><i class="icon icon-email tooltip" title="Cet email est utilisé pour vous contacter"></i><span class="user-email">{{ user.email }}</span></li>
 		{% endif %}
 		<li class="actions">
 			<a href="/accounts/settings/" class="button">{%trans "My settings" %}</span></a>
