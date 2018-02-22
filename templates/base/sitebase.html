@@ -50,13 +50,18 @@
 	<div id="user-account">
 		<ul>
 		{% if user|user_login %}
-		<li><a href="/accounts/settings/"><span class="user-login">{{ user.username }}</span></a></li>
-		<li><span class="user-email">{{ user.email }}</span></li>
-		<li><a href="/accounts/settings/"><span class="icon icon-settings">&nbsp;</span>{% trans "My settings" %}</a></li>
-		{% else %}
-		<li><span class="user-login">{% trans "Anonymous"%}</span><span class="tooltip" title="Vous êtes connecté via un lien sans mot de passe. GrippeNet n'a pas pu récuperer certaines informations de votre compte (login, email)."><i class="icon icon-tip"></i></span></li>
+		<li>{% if user.username == user.email %}<i class="icon icon-mail tooltip" title="Cet email est utilisé pour vous contacter et comme identifiant utilisateur (login)"></i>{% endif %}<a href="/accounts/settings/"><span class="user-login">{{ user.username }}</span></a></li>
+		{% if user.username != user.email %}
+	    <li><i class="icon icon-mail tooltip" title="Cet email est utilisé pour vous contacter"></i><span class="user-email">{{ user.email }}</span></li>
 		{% endif %}
-		<li><span class="icon icon-logout">&nbsp;</span><a href="/accounts/logout/">{% trans "Log out" %}</a></li>
+		<li class="actions">
+			<a href="/accounts/settings/" class="button">{%trans "My settings" %}</span></a>
+			<a href="/accounts/logout/" class="button"><span class="icon icon-logout">&nbsp;</span>{% trans "Log out" %}</a>
+		</li>
+		{% else %}
+			<li><span class="user-login">{% trans "Anonymous"%}</span><span class="tooltip" title="Vous êtes connecté via un lien sans mot de passe. GrippeNet n'a pas pu récuperer certaines informations de votre compte (login, email)."><i class="icon icon-tip"></i></span></li>
+			<li><span class="icon icon-logout">&nbsp;</span><a href="/accounts/logout/">{% trans "Log out" %}</a></li>
+		{% endif %}
 		</ul>
 		</div>
 	</div>
