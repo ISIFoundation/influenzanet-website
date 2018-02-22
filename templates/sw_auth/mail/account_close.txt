@@ -1,0 +1,11 @@
+Bonjour,
+
+Vous avez demandé la fermeture de votre compte GrippeNet.fr,
+
+Nous procéderons à cette fermeture dans les jours qui viennent.
+
+Si toutefois vous souhaitez annuler cette demande, indiquez nous le numéro : {{ id }}
+
+Bien cordialement,
+
+L'équipe GrippeNet.fr

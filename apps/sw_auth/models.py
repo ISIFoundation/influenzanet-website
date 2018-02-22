@@ -283,6 +283,11 @@ class EpiworkUser(models.Model):
             transaction.rollback()
             raise
 
+
+class AnonymizeRequest(models.Model):
+    user = models.OneToOneField(EpiworkUser)
+    date = models.DateTimeField(auto_now_add=True)
+
 class AnonymizeLog(models.Model):
 
     EVENT_WARNING   = 1 # Anonymize Warning sent

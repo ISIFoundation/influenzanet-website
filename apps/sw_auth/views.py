@@ -14,10 +14,11 @@ from django.utils.translation import ugettext_lazy as _
 from django.views.decorators.csrf import csrf_protect
 from django.views.decorators.cache import never_cache
 from django.contrib.admin.views.decorators import staff_member_required
+
 from apps.common.wait import get_wait_launch_date
-from apps.sw_auth.models import EpiworkUser
-from apps.sw_auth.utils import send_activation_email,EpiworkToken,\
-    send_user_email
+from apps.common.mail import create_email_message, send_team_message
+from apps.sw_auth.models import EpiworkUser, AnonymizeRequest
+from apps.sw_auth.utils import send_activation_email,EpiworkToken, send_user_email
 from apps.sw_auth.logger import auth_notify
 
 from .forms import PasswordResetForm, RegistrationForm, SetPasswordForm, UserEmailForm, ReminderSettings,EmailForm
@@ -285,15 +286,37 @@ def my_settings(request):
                 msg = _(u'An email has been sent to %(email)s with a link you need to follow to activate this address') % {'email': email }
                 success = True
 
+        if action == 'close_account':
+            ano = AnonymizeRequest()
+            ano.user = epiwork_user
+            ano.save()
+            msg = _(u'The request to close your account has been registered')
+            id = epiwork_user.id
+            send_user_email('account_close', epiwork_user.email, {'id': epiwork_user.id })
+            send_team_message(create_email_message(_(u'Account Closing request'), _(u'A account closing request has been provided for account number %d') % (id)))
+            success = True
+
+        if action == 'cancel_close':
+            try:
+                ano = AnonymizeRequest.objects.get(user=epiwork_user)
+                ano.delete()
+            except AnonymizeRequest.DoesNotExist:
+                pass
+
     if form_reminder is None:
         form_reminder = ReminderSettings(instance=request.user)
 
     if form_email is None:
         form_email = EmailForm(request.POST, instance=epiwork_user)
 
+    ano = AnonymizeRequest.objects.filter(user=epiwork_user).all()
+    if len(ano):
+        ano = ano[0]
+
     context['msg'] = msg
     context['form_reminder'] = form_reminder
     context['form_email'] = form_email
+    context['ano_request'] = ano
     context['success'] = success
 
     return render_template('my_settings', request, context)

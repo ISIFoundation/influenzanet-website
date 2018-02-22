@@ -273,6 +273,7 @@ def group_management(request):
     active_cohorts = active_cohorts.keys()
 
     ctx = {
+           'vacc2017': vacc2017,
            'has_vacc2017': len(vacc2017) > 0,
            'persons': persons,
            'gid': request.GET.get("gid"),

@@ -15,6 +15,20 @@
 .form-settings .note { font-size: .8em }
 .form-settings .email_proposal { color: blue; font-weight: bold }
 .errorlist { color: red; font-size: .8em}
+
+.form-close-account {
+ text-align: center;
+ padding: 1em;
+ border: 1px solid #b94a48;
+ background-color: #f2dede;
+}
+
+.form-close-account button {
+ background-color: #b94a48;
+ border: 1px solid #b94a48;
+}
+
+
 </style>
 {%endblock add_css%}
 
@@ -74,6 +88,18 @@
 	</td>
 </tr>
 </table>
+</form>
+
+<form action="" method="post" class="form-settings form-close-account">{% csrf_token %}
+	{% if ano_request %}
+		<p class="alert alert-danger">{% trans "An account closing request was registred on " %} {{ ano_request.date|date:"d/m/Y" }}</p>
+		<input type="hidden" name="action" value="cancel_close"/>
+		<button type="submit" class="button button-alert">{% trans "Cancel the account closing request" %}</button>
+	{% else %}
+		<input type="hidden" name="action" value="close_account"/>
+		<button type="submit" class="button button-alert">{% trans "Request to close you account" %}</button>
+		<p>{% trans "We will proceed to the effective closure on the next days after your request" %}</p>
+	{% endif %}
 </form>
 
 {% endblock %}
