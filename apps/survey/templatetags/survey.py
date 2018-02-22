@@ -8,7 +8,7 @@ SECS_IN_DAY = 3600 * 24
 
 def delay_str(single, plural, count):
     type = ungettext(single, plural, count)
-    return ugettext('%d %s') % (count, type)
+    return ugettext('%(count)d %(type)s') % {'count': count, 'type': type }
 
 def time_to_delay(d):
     if not isinstance(d, datetime.datetime):
@@ -16,7 +16,7 @@ def time_to_delay(d):
     now = datetime.datetime.now()
     delta = now - (d - datetime.timedelta(0, 0, d.microsecond))
     since = delta.days * 24 * 60 * 60 + delta.seconds
-    
+
     print since
     if since < 0:
         return u'0 ' + ugettext('minute')
