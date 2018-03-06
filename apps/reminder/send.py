@@ -17,7 +17,7 @@ from apps.partnersites.context_processors import site_context
 
 from .models import get_reminders_for_users, UserReminderInfo, ReminderError, get_settings
 
-def create_message(user, message, language, next=None):
+def create_message(user, message, language, next=None, tracker=None):
     if language:
         activate(language)
 
@@ -41,6 +41,7 @@ def create_message(user, message, language, next=None):
     c['inner'] = inner
     c['MEDIA_URL'] = get_media_url()
     c['message'] = message
+    c['tracking_url'] =get_tracking_url(tracker)
     return inner, t.render(Context(c))
 
 def send_reminders(fake=False):
@@ -54,6 +55,11 @@ def send_reminders(fake=False):
             print 'sending', user.email, message.subject
 
     return i + 1
+
+#A modifier
+
+
+
 
 def get_site_url():
     return 'https://%s' % Site.objects.get_current().domain
@@ -78,13 +84,19 @@ def get_login_url(user, next):
 
     return '%s/%s' % (loginurl_base, key.key)
 
+def get_tracking_url(tracker) :
+    domain = Site.objects.get_current()
+    path=reverse('tracking', args=[tracker.id])
+    #'https://%s' % Site.objects.get_current().domain
+    return 'http://%s%s' % (domain,path)
+
 def get_survey_url():
     domain = Site.objects.get_current()
     path = reverse('survey_index')
     return 'https://%s%s' % (domain, path)
 
-def send(now, user, message, language, is_test_message=False, next=None, headers=None):
-    text_base, html_content = create_message(user, message, language, next)
+def send(now, user, message, language, is_test_message=False, next=None, headers=None, tracker=None):
+    text_base, html_content = create_message(user, message, language, next, tracker)
     text_content = strip_tags(text_base)
 
     msg = EmailMultiAlternatives(
@@ -105,11 +117,11 @@ def send(now, user, message, language, is_test_message=False, next=None, headers
             message=unicode(e),
             traceback=format_exc(),
         )
-
     if not is_test_message:
         info = UserReminderInfo.objects.get(user=user)
         info.last_reminder = now
         info.save()
+        return(headers)
 
 def send_unsubscribe_email(user):
     reminder_settings = get_settings()

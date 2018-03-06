@@ -8,7 +8,7 @@ from ...models import get_settings, UserReminderInfo, MockNewsLetter
 from django.db import connection
 from django.conf import settings
 from django.contrib.auth.models import User
-from apps.reminder.models import NewsLetter
+from apps.reminder.models import NewsLetter, NewsletterTracking
 
 
 def get_user_provider():
@@ -100,7 +100,6 @@ class Command(BaseCommand):
         now = datetime.now()
 
         users = get_user_provider()
-
         if self.verbose:
             print "> User provider class : %s " % str(users.__class__)
 
@@ -152,10 +151,12 @@ class Command(BaseCommand):
 
                 if to_send:
                     i += 1
+
+                    tracker,_=NewsletterTracking.objects.get_or_create(user=user, newsletter=message, date_sent=now)
                     if not self.fake:
                         if self.verbose:
                             print " > sending [%d] %s " % (user.id, user.email,)
-                        send(now, user, message, language, next=next, headers=self.headers)
+                        send(now, user, message, language, next=next, headers=self.headers, tracker=tracker)
                     else:
                         print "[fake] sending [%d] %s %s " % (user.id, user.email, message.subject)
                 else:

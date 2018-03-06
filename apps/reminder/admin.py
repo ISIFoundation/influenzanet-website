@@ -7,7 +7,7 @@ from django.conf import settings
 
 from nani.admin import TranslatableAdmin
 
-from .models import UserReminderInfo, ReminderSettings, NewsLetterTemplate, NewsLetter, ReminderError
+from .models import UserReminderInfo, ReminderSettings, NewsLetterTemplate, NewsLetter, ReminderError, NewsletterTracking
 from .forms import ReminderSettingsForm, NewsLetterTemplateForm, NewsLetterForm
 
 def make_active(modeladmin, request, queryset):
@@ -19,7 +19,7 @@ def make_inactive(modeladmin, request, queryset):
 make_inactive.short_description = 'Make selected reminders inactive'
 
 class UserReminderInfoAdmin(admin.ModelAdmin):
-    list_display = ('user', 'active', 'last_reminder',)
+    list_display = ('id','user', 'active', 'last_reminder',)
     ordering = ('user__username',)
     actions = (make_active, make_inactive,)
     list_editable = ('active',)
@@ -84,3 +84,8 @@ class ReminderErrorAdmin(admin.ModelAdmin):
     search_fields = ('user__username', 'user__email',)
 
 admin.site.register(ReminderError, ReminderErrorAdmin)
+
+class NewsletterTrackingAdmin(admin.ModelAdmin):
+    list_display = ("id","user", "newsletter","date_sent", "tracking", "first_view")
+
+admin.site.register(NewsletterTracking, NewsletterTrackingAdmin)

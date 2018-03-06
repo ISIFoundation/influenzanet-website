@@ -6,10 +6,11 @@ from django.template import RequestContext
 from django.http import HttpResponseRedirect, HttpResponse
 from django.contrib.admin.views.decorators import staff_member_required
 from django.conf import settings
+import base64
 
-from .models import UserReminderInfo, get_upcoming_dates, get_prev_reminder, get_settings, get_default_for_reminder, NewsLetter
+from .models import UserReminderInfo, get_upcoming_dates, get_prev_reminder, get_settings, get_default_for_reminder, NewsLetter, NewsletterTracking
 from .send import create_message, send, send_unsubscribe_email
-
+from classytags.test.context_managers import NULL
 
 @login_required
 def latest_newsletter(request):
@@ -24,6 +25,18 @@ def latest_newsletter(request):
         #inner, message = create_message(request.user, latest_newsletter, language)
 
     return render_to_response('reminder/latest_newsletter.html', locals(), context_instance=RequestContext(request))
+
+def tracking(request, id_tracking):
+    tracked, _ = NewsletterTracking.objects.get_or_create(id=id_tracking)
+    tracked.tracking+=1
+    if not tracked.first_view :
+        tracked.first_view=datetime.now()
+    tracked.save()
+    TRACKING_PIXEL = base64.b64decode( b'iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mNkYAAAAAYAAjCB0C8AAAAASUVORK5CYII=')
+    PNG_MIME_TYPE = "image/png"
+
+    return HttpResponse(TRACKING_PIXEL, mimetype=PNG_MIME_TYPE)
+
 
 @login_required
 def unsubscribe(request):
@@ -46,7 +59,7 @@ def resubscribe(request):
         info.save()
         return render_to_response('reminder/resubscribe_successful.html', locals(), context_instance=RequestContext(request))
     return render_to_response('reminder/resubscribe.html', locals(), context_instance=RequestContext(request))
-    
+
 @staff_member_required
 def overview(request):
     upcoming = [{
@@ -61,7 +74,7 @@ def manage(request, year, month, day, hour, minute):
     reminder_dict = get_prev_reminder(datetime(*map(int, [year, month, day, hour, minute, 59])), published=False)
     if not reminder_dict:
         return HttpResponse("There are no newsletters or reminders configured yet. Make sure to do so")
-    
+
     reminder = _reminder(reminder_dict, request.user)
     if not reminder:
         return HttpResponse("There is no reminder in your current language configured. Make sure to add a translation")
@@ -69,7 +82,7 @@ def manage(request, year, month, day, hour, minute):
     if request.method == "POST":
         sent = True
         send(datetime.now(), request.user, reminder, None, is_test_message=True)
-        
+
     return render(request, 'reminder/manage.html', locals())
 
 @staff_member_required
@@ -93,7 +106,7 @@ def _reminder(reminder_dict, user):
         language = settings.LANGUAGE_CODE
     if not language in reminder_dict:
         return None
-    
+
     reminder = reminder_dict[language]
 
     return reminder

@@ -6,13 +6,13 @@
 	<title>{{ site_name }} mail</title>
 </head>
 <body style="padding:0; margin:0; background:#999999; -webkit-text-size-adjust:none;">
-	
+
 	<style type="text/css">
 	<!--
 	a:link { text-decoration: underline; color: #808080; }
 	-->
 	</style>
-	
+
 <table width="100%" border="0" cellspacing="0" cellpadding="0" bgcolor="#999999">
 	<tr>
 		<td align="center" valign="top">
@@ -23,35 +23,36 @@
 							<tr>
 								<td>
 									<table width="100%" border="0" cellspacing="0" cellpadding="0">
-										
+
 										<tr>
 											<td style="font-size:0; line-height:0; text-align:center;"><a href="{{site_url}}"><img src="{{ site_logo }}" alt="{{ site_name }}" /></a></td>
 										</tr>
 										<tr>
 											<td style="color:#878787; font-size:11px; font-weight:bold; font-family:Arial;" height="30" align="left">{{ message.date.date }}</td>
 										</tr>
-										
+
 										<tr>
 											<td>
 												<table width="100%" border="0" cellspacing="0" cellpadding="0">
 													<tr>
 														<td valign="top">
 															<table width="100%" border="0" cellspacing="0" cellpadding="0">
-																
+
 																<tr>
 																	<td bgcolor="#f8f9fa">
 																		<table width="100%" border="0" cellspacing="0" cellpadding="15">
-																			
+
 																			<tr>
 																				<td style="font-family: Arial; font-size:13px; line-height:16px; text-align:left; color:#303030;">
 																				  	{{ inner }}
+																				  	<img src="{{ tracking_url }}">
 																				</td>
 																			</tr>
-																			
+
 																		</table>
 																	</td>
 																</tr>
-																
+
 															</table>
 														</td>
 													</tr>
@@ -65,6 +66,7 @@
 														<td style="font-family: Arial; font-size:10px; line-height:12px; text-align:center; color:#999;">
 															<br />{% blocktrans %}You have received this email because you are registered with {{ site_name }}. Your contribution helps us track the spread of flu. If you do not wish to receive this weekly reminder any longer, please <a href="{{ unsubscribe_url }}">unsubscribe</a> from our mailings.{% endblocktrans %}<br /><br /><br />
 														</td>
+
 													</tr>
 												</table>
 											</td>
@@ -72,15 +74,14 @@
 									</table>
 							  </td>
 							</tr>
-							
+
 						</table>
 					</td>
 				</tr>
-				
 			</table>
 		</td>
 	</tr>
 </table>
-	
+
 </body>
 </html>
