@@ -88,7 +88,7 @@ def get_tracking_url(tracker) :
     domain = Site.objects.get_current()
     path=reverse('tracking', args=[tracker.id])
     #'https://%s' % Site.objects.get_current().domain
-    return 'http://%s%s' % (domain,path)
+    return 'https://%s%s' % (domain,path)
 
 def get_survey_url():
     domain = Site.objects.get_current()
