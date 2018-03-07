@@ -177,6 +177,7 @@ class Command(BaseCommand):
         next = options.get('next', None)
         mock = options.get('mock', False)
         check = options.get('check', False)
+
         try:
             conf = get_settings()
         except:
@@ -184,43 +185,31 @@ class Command(BaseCommand):
 
         if conf is None:
             return u"0 reminders sent - not configured"
-        else:
-            if conf.currently_sending and conf.last_process_started_date + timedelta(hours=3) > datetime.now():
-                return u"0 reminders sent - too soon"
 
         batch_size = conf.batch_size
 
-        conf.currently_sending = True
-        conf.last_process_started_date = datetime.now()
-        conf.save()
+        if mock:
+            message = self.get_mock_reminder()
+            self.fake = True
+        else:
+            message = self.get_reminder()
 
-        try:
-            if mock:
-                message = self.get_mock_reminder()
-                self.fake = True
+        print "Newsletter #%d [%s] %s" % (message.id, str(message.date), message.subject)
+        if check:
+            return
+
+        if next is None:
+            if message.next:
+                # use redirect page for the newsletter if defined
+                next = message.next
             else:
-                message = self.get_reminder()
+                # force next to LOGIN_REDIRECT_URL because when next is None
+                # send_reminders() set it to survey_index's url.
+                next = settings.LOGIN_REDIRECT_URL
 
-            print "Newsletter #%d [%s] %s" % (message.id, str(message.date), message.subject)
-            if check:
-                return
+        count = self.send_reminders(message=message, target=user, batch_size=batch_size, next=next)
 
-            if next is None:
-                if message.next:
-                    # use redirect page for the newsletter if defined
-                    next = message.next
-                else:
-                    # force next to LOGIN_REDIRECT_URL because when next is None
-                    # send_reminders() set it to survey_index's url.
-                    next = settings.LOGIN_REDIRECT_URL
-
-            count = self.send_reminders(message=message, target=user, batch_size=batch_size, next=next)
-
-            if(counter is not None):
-                file(counter,'w').write(str(count))
-            return u'%d reminders sent.\n' % count
-        finally:
-            # conf = get_settings()
-            conf.currently_sending = False
-            conf.save()
+        if(counter is not None):
+            file(counter,'w').write(str(count))
+        return u'%d reminders sent.\n' % count
 
