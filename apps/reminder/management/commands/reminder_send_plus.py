@@ -124,7 +124,6 @@ class Command(BaseCommand):
                 if batch_size and i >= batch_size:
                     raise StopIteration
 
-                to_send = False
 
                 info, _ = UserReminderInfo.objects.get_or_create(user=user, defaults={'active': True, 'last_reminder': user.date_joined})
 
@@ -134,22 +133,24 @@ class Command(BaseCommand):
                 if self.verbose:
                     print "id=%d last=%s " % (user.id, str(info.last_reminder),),
 
+                if not checker.check(user):
+                    if self.verbose:
+                        print " [checker] skip id=%s" % str(user.id),
+                    continue
+
+                to_send = False
+
                 try :
-                    tracker=NewsletterTracking.objects.get(user=user, newsletter=message)
+                    tracker = NewsletterTracking.objects.get(user=user, newsletter=message)
                     if self.force:
-                        tracker.date_sent=now
+                        if self.verbose:
+                            print " [tracker] update id=%s" % str(user.id),
+                        tracker.date_sent = now
                         tracker.save()
                         to_send = True
-                except :
-                    NewsletterTracking.DoesNotExist
-                    tracker,_=NewsletterTracking.objects.get_or_create(user=user, newsletter=message, date_sent=now)
+                except NewsletterTracking.DoesNotExist:
+                    tracker = NewsletterTracking.objects.create(user=user, newsletter=message, date_sent=now)
                     to_send= True
-
-                if to_send:
-                    if not checker.check(user):
-                        if self.verbose:
-                            print " [checker] skip id=%s" % str(user.id),
-                        to_send = False
 
                 if to_send:
                     i += 1
@@ -162,6 +163,7 @@ class Command(BaseCommand):
                 else:
                     if self.verbose:
                         print " skip"
+
         except StopIteration:
             pass
         return i + 1

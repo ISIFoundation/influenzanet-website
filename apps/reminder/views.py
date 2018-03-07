@@ -29,13 +29,12 @@ def latest_newsletter(request):
 def tracking(request, id_tracking):
     try :
         tracked = NewsletterTracking.objects.get(id=id_tracking)
-        tracked.tracking+=1
+        tracked.tracking += 1
         if not tracked.first_view :
-            tracked.first_view=datetime.now()
+            tracked.first_view = datetime.now()
         tracked.save()
-    except :
-        NewsletterTracking.DoesNotExist
-        print " Does not exist \n"
+    except NewsletterTracking.DoesNotExist:
+        pass
 
     TRACKING_PIXEL = base64.b64decode( b'iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mNkYAAAAAYAAjCB0C8AAAAASUVORK5CYII=')
     PNG_MIME_TYPE = "image/png"
