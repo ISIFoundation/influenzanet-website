@@ -89,3 +89,5 @@ class NewsletterTrackingAdmin(admin.ModelAdmin):
     list_display = ("id","user", "newsletter","date_sent", "tracking", "first_view")
 
 admin.site.register(NewsletterTracking, NewsletterTrackingAdmin)
+
+admin.site.register(ReminderSettings)
