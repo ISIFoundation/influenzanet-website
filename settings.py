@@ -90,6 +90,7 @@ SECRET_KEY = 'swgm*3%po62mg76m4iq!k8h3j+_)x=8b--7skjc_0wiak^wksr'
 
 # List of callables that know how to import templates from various sources.
 TEMPLATE_LOADERS = (
+    'django_mobile.loader.Loader',
     'django.template.loaders.filesystem.Loader',
     'django.template.loaders.app_directories.Loader',
 #    'django.template.loaders.eggs.load_template_source',
@@ -106,6 +107,8 @@ MIDDLEWARE_CLASSES = (
     'cms.middleware.user.CurrentUserMiddleware',
     'cms.middleware.toolbar.ToolbarMiddleware',
     'cms.middleware.media.PlaceholderMediaMiddleware',
+    'django_mobile.middleware.MobileDetectionMiddleware',
+    'django_mobile.middleware.SetFlavourMiddleware',
 #   'pybb.middleware.PybbMiddleware',
     'cms.middleware.multilingual.MultilingualURLMiddleware',
     'apps.pollster.middleware.ForceResponseMiddleware',
@@ -125,6 +128,7 @@ TEMPLATE_CONTEXT_PROCESSORS = (
 #    "apps.pollster.context_processors.last_survey",
 #    "apps.pollster.context_processors.surveyuser_count",
     "apps.survey.context_processors.household",
+    'django_mobile.context_processors.flavour',
 )
 
 CMS_TEMPLATES = (
@@ -156,6 +160,7 @@ INSTALLED_APPS = (
     'django.contrib.sites',
     'django.contrib.admin',
     'django.contrib.messages',
+    'django_mobile', 
     'sekizai',
     'apps.common',
 #    'registration',
