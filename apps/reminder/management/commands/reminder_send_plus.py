@@ -145,14 +145,22 @@ class Command(BaseCommand):
                             print " [checker] skip id=%s" % str(user.id),
                         to_send = False
 
+                #Check if the Newsletter has already be sent to this user
+                newslettertracking_queryset = NewsletterTracking.objects.filter(user=user, newsletter=message)
+                if  newslettertracking_queryset :
+                    print "%s has already received this Newsletter. use --force if you want to send him this newsletter again \n" %user
+                    to_send = False
+
                 # If enforced mode : send regardless user info (only for test)
                 if self.force:
                     to_send = True
 
                 if to_send:
                     i += 1
+                    tracker,_=NewsletterTracking.objects.get_or_create(user=user, newsletter=message)
+                    tracker.date_sent=now
+                    tracker.save()
 
-                    tracker,_=NewsletterTracking.objects.get_or_create(user=user, newsletter=message, date_sent=now)
                     if not self.fake:
                         if self.verbose:
                             print " > sending [%d] %s " % (user.id, user.email,)
