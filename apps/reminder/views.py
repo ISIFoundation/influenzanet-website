@@ -27,11 +27,16 @@ def latest_newsletter(request):
     return render_to_response('reminder/latest_newsletter.html', locals(), context_instance=RequestContext(request))
 
 def tracking(request, id_tracking):
-    tracked, _ = NewsletterTracking.objects.get_or_create(id=id_tracking)
-    tracked.tracking+=1
-    if not tracked.first_view :
-        tracked.first_view=datetime.now()
-    tracked.save()
+    try :
+        tracked = NewsletterTracking.objects.get(id=id_tracking)
+        tracked.tracking+=1
+        if not tracked.first_view :
+            tracked.first_view=datetime.now()
+        tracked.save()
+    except :
+        NewsletterTracking.DoesNotExist
+        print " Does not exist \n"
+
     TRACKING_PIXEL = base64.b64decode( b'iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mNkYAAAAAYAAjCB0C8AAAAASUVORK5CYII=')
     PNG_MIME_TYPE = "image/png"
 

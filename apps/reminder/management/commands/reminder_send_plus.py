@@ -62,7 +62,7 @@ class Command(BaseCommand):
         make_option('--next', action='store', dest='next', default=None, help='Next url for login url'),
         make_option('--mock', action='store_true', dest="mock", default=False, help="Create a mock newsletter and fake send it (always fake)"),
         make_option('--force', action='store_true', dest="force", default=False, help="Force the newsletter to be sent regardless user info state"),
-        make_option('--check', action='store_true', dest="check", default=False, help="Only check wich newsletter will be sent"),
+        make_option('--check', action='store_true', dest="check", default=False, help="Only check which newsletter will be sent"),
     )
 
     def __init__(self):
@@ -134,10 +134,16 @@ class Command(BaseCommand):
                 if self.verbose:
                     print "id=%d last=%s " % (user.id, str(info.last_reminder),),
 
-                if info.last_reminder is None:
-                    to_send = True
-                elif info.last_reminder < message.date:
-                    to_send = True
+                try :
+                    tracker=NewsletterTracking.objects.get(user=user, newsletter=message)
+                    if self.force:
+                        tracker.date_sent=now
+                        tracker.save()
+                        to_send = True
+                except :
+                    NewsletterTracking.DoesNotExist
+                    tracker,_=NewsletterTracking.objects.get_or_create(user=user, newsletter=message, date_sent=now)
+                    to_send= True
 
                 if to_send:
                     if not checker.check(user):
@@ -145,22 +151,8 @@ class Command(BaseCommand):
                             print " [checker] skip id=%s" % str(user.id),
                         to_send = False
 
-                #Check if the Newsletter has already be sent to this user
-                newslettertracking_queryset = NewsletterTracking.objects.filter(user=user, newsletter=message)
-                if  newslettertracking_queryset :
-                    print "%s has already received this Newsletter. use --force if you want to send him this newsletter again \n" %user
-                    to_send = False
-
-                # If enforced mode : send regardless user info (only for test)
-                if self.force:
-                    to_send = True
-
                 if to_send:
                     i += 1
-                    tracker,_=NewsletterTracking.objects.get_or_create(user=user, newsletter=message)
-                    tracker.date_sent=now
-                    tracker.save()
-
                     if not self.fake:
                         if self.verbose:
                             print " > sending [%d] %s " % (user.id, user.email,)
