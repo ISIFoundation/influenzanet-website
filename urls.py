@@ -16,6 +16,7 @@ urlpatterns = patterns('',
 
     (r'^admin/surveys-editor/', include('apps.pollster.urls')),
     (r'^admin/users/', include('apps.sw_auth.urls_admin')),
+    (r'^admin/tracking/', include('apps.reminder.urls_admin')),
     (r'^admin/', include(admin.site.urls)),
     url(r'^surveys/(?P<survey_shortname>.+)/charts/(?P<chart_shortname>.+)/tile/(?P<z>\d+)/(?P<x>\d+)/(?P<y>\d+)$', 'apps.pollster.views.map_tile', name='pollster_map_tile'),
     url(r'^surveys/(?P<survey_shortname>.+)/charts/(?P<chart_shortname>.+)/click/(?P<lat>[\d.-]+)/(?P<lng>[\d.-]+)$', 'apps.pollster.views.map_click', name='pollster_map_click'),

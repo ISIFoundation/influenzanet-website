@@ -12,6 +12,19 @@ from .models import UserReminderInfo, get_upcoming_dates, get_prev_reminder, get
 from .send import create_message, send, send_unsubscribe_email
 from classytags.test.context_managers import NULL
 
+def _reminder(reminder_dict, user):
+    info, _ = UserReminderInfo.objects.get_or_create(user=user, defaults={'active': True, 'last_reminder': user.date_joined})
+    language = info.get_language()
+
+    if not language in reminder_dict:
+        language = settings.LANGUAGE_CODE
+    if not language in reminder_dict:
+        return None
+
+    reminder = reminder_dict[language]
+
+    return reminder
+
 @login_required
 def latest_newsletter(request):
     now = datetime.now()
@@ -64,6 +77,11 @@ def resubscribe(request):
         return render_to_response('reminder/resubscribe_successful.html', locals(), context_instance=RequestContext(request))
     return render_to_response('reminder/resubscribe.html', locals(), context_instance=RequestContext(request))
 
+
+##
+# Admin Pages
+##
+
 @staff_member_required
 def overview(request):
     upcoming = [{
@@ -102,15 +120,6 @@ def preview(request, year, month, day, hour, minute):
     text_base, html_content = create_message(request.user, reminder, settings.LANGUAGE_CODE)
     return HttpResponse(html_content)
 
-def _reminder(reminder_dict, user):
-    info, _ = UserReminderInfo.objects.get_or_create(user=user, defaults={'active': True, 'last_reminder': user.date_joined})
-    language = info.get_language()
-
-    if not language in reminder_dict:
-        language = settings.LANGUAGE_CODE
-    if not language in reminder_dict:
-        return None
-
-    reminder = reminder_dict[language]
-
-    return reminder
+@staff_member_required
+def follow_sending(request, newsletter_id):
+    pass
