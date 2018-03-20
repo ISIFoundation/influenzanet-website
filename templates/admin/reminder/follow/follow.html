@@ -1,0 +1,52 @@
+{% extends "admin/base_site.html" %}
+{% load i18n %}
+{% block breadcrumbs %}
+<br>
+<table width="100%" border="0" cellspacing="0" cellpadding="17" bgcolor="#ffffff">
+	<h1> Newsletter {{newsletter_id}}</h1>
+	<table width="100%" border="0" cellspacing="0" cellpadding="0">
+		<tr>
+			<td><h2>Nombre de mails envoyes par jour </h2></td>
+			<td></td>
+		</tr>
+		<tr>
+			<th>Jour d'envoi du mail</th>
+			<th>Nombre de mails envoyes</th>
+		</tr>
+		{% for sent in sent_by_day %}
+			<tr>
+				<td>{{ sent.day_sent }}</td>
+				<td>{{ sent.nb_sent }}</td>
+			</tr>
+		{% endfor %}
+		<tr>
+			<td><h2>Nombre de mails vus par jour </h2></td>
+			<td></td>
+		</tr>
+		<tr>
+			<th>Jour d'ouverture du mail</th>
+			<th>Nombre de mails ouverts</th>
+		</tr>
+		{% for read_d in read_by_day %}
+			<tr>
+				<td>{{ read_d.day_view }}</td>
+				<td>{{ read_d.nb_view }}</td>
+			</tr>
+		{% endfor %}
+		<tr>
+			<td><h2>Rapidite de lecture de mails (en jour)</h2></td>
+			<td></td>
+		</tr>
+		<tr>
+			<th>Temps entre envoi et vu du mail</th>
+			<th>Nombre de mails ouverts</th>
+		</tr>
+		{% for read_t in read_by_timelapse %}
+			<tr>
+				<td>{{ read_t.timelapse }}</td>
+				<td>{{ read_t.nb_view }}</td>
+			</tr>
+		{% endfor %}
+	</table>
+</table>
+{% endblock %}

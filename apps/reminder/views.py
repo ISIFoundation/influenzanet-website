@@ -8,6 +8,9 @@ from django.contrib.admin.views.decorators import staff_member_required
 from django.conf import settings
 import base64
 
+from django.db.models import Count
+from django.db.models import aggregates
+
 from .models import UserReminderInfo, get_upcoming_dates, get_prev_reminder, get_settings, get_default_for_reminder, NewsLetter, NewsletterTracking
 from .send import create_message, send, send_unsubscribe_email
 from classytags.test.context_managers import NULL
@@ -39,7 +42,7 @@ def latest_newsletter(request):
 
     return render_to_response('reminder/latest_newsletter.html', locals(), context_instance=RequestContext(request))
 
-def tracking(request, id_tracking):
+def tracking_url(request, id_tracking):
     try :
         tracked = NewsletterTracking.objects.get(id=id_tracking)
         tracked.tracking += 1
@@ -76,7 +79,6 @@ def resubscribe(request):
         info.save()
         return render_to_response('reminder/resubscribe_successful.html', locals(), context_instance=RequestContext(request))
     return render_to_response('reminder/resubscribe.html', locals(), context_instance=RequestContext(request))
-
 
 ##
 # Admin Pages
@@ -120,6 +122,19 @@ def preview(request, year, month, day, hour, minute):
     text_base, html_content = create_message(request.user, reminder, settings.LANGUAGE_CODE)
     return HttpResponse(html_content)
 
+
 @staff_member_required
 def follow_sending(request, newsletter_id):
-    pass
+
+    trunc_day_sent = {"day_sent": """DATE(date_sent)"""}
+    trunc_day_view = {"day_view":""" DATE(first_view)"""}
+    timelapse_sent_view = {"timelapse": """ DATE_PART('day', DATE_TRUNC('day',first_view) - DATE_TRUNC('day',date_sent) )"""}
+
+    all_trackers = NewsletterTracking.objects.filter(newsletter = newsletter_id).extra(select=trunc_day_sent)
+    tracked = all_trackers.exclude( tracking = 0)
+    sent_by_day = all_trackers.values('day_sent').annotate(nb_sent=Count('user')).order_by('-day_sent')
+    read_by_day = tracked.extra(select=trunc_day_view).values('day_view').annotate(nb_view=Count('user')).order_by('-day_view')
+    read_by_timelapse = tracked.extra(select=timelapse_sent_view).values('timelapse').annotate(nb_view=Count('user')).order_by('timelapse')
+
+    return render(request, 'admin/reminder/follow/follow.html',{'sent_by_day': sent_by_day, 'newsletter_id' : newsletter_id, 'read_by_day' : read_by_day, 'read_by_timelapse' : read_by_timelapse})
+    #return render(request, 'admin/reminder/newsletter/follow.html', locals())

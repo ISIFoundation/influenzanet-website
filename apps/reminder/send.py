@@ -17,7 +17,7 @@ from apps.partnersites.context_processors import site_context
 
 from .models import get_reminders_for_users, UserReminderInfo, ReminderError, get_settings
 
-def create_message(user, message, language, next=None, tracker=None):
+def create_message(user, message, language, next = None, tracker = None):
     if language:
         activate(language)
 
@@ -41,7 +41,7 @@ def create_message(user, message, language, next=None, tracker=None):
     c['inner'] = inner
     c['MEDIA_URL'] = get_media_url()
     c['message'] = message
-    c['tracking_url'] =get_tracking_url(tracker)
+    c['tracking_url'] = get_tracking_url(tracker)
     return inner, t.render(Context(c))
 
 def send_reminders(fake=False):
@@ -86,7 +86,7 @@ def get_login_url(user, next):
 
 def get_tracking_url(tracker) :
     domain = Site.objects.get_current()
-    path=reverse('tracking', args=[tracker.id])
+    path=reverse('tracking', args = [tracker.id])
     #'https://%s' % Site.objects.get_current().domain
     return 'https://%s%s' % (domain,path)
 
@@ -95,7 +95,7 @@ def get_survey_url():
     path = reverse('survey_index')
     return 'https://%s%s' % (domain, path)
 
-def send(now, user, message, language, is_test_message=False, next=None, headers=None, tracker=None):
+def send(now, user, message, language, is_test_message = False, next = None, headers = None, tracker = None):
     text_base, html_content = create_message(user, message, language, next, tracker)
     text_content = strip_tags(text_base)
 

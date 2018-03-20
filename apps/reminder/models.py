@@ -96,9 +96,9 @@ class NewsLetter(TranslatableModel):
 class NewsletterTracking(models.Model):
     user = models.ForeignKey(User)
     newsletter = models.ForeignKey(NewsLetter)
-    date_sent = models.DateTimeField(null=True, blank=True)
-    tracking = models.IntegerField(default=0)
-    first_view = models.DateTimeField(null=True, blank=True)
+    date_sent = models.DateTimeField(null = True, blank = True)
+    tracking = models.IntegerField(default = 0)
+    first_view = models.DateTimeField(null = True, blank = True)
 
 
 class MockNewsLetter(object):

@@ -7,7 +7,7 @@ from loginurl.views import cleanup, login
 
 urlpatterns = patterns('apps.reminder.views',
     (r'^latest_newsletter/$', 'latest_newsletter'),
-    url(r'^tracking/(?P<id_tracking>.+)/$',  views.tracking, name='tracking'),
+    url(r'^tracking/(?P<id_tracking>.+)/$',  views.tracking_url, name='tracking'),
     (r'^unsubscribe/$', 'unsubscribe'),
     (r'^resubscribe/$', 'resubscribe'),
     (r'^overview/$', 'overview'),
