@@ -1,52 +1,111 @@
 {% extends "admin/base_site.html" %}
 {% load i18n %}
+
+{% block extrahead %}
+<script src="https://d3js.org/d3.v4.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/vega@3.2.1/build/vega-core.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/vega-lite@2"></script>
+<script src="https://cdn.jsdelivr.net/npm/vega-embed@3"></script>
+
+{% endblock %}
+
 {% block breadcrumbs %}
 <br>
+
 <table width="100%" border="0" cellspacing="0" cellpadding="17" bgcolor="#ffffff">
 	<h1> Newsletter {{newsletter_id}}</h1>
+	<td>
 	<table width="100%" border="0" cellspacing="0" cellpadding="0">
 		<tr>
-			<td><h2>Nombre de mails envoyes par jour </h2></td>
-			<td></td>
+			<td><h2>Nombre de mails envoyés et lus par jour</h2></td>
 		</tr>
-		<tr>
-			<th>Jour d'envoi du mail</th>
-			<th>Nombre de mails envoyes</th>
-		</tr>
-		{% for sent in sent_by_day %}
-			<tr>
-				<td>{{ sent.day_sent }}</td>
-				<td>{{ sent.nb_sent }}</td>
+	<!--	<table id="tab"></table> -->
+
+				<th>Date </th>
+				<th>Nombre de mails envoyés</th>
+				<th>Nombre de mails ouverts</th>
+			</tr>
+			{% for date in dict_dates %}
+			<tr class="data" data-day= "{{date.day}}" data-sent="{{ date.nb_sent }}" data-view="{{ date.nb_view }}">
+				<td class="day" data-date="{{ date.day.isoformat }}">{{ date.day }}</td>
+				<td class="sent">{{ date.nb_sent }}</td>
+				<td class="view">{{ date.nb_view }}</td>
 			</tr>
 		{% endfor %}
+
+		<!--	<table width="100%" border="0" cellspacing="0" cellpadding="0" id="tab"></table>-->
 		<tr>
-			<td><h2>Nombre de mails vus par jour </h2></td>
-			<td></td>
-		</tr>
+			<td><h2>Rapidité de lecture de mails (en jour)</h2></td>
 		<tr>
-			<th>Jour d'ouverture du mail</th>
-			<th>Nombre de mails ouverts</th>
-		</tr>
-		{% for read_d in read_by_day %}
-			<tr>
-				<td>{{ read_d.day_view }}</td>
-				<td>{{ read_d.nb_view }}</td>
-			</tr>
-		{% endfor %}
 		<tr>
-			<td><h2>Rapidite de lecture de mails (en jour)</h2></td>
-			<td></td>
-		</tr>
-		<tr>
-			<th>Temps entre envoi et vu du mail</th>
+			<th>Temps entre envoi et vu de mail</th>
 			<th>Nombre de mails ouverts</th>
 		</tr>
 		{% for read_t in read_by_timelapse %}
-			<tr>
-				<td>{{ read_t.timelapse }}</td>
-				<td>{{ read_t.nb_view }}</td>
+			<tr class = "data2" data2-delay = "{{ read_t.timelapse }}" data2-view = "{{ read_t.nb_view }}">
+				<td class = "delay">{{ read_t.timelapse }}</td>
+				<td class = "view">{{ read_t.nb_view }}</td>
 			</tr>
 		{% endfor %}
 	</table>
+	</td>
+
+	<td>
+	<div id="vis"></div>
+
+	</td>
 </table>
+
+	<script type="text/javascript">
+
+		var data = [];
+		var tot_sent = 0;
+		var tot_view = 0;
+
+		d3.selectAll('tr.data').each(function(d, i) {
+
+			d3.select(this).selectAll('td').each(function() {
+				if(typeof(data[i]) == "undefined") {
+					data[i] = {};
+				}
+				var $e = d3.select(this);
+				var k = $e.attr('class');
+				if(k =='day') {
+					data[i][k] = $e.attr('data-date');
+				}else{
+					data[i][k] = $e.text();
+				}
+			});
+
+		});
+
+		var yourVlSpec = {
+		  	"$schema": "https://vega.github.io/schema/vega-lite/v2.0.json",
+	      	"description": "Nombres de mails envoyés et lus par jour.",
+	      	"data": {
+	        	"values": data
+	        },
+	        "layer": [
+	        {
+		      	"mark": "bar",
+		      	"encoding": {
+	        		"x": {"field": "day", "type": "nominal"},
+	        		"y": {"field": "sent", "type": "quantitative"},
+	      		}
+	      	},
+	      	{
+	      		"mark": "line",
+	      		"encoding": {
+		      		"x": {"field": "day", "type": "nominal"},
+		      		"y": {"field": "view", "type": "quantitative"},
+		      		"color": {"value": "red"}
+				},
+
+	      	}]
+
+      	}
+		vegaEmbed("#vis", yourVlSpec);
+
+	</script>
+
 {% endblock %}

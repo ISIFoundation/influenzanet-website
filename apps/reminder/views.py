@@ -3,17 +3,39 @@ from datetime import datetime
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import render_to_response, render
 from django.template import RequestContext
-from django.http import HttpResponseRedirect, HttpResponse
+from django.http import HttpResponse
 from django.contrib.admin.views.decorators import staff_member_required
 from django.conf import settings
+import simplejson as json
 import base64
+import collections
+
+class JSONEncoder(json.JSONEncoder):
+
+    # Cette methode est appelee pour serialiser les objets en JSON
+    def default(self, obj):
+        # Si l'objet est de type datetime, on retourne une chaine formatee
+        # representant l'instant de maniere classique
+        # ex: "2014-03-09 19:51:32.7689"
+        if hasattr(obj, 'isoformat'):
+            return obj.isoformat()
+        return json.JSONEncoder.default(self, obj)
+
+def json_dumps(data):
+    return JSONEncoder().encode(data)
+
+def myconverter(o):
+    if hasattr(o, 'isoformat'):
+        return o.__str__()
 
 from django.db.models import Count
-from django.db.models import aggregates
+#unused
+#from django.db.models import aggregates
 
-from .models import UserReminderInfo, get_upcoming_dates, get_prev_reminder, get_settings, get_default_for_reminder, NewsLetter, NewsletterTracking
+# unused , get_default_for_reminder
+from .models import UserReminderInfo, get_upcoming_dates, get_prev_reminder, get_settings, NewsLetter, NewsletterTracking
 from .send import create_message, send, send_unsubscribe_email
-from classytags.test.context_managers import NULL
+#from classytags.test.context_managers import NULL
 
 def _reminder(reminder_dict, user):
     info, _ = UserReminderInfo.objects.get_or_create(user=user, defaults={'active': True, 'last_reminder': user.date_joined})
@@ -126,15 +148,32 @@ def preview(request, year, month, day, hour, minute):
 @staff_member_required
 def follow_sending(request, newsletter_id):
 
-    trunc_day_sent = {"day_sent": """DATE(date_sent)"""}
-    trunc_day_view = {"day_view":""" DATE(first_view)"""}
+    trunc_day_sent = {"day": """DATE(date_sent)"""}
+    trunc_day_view = {"day":""" DATE(first_view)"""}
     timelapse_sent_view = {"timelapse": """ DATE_PART('day', DATE_TRUNC('day',first_view) - DATE_TRUNC('day',date_sent) )"""}
 
+
     all_trackers = NewsletterTracking.objects.filter(newsletter = newsletter_id).extra(select=trunc_day_sent)
-    tracked = all_trackers.exclude( tracking = 0)
-    sent_by_day = all_trackers.values('day_sent').annotate(nb_sent=Count('user')).order_by('-day_sent')
-    read_by_day = tracked.extra(select=trunc_day_view).values('day_view').annotate(nb_view=Count('user')).order_by('-day_view')
+    tracked = all_trackers.exclude(tracking = 0)
+
+    sent_by_day = all_trackers.values('day').annotate(nb_sent=Count('user')).order_by('day')
+    read_by_day = tracked.extra(select=trunc_day_view).values('day').annotate(nb_view=Count('user')).order_by('day')
+    #all_trackers.extra(select=trunc_day_sent).values('day_sent').annotate(nb_sent=Count('user')).order_by('day_sent')
+
+    dict_dates = dict([ (r['day'] , r) for r in read_by_day ])
+
+    for s in sent_by_day :
+        if dict_dates.has_key(s['day']) :
+            dict_dates[s['day']]["nb_sent"] = s['nb_sent']
+        else :
+            dict_dates[s['day']]={'nb_sent' : s['nb_sent'], 'day' : s['day'], 'nb_view' : 0 }
+
+    for v in dict_dates.values() :
+        if not 'nb_sent' in v :
+            v['nb_sent'] = 0
+
+    dict_dates_sorted = collections.OrderedDict(sorted(dict_dates.items(), key=lambda t: t[0]))
     read_by_timelapse = tracked.extra(select=timelapse_sent_view).values('timelapse').annotate(nb_view=Count('user')).order_by('timelapse')
 
-    return render(request, 'admin/reminder/follow/follow.html',{'sent_by_day': sent_by_day, 'newsletter_id' : newsletter_id, 'read_by_day' : read_by_day, 'read_by_timelapse' : read_by_timelapse})
-    #return render(request, 'admin/reminder/newsletter/follow.html', locals())
+    return render(request, 'admin/reminder/follow/follow.html',{'dict_dates' : dict_dates_sorted.values(), 'newsletter_id' : newsletter_id,'read_by_timelapse' : read_by_timelapse})
+
