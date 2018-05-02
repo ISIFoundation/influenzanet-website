@@ -3,7 +3,6 @@
 
 {% block col1 %}
 
-{% comment %}
 	{% if wait.message %}
 	<h1>{{ wait.message.title }}</h1>
 	<p>{{ wait.message.content|safe }}</p>
@@ -14,7 +13,7 @@
 	{% if wait.date %}
 	<p class="launch-date">{%trans "The project will be launched from the" %} <b>{{ wait.date|date:"DATE_FORMAT" }}</b></p>
 	{% endif %}
-{% endcomment %}
+{% comment %}
 
 <h1>La saison 2017/2018 de GrippeNet.fr n'a pas encore commencé</h1>
 
@@ -46,5 +45,6 @@
 		{% endfor %}
 		</table>
 	{%endif%}
+{% endcomment %}
 
 {% endblock %}
