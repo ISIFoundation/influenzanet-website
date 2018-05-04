@@ -1,9 +1,16 @@
-from django.contrib import admin
-from .models import EpiworkUser
+from django.contrib.admin import ModelAdmin
+from django.contrib.admin import site
+from .models import EpiworkUser, AnonymizeRequest
 
-class EpiworkUserAdmin(admin.ModelAdmin):
+class EpiworkUserAdmin(ModelAdmin):
     list_display = ['login','email','is_active']
-    exclude = ('user','password',) 
+    exclude = ('user','password',)
     search_fields = ['user','email']
 
-admin.site.register(EpiworkUser, EpiworkUserAdmin)
+class AnonymizeRequestAdmin(ModelAdmin):
+    list_display = ['user','date']
+    search_fields = ['user','email']
+
+site.register(EpiworkUser, EpiworkUserAdmin)
+
+site.register(AnonymizeRequest, AnonymizeRequestAdmin)

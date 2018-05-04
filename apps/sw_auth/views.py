@@ -287,21 +287,15 @@ def my_settings(request):
                 success = True
 
         if action == 'close_account':
-            ano = AnonymizeRequest()
-            ano.user = epiwork_user
-            ano.save()
+            anonymizer = Anonymizer()
+            anonymizer.request_close(epiwork_user)
             msg = _(u'The request to close your account has been registered')
-            id = epiwork_user.id
-            send_user_email('account_close', epiwork_user.email, {'id': epiwork_user.id })
-            send_team_message(create_email_message(_(u'Account Closing request'), _(u'A account closing request has been provided for account number %d') % (id)))
             success = True
 
         if action == 'cancel_close':
-            try:
-                ano = AnonymizeRequest.objects.get(user=epiwork_user)
-                ano.delete()
-            except AnonymizeRequest.DoesNotExist:
-                pass
+            anonymizer = Anonymizer()
+            anonymizer.cancel_request(epiwork_user)
+            success = True
 
     if form_reminder is None:
         form_reminder = ReminderSettings(instance=request.user)

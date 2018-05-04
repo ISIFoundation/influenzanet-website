@@ -283,18 +283,25 @@ class EpiworkUser(models.Model):
             transaction.rollback()
             raise
 
+    def __unicode__(self):
+        return '<' + self.login + ',' + self.email + '>'
+
 
 class AnonymizeRequest(models.Model):
+    """
+        Request from user to anonnymize account
+    """
     user = models.OneToOneField(EpiworkUser)
     date = models.DateTimeField(auto_now_add=True)
 
 class AnonymizeLog(models.Model):
 
     EVENT_WARNING   = 1 # Anonymize Warning sent
-    EVENT_DONE      = 2 # Account anonymized
+    EVENT_ANONYMISED      = 2 # Account anonymized
     EVENT_MANUALLY  = 3 # Account anonymized by administrator
     EVENT_CANCELLED = 4 # Account anonymization cancelled by user login
     EVENT_CONFIRMED = 5 # Account confirmed by user
+    EVENT_REQUEST   = 6 # Anonymize requested by user
 
     user = models.ForeignKey(EpiworkUser)
     date = models.DateTimeField(auto_now_add=True)
