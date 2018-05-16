@@ -30,6 +30,7 @@ def create_message(user, message, language, next = None, tracker = None):
         'username': user.username,
     }
     c.update(site_context())
+    # can be provided by site_context
     c['site_logo'] = get_site_url() + c['site_logo']
     c['site_url'] = get_site_url()
     inner = t.render(Context(c))
@@ -57,9 +58,6 @@ def send_reminders(fake=False):
     return i + 1
 
 #A modifier
-
-
-
 
 def get_site_url():
     return 'https://%s' % Site.objects.get_current().domain

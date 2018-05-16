@@ -1,0 +1,72 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+{% load i18n %}
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+	<meta http-equiv="Content-type" content="text/html; charset=utf-8" />
+	<title>{{ site_name }} mail</title>
+</head>
+<body style="padding:0; margin:0; background:#999999; -webkit-text-size-adjust:none;">
+
+	<style type="text/css">
+	<!--
+	a:link { text-decoration: underline; color: #808080; }
+	-->
+	</style>
+
+<table width="100%" border="0" cellspacing="0" cellpadding="0" bgcolor="#999999">
+	<tr>
+		<td align="center" valign="top">
+			<table width="581" cellspacing="0" cellpadding="0">
+				<tr>
+					<td>
+						<table width="100%" border="0" cellspacing="0" cellpadding="17" bgcolor="#ffffff">
+							<tr>
+								<td>
+									<table width="100%" border="0" cellspacing="0" cellpadding="0">
+
+										<tr>
+											<td style="font-size:0; line-height:0; text-align:center;"><a href="{{site_url}}"><img src="{{ site_logo }}" alt="{{ site_name }}" /></a></td>
+										</tr>
+										<tr>
+											<td style="color:#878787; font-size:11px; font-weight:bold; font-family:Arial;" height="30" align="left">{{ email_subject }}</td>
+										</tr>
+
+										<tr>
+											<td>
+												<table width="100%" border="0" cellspacing="0" cellpadding="0">
+													<tr>
+														<td valign="top">
+															<table width="100%" border="0" cellspacing="0" cellpadding="0">
+
+																<tr>
+																	<td bgcolor="#f8f9fa">
+																		<table width="100%" border="0" cellspacing="0" cellpadding="15">
+
+																			<tr>
+																				<td style="font-family: Arial; font-size:13px; line-height:16px; text-align:left; color:#303030;">
+																				  	{{ inner_contents }}
+																				</td>
+																			</tr>
+																		</table>
+																	</td>
+																</tr>
+
+															</table>
+														</td>
+													</tr>
+												</table>
+											</td>
+										</tr>
+									</table>
+							  </td>
+							</tr>
+						</table>
+					</td>
+				</tr>
+			</table>
+		</td>
+	</tr>
+</table>
+
+</body>
+</html>

@@ -8,11 +8,11 @@ from .models import SiteSettings
 def customizations(request):
     return site_context()
 
-def site_context():
+def site_context(with_url=False):
     site = Site.objects.get_current()
     settings = SiteSettings.get(site)
 
-    return {
+    data = {
         'site_name': site.name,
         'site_logo': settings.logo.url if settings.logo else "",
         'site_footer': mark_safe(clean_html(settings.footer, full=False)) if settings.footer else None,
@@ -21,3 +21,11 @@ def site_context():
         'piwik_server_url': getattr(django_settings,'PIWIK_SERVER_URL', False),
         'assets_version': getattr(django_settings, 'ASSETS_VERSION', 0)
     }
+
+    if with_url:
+        url = 'https://%s' % site.domain
+        data['site_url'] = url
+        data['site_logo'] = url + data['site_logo']
+        data['MEDIA_URL'] = '%s%s' % (url, django_settings.MEDIA_URL)
+
+    return data
