@@ -47,7 +47,7 @@ class Anonymizer:
 
     def anonymize(self, user):
         """
-            Don anonymize the account
+            Do anonymize the account
         """
         email = user.email
         user.anonymize()
