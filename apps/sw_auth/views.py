@@ -315,8 +315,20 @@ def my_settings(request):
 
     return render_template('my_settings', request, context)
 
-def deactivate_planned(request):
-    return render_template('deactivate_planned', request)
+def deactivate(request, *args):
+
+    confirm = request.GET.get('confirm', default=False)
+
+    if confirm:
+        try:
+            epiwork_user = request.session['epiwork_user']
+            anonymizer = Anonymizer()
+            anonymizer.request_close(epiwork_user)
+        except KeyError:
+            return render_template('no_settings', request)
+
+
+    return render_template('deactivate_planned', request, {'confirm': confirm})
 
 def deactivate_request(request):
     try:

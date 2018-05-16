@@ -13,9 +13,13 @@
  User can deactivate manually the account, if finally
 {% endcomment %}
 
+{% if confirm %}
+	<p class="info">{%trans "The request to close your account has been registered" %}</p>
+{% else %}
 <p class="warning">{%trans "If your want to deactivate your account click on the button below"%}
-
 <p class="centered">
-	<a href="{% url deactivate_request %}" class="button">{%trans "I confirm deactivation of my account" %}</a>
+	<a href="{% url deactivate_planned %}?confirm=1" class="button">{%trans "I confirm deactivation of my account" %}</a>
 </p>
+{% endif %}
+
 {% endblock %}

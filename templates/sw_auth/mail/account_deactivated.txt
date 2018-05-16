@@ -1,9 +1,0 @@
-{% load i18n %}
-{% blocktrans %}Your account has been deactivated and your account information (login, password, email).
-
-If you didnt want your account to be deactivated, please contact us and indicate your account
-number.
- 
-Your Account number : {{ id }}
-
-{% endblocktrans %}

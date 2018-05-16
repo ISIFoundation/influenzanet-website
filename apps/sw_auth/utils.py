@@ -12,6 +12,9 @@ TOKEN_PASSWORD = 2
 TOKEN_LOGIN    = 3
 TOKEN_EMAIL    = 4
 
+EMAIL_TEMPLATE_PATH = 'sw_auth/mail/'
+
+
 class EpiworkToken:
     """
     Token management class

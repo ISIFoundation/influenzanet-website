@@ -1,8 +1,0 @@
-{% load i18n %}
-{% blocktrans %}You did not connect since {{ delay }} days to the website.
-Your account will be deactivated and your connection information will be deleted.
-
-If you dont want your account to be deactivated, please login to the website or click
-on the link below:
-{{login_token}}
-{% endblocktrans %}

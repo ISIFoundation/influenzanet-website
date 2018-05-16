@@ -1,0 +1,11 @@
+{% load i18n %}
+{% blocktrans %}<p>You did not connect since {{ login_delay }} days to the website. </p>
+<p>Your account will be deactivated and your connection information will be deleted in <b>{{ waiting_delay }}</b> days.</p>
+
+<p>If you dont want your account to be deactivated, please login to the website or click
+on the link below <b>before {{ waiting_delay }} days</b> :</p>
+<p style="text-align:center">
+ <a href="{{login_token}}">{{login_token}}</a>
+</p>
+<p>After this delay, your account information will be lost and you will need to provide your account number : <b>{{ account_id }}</b> to reactivate.</p>
+{% endblocktrans %}

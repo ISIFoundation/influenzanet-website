@@ -4,8 +4,8 @@ from .models import AnonymizeLog, AnonymizeRequest
 import datetime
 from apps.common.mail import send_message, create_message_from_template
 from apps.common.mail import create_email_message, send_team_message
-from apps.sw_auth.utils import send_user_email
 from django.utils.translation import ugettext_lazy as _
+from .utils import EMAIL_TEMPLATE_PATH
 
 class Anonymizer:
     """
@@ -28,7 +28,7 @@ class Anonymizer:
 
     def send_anonymized(self, user_id, user_email):
         # Send an email to tell the user his account has been anonymized
-        message = create_message_from_template('account_deactivated', {'id':user_id}, text_template=True, html_template=False)
+        message = create_message_from_template(EMAIL_TEMPLATE_PATH + 'account_deactivated', {'id':user_id})
         send_message(user_email, message)
 
     def send_warning(self, user):
@@ -36,8 +36,13 @@ class Anonymizer:
         next = reverse('deactivate_planned')
         token = user.create_login_token(usage_left=1, expires=expires, next=next)
 
-        data = {'waiting_delay': self.waiting_delay, 'login_token':token.get_url()}
-        message = create_message_from_template('deactivate_warning', data, text_template=True, html_template=False)
+        data = {'login_delay': self.login_delay, 'waiting_delay': self.waiting_delay, 'login_token': token.get_url(), 'account_id': user.id }
+        message = create_message_from_template(EMAIL_TEMPLATE_PATH + 'deactivate_warning', data)
+        send_message(user.email, message)
+
+    def send_request(self, user):
+        data = { 'id': user.id}
+        message = create_message_from_template(EMAIL_TEMPLATE_PATH + 'account_close', data)
         send_message(user.email, message)
 
     def anonymize(self, user):
@@ -65,13 +70,12 @@ class Anonymizer:
         self.log(user, AnonymizeLog.EVENT_CANCELLED)
 
     def request_close(self, user):
-        ano = AnonymizeRequest()
-        ano.user = user
-        ano.save()
-        id = user.id
-        self.log(user, AnonymizeLog.EVENT_REQUEST)
-        send_user_email('account_close', user.email, {'id': user.id })
-        send_team_message(create_email_message(_(u'Account Closing request'), _(u'A account closing request has been provided for account number %d') % (id)))
+        ano, created = AnonymizeRequest.objects.get_or_create(user=user)
+        if created:
+            self.log(user, AnonymizeLog.EVENT_REQUEST)
+            self.send_request(user)
+            send_team_message(create_email_message(_(u'Account Closing request'), _(u'A account closing request has been provided for account number %d') % (user.id)))
+        return (ano, created)
 
     def cancel_request(self, user):
         try:

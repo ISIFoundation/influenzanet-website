@@ -86,9 +86,7 @@ urlpatterns = patterns('',
 
     url(r'^settings/$', views.my_settings),
 
-    url(r'^deactivate/planned/$', views.deactivate_planned, name="deactivate_planned"),
-
-    url(r'^deactivate/request/$', views.deactivate_request, name="deactivate_request"),
+    url(r'^deactivate(/planned)?/$', views.deactivate, name="deactivate_planned"),
 
     url(r'^email/change/(?P<user_id>.+)/(?P<token>.+)/$', views.email_change_confirm, name='auth_email_change'),
 
