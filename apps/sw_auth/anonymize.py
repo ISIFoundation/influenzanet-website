@@ -26,22 +26,22 @@ class Anonymizer:
         l.event = event
         l.save()
 
-    def send_anonymized(self, user_id, user_email):
+    def send_anonymized(self, user_id, user_email, test=False):
         # Send an email to tell the user his account has been anonymized
-        message = create_message_from_template(EMAIL_TEMPLATE_PATH + 'account_deactivated', {'id':user_id})
+        message = create_message_from_template(EMAIL_TEMPLATE_PATH + 'account_deactivated', {'id':user_id, 'is_test': test})
         send_message(user_email, message)
 
-    def send_warning(self, user):
+    def send_warning(self, user, test=False):
         expires = datetime.datetime.now() + datetime.timedelta(days=self.waiting_delay + 1)
         next = reverse('deactivate_planned')
         token = user.create_login_token(usage_left=1, expires=expires, next=next)
 
-        data = {'login_delay': self.login_delay, 'waiting_delay': self.waiting_delay, 'login_token': token.get_url(), 'account_id': user.id }
+        data = {'login_delay': self.login_delay, 'waiting_delay': self.waiting_delay, 'login_token': token.get_url(), 'account_id': user.id, 'is_test': test}
         message = create_message_from_template(EMAIL_TEMPLATE_PATH + 'deactivate_warning', data)
         send_message(user.email, message)
 
-    def send_request(self, user):
-        data = { 'id': user.id}
+    def send_request(self, user, test=False):
+        data = { 'id': user.id, 'is_test': test}
         message = create_message_from_template(EMAIL_TEMPLATE_PATH + 'account_close', data)
         send_message(user.email, message)
 

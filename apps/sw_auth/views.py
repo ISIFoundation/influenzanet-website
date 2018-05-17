@@ -16,7 +16,6 @@ from django.views.decorators.cache import never_cache
 from django.contrib.admin.views.decorators import staff_member_required
 
 from apps.common.wait import get_wait_launch_date
-from apps.common.mail import create_email_message, send_team_message
 from apps.sw_auth.models import EpiworkUser, AnonymizeRequest
 from apps.sw_auth.utils import send_activation_email,EpiworkToken, send_user_email
 from apps.sw_auth.logger import auth_notify
@@ -315,6 +314,7 @@ def my_settings(request):
 
     return render_template('my_settings', request, context)
 
+@login_required
 def deactivate(request, *args):
 
     confirm = request.GET.get('confirm', default=False)
@@ -329,15 +329,6 @@ def deactivate(request, *args):
 
 
     return render_template('deactivate_planned', request, {'confirm': confirm})
-
-def deactivate_request(request):
-    try:
-        epiwork_user = request.session['epiwork_user']
-        anonymizer = Anonymizer()
-        anonymizer.warn(epiwork_user, 1) # Warning of deactivation will be tomoroww
-        return render_template('password_reset_error', request)
-    except KeyError:
-        return render_template('no_settings', request)
 
 def index(request):
     """

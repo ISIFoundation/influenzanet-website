@@ -7,16 +7,16 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-02-22 14:06+0100\n"
-"PO-Revision-Date: 2018-02-22 14:17+0100\n"
+"POT-Creation-Date: 2018-05-17 19:24+0200\n"
+"PO-Revision-Date: 2018-05-17 19:46+0200\n"
 "Last-Translator: \n"
+"Language-Team: \n"
 "Language: fr\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 "X-Generator: Poedit 2.0.6\n"
-"Language-Team: \n"
 
 #: .\apps\accounts\forms.py:17 .\apps\accounts\forms.py:21
 #: .\apps\accounts\forms.py:26 .\apps\sw_auth\forms.py:25
@@ -42,7 +42,7 @@ msgstr ""
 msgid "Email"
 msgstr "Email"
 
-#: .\apps\accounts\forms.py:33 .\apps\reminder\models.py:36
+#: .\apps\accounts\forms.py:33 .\apps\reminder\models.py:38
 #: .\apps\sw_auth\forms.py:201
 msgid "Send reminders"
 msgstr "Recevoir la lettre hebdomadaire d'information :"
@@ -99,7 +99,6 @@ msgstr "Inconnu"
 #: .\templates\survey\group_management.html.py:45
 #: .\templates\survey\group_management_sw.html.py:35
 #: .\templates\survey\group_management_sw_vacc.html.py:24
-#: .\templates\survey\wait_launch.html.py:29
 msgid "Name"
 msgstr "Nom"
 
@@ -328,96 +327,96 @@ msgstr "Si 'send_reminders' est coché, les autres champs relatifs aux emails de
 msgid "If no dates are shown here, check your site settings"
 msgstr "S'il n'y a pas de date qui s'affiche, vérifier les paramètres du site"
 
-#: .\apps\reminder\models.py:36
+#: .\apps\reminder\models.py:38
 msgid "Check this box to send reminders"
 msgstr "Cocher cette case pour recevoir la lettre hebdomadaire"
 
-#: .\apps\reminder\models.py:37
+#: .\apps\reminder\models.py:39
 msgid "Interval"
 msgstr "Intervalle"
 
-#: .\apps\reminder\models.py:37
+#: .\apps\reminder\models.py:39
 msgid "Weekly"
 msgstr "Hebdomadaire"
 
-#: .\apps\reminder\models.py:37
+#: .\apps\reminder\models.py:39
 msgid "Bi-weekly"
 msgstr "Bi-hebdomadaire"
 
-#: .\apps\reminder\models.py:37
+#: .\apps\reminder\models.py:39
 msgid "Don't send reminders at a fixed interval"
 msgstr "Ne pas envoyer le reminder a un interval de temps fixe"
 
-#: .\apps\reminder\models.py:38
+#: .\apps\reminder\models.py:40
 msgid "Begin date"
 msgstr "Date de début"
 
-#: .\apps\reminder\models.py:48
+#: .\apps\reminder\models.py:50
 msgid "Reminder settings"
 msgstr "Paramètres du rappel"
 
-#: .\apps\reminder\models.py:56
+#: .\apps\reminder\models.py:58
 msgid "Is default reminder"
 msgstr "Ceci est le rappel pas défaut"
 
-#: .\apps\reminder\models.py:56
+#: .\apps\reminder\models.py:58
 msgid "If this option is checked this template is the standard template for reminder emails."
 msgstr "Si cette option est cochée, ce modèle est le modèle standard utilisé pour les emails de rappel."
 
-#: .\apps\reminder\models.py:57
+#: .\apps\reminder\models.py:59
 msgid "Is default newsitem"
 msgstr "Ceci est l'actualité par défaut"
 
-#: .\apps\reminder\models.py:57
+#: .\apps\reminder\models.py:59
 msgid "If this option is checked this template is the standard template for new news items."
 msgstr "Si cette option est cochée, ce modèle est le modèle standard utilisé pour les actualités."
 
-#: .\apps\reminder\models.py:58 .\apps\reminder\models.py:72
+#: .\apps\reminder\models.py:60 .\apps\reminder\models.py:74
 msgid "Sender email"
 msgstr "Email de l'expéditeur"
 
-#: .\apps\reminder\models.py:59 .\apps\reminder\models.py:73
+#: .\apps\reminder\models.py:61 .\apps\reminder\models.py:75
 msgid "Sender name"
 msgstr "Nom de l'expéditeur"
 
-#: .\apps\reminder\models.py:70
+#: .\apps\reminder\models.py:72
 msgid "Date"
 msgstr "Date"
 
-#: .\apps\reminder\models.py:77
+#: .\apps\reminder\models.py:79
 msgid "Table or view name used to get the user list"
 msgstr ""
 
-#: .\apps\reminder\models.py:79
+#: .\apps\reminder\models.py:81
 msgid "Next page to follow"
 msgstr ""
 
-#: .\apps\reminder\models.py:81
+#: .\apps\reminder\models.py:83
 msgid "Email template"
 msgstr ""
 
-#: .\apps\reminder\models.py:137
+#: .\apps\reminder\models.py:147
 #, python-format
 msgid "%(current)s (in %(days)s days)"
 msgstr "%(current)s (in %(days)s jours)"
 
-#: .\apps\reminder\models.py:139
+#: .\apps\reminder\models.py:149
 #, python-format
 msgid "%(current)s (in %(weeks)s weeks)"
 msgstr "%(current)s (in %(weeks)s semaines)"
 
-#: .\apps\reminder\models.py:142
+#: .\apps\reminder\models.py:152
 #, python-format
 msgid "%(current)s (%(days)s days ago)"
 msgstr "%(current)s (in %(days)s jours)"
 
-#: .\apps\reminder\models.py:144
+#: .\apps\reminder\models.py:154
 #, python-format
 msgid "%(current)s (%(weeks)s weeks ago)"
 msgstr "%(current)s (in %(weeks)s semaines)"
 
 #: .\apps\reminder\templates\reminder\ggrippenet.html.py:66
-#: .\apps\reminder\templates\reminder\message.html.py:66
+#: .\apps\reminder\templates\reminder\message.html.py:67
 #, python-format
 msgid "You have received this email because you are registered with %(site_name)s. Your contribution helps us track the spread of flu. If you do not wish to receive this weekly reminder any longer, please <a href=\"%(unsubscribe_url)s\">unsubscribe</a> from our mailings."
 msgstr "Vous recevez cet email car vous êtes inscrit sur %(site_name)s. Votre participation nous aide à suivre les tendances de la grippe. Si vous ne souhaitez plus recevoir cet email hebdomadaire de rappel, vous pouvez vous <a href=\"%(unsubscribe_url)s\">désinscrire</a> de la liste de diffusion."
@@ -516,6 +515,15 @@ msgstr ""
 msgid "Before we take you to the symptoms questionnaire, please complete the short background questionnaire below. You will only have to complete this once."
 msgstr "Avant d'accéder au questionnaire hebdomadaire, complétez s'il-vous-plaît ce questionnaire préliminaire. Vous n'aurez à remplir ce questionnaire qu'une seule fois, mais pourrez revenir le modifier quand vous le souhaitez."
 
+#: .\apps\sw_auth\anonymize.py:77
+msgid "Account Closing request"
+msgstr "Demande de fermeture de compte"
+
+#: .\apps\sw_auth\anonymize.py:77
+#, python-format
+msgid "A account closing request has been provided for account number %d"
+msgstr "Une demande de fermeture de compte faite pour le compte %d"
+
 #: .\apps\sw_auth\forms.py:11
 msgid "Enter your password"
 msgstr "Entrer votre mot de passe"
@@ -610,56 +618,48 @@ msgstr "Adresse email :"
 msgid "password"
 msgstr "Nouveau mot de passe :"
 
-#: .\apps\sw_auth\views.py:87
+#: .\apps\sw_auth\views.py:86
 msgid "This email is associated with several accounts. Please contact us to regularize"
 msgstr "Cette adresse email est associée à plusieurs compte GrippeNet. Contactez nous pour régulariser cette situation."
 
-#: .\apps\sw_auth\views.py:93
+#: .\apps\sw_auth\views.py:92
 msgid "The user associated with this email is already activated"
 msgstr "Le compte associé à cet e-mail est déjà activé."
 
-#: .\apps\sw_auth\views.py:100
+#: .\apps\sw_auth\views.py:99
 msgid "Problem occured during activation email generation"
 msgstr "Un problème est survenu durant l'enregistrement. Veuillez réessayer plus tard ou nous contacter."
 
-#: .\apps\sw_auth\views.py:102
+#: .\apps\sw_auth\views.py:101
 msgid "This email is not associated with any account"
 msgstr "Cet adresse email n'est associée à aucun compte GrippeNet.fr"
 
-#: .\apps\sw_auth\views.py:121
+#: .\apps\sw_auth\views.py:120
 msgid "sorry no corresponding user info was found"
 msgstr "Aucun utilisateur ne correspond à ces informations."
 
-#: .\apps\sw_auth\views.py:136
+#: .\apps\sw_auth\views.py:135
 #, python-format
 msgid "Password reset on %s"
 msgstr "Réinitialisation du mot de passe %s"
 
-#: .\apps\sw_auth\views.py:234
+#: .\apps\sw_auth\views.py:233
 msgid "Invalid email token"
 msgstr "Adresse invalide"
 
-#: .\apps\sw_auth\views.py:270 .\templates\accounts\my_settings.html.py:24
+#: .\apps\sw_auth\views.py:269 .\templates\accounts\my_settings.html.py:24
 msgid "Your settings have been updated"
 msgstr "Vos paramètres ont été mis à jour"
 
-#: .\apps\sw_auth\views.py:286
+#: .\apps\sw_auth\views.py:285
 #, python-format
 msgid "An email has been sent to %(email)s with a link you need to follow to activate this address"
 msgstr "Un courriel a été adressé à %(email)s. Il contient un lien que vous devez utiliser (en cliquant dessus ou en le copiant dans la barre d'adresse d'un navigateur internet) pour activer votre compte."
 
-#: .\apps\sw_auth\views.py:293
+#: .\apps\sw_auth\views.py:291
+#: .\templates\sw_auth\deactivate_planned.html.py:17
 msgid "The request to close your account has been registered"
 msgstr "En cliquant sur ce lien, votre compte a été réactivé."
-
-#: .\apps\sw_auth\views.py:296
-msgid "Account Closing request"
-msgstr "Demande de fermeture de compte"
-
-#: .\apps\sw_auth\views.py:296
-#, python-format
-msgid "A account closing request has been provided for account number %d"
-msgstr "Une demande de fermeture de compte faite pour le compte %d"
 
 #: .\apps\sw_cohort\models.py:41
 msgid "No usage left for this token"
@@ -880,6 +880,7 @@ msgstr "Lettre d'information"
 
 #: .\templates\accounts\partials\usermenu.html.py:15
 #: .\templates\base\forum.html.py:79 .\templates\base\sitebase.html.py:59
+#: .\templates\base\sitebase.html.py:63
 msgid "Log out"
 msgstr "Se déconnecter"
 
@@ -898,6 +899,7 @@ msgstr "nous contacter"
 
 #: .\templates\admin\pollster\survey\change_form.html.py:6
 #: .\templates\admin\pollster\translationsurvey\change_form.html.py:6
+#: .\templates\admin\reminder\newsletter\change_form.html.py:6
 #: .\templates\admin\sw_auth\epiworkuser\change_form.html.py:6
 msgid "History"
 msgstr "Antécédents"
@@ -914,6 +916,10 @@ msgstr "Edition complète"
 #: .\templates\admin\pollster\survey\change_list.html.py:7
 msgid "Add Survey"
 msgstr "Ajouter un questionnaire"
+
+#: .\templates\admin\reminder\newsletter\change_form.html.py:8
+msgid "Follow sending"
+msgstr ""
 
 #: .\templates\base\forum.html.py:78
 msgid "My account"
@@ -960,12 +966,12 @@ msgstr "Contactez-nous"
 msgid "Contact"
 msgstr "Contact"
 
-#: .\templates\base\sitebase.html.py:55
+#: .\templates\base\sitebase.html.py:58
 #: .\templates\sw_auth\my_settings.html.py:36
 msgid "My settings"
 msgstr "Mes paramètres"
 
-#: .\templates\base\sitebase.html.py:57
+#: .\templates\base\sitebase.html.py:62
 msgid "Anonymous"
 msgstr "Anonyme"
 
@@ -1553,7 +1559,6 @@ msgstr "Le questionnaire prélimaire n'est pas rempli pour certains participants
 
 #: .\templates\survey\group_management_sw.html.py:36
 #: .\templates\survey\group_management_sw_vacc.html.py:25
-#: .\templates\survey\wait_launch.html.py:30
 msgid "Fill a questionnaire"
 msgstr "Remplissez un questionnaire"
 
@@ -1635,11 +1640,13 @@ msgid "Update vaccination help"
 msgstr "Si vous avez été vacciné contre la grippe et que vous nous aviez indiqué ne pas être vacciné en début de saison, il vous suffit de cliquer à nouveau sur le bouton de votre questionnaire préliminaire (pour le participant concerné) et de modifier votre réponse à la question concernant la vaccination anti-grippale puis de valider le questionnaire. Nous prendons en compte ce changement d'information dans nos analyses !"
 
 #: .\templates\survey\group_management_sw.html.py:152
+#: .\templates\survey\wait_launch.html.py:11
 #: .\templates\sw_auth\activation_complete.html.py:14
 msgid "The project has not started yet for the season. We will contact you as soon as the follow-up begin."
 msgstr "Le suivi de GrippeNet.fr n'a pas encore débuté cette saison. Vous recevrez prochainement un email vous informant du lancement de la saison et vous invitant à remplir votre questionnaire préliminaire et votre premier questionnaire hebdomadaire. Pour toute question, n'hésitez pas à nous contacter à <a href=\"mailto:contact@grippenet.fr\">contact@grippenet.fr</a>."
 
 #: .\templates\survey\group_management_sw.html.py:153
+#: .\templates\survey\wait_launch.html.py:14
 #: .\templates\sw_auth\activation_complete.html.py:15
 msgid "The project will be launched from the"
 msgstr "Le lancement de la prochaine saison est prévu le"
@@ -1787,6 +1794,10 @@ msgstr "Vous pouvez également visiter"
 msgid "profile page"
 msgstr "Votre page de résultat"
 
+#: .\templates\survey\wait_launch.html.py:10
+msgid "Launch date"
+msgstr ""
+
 #: .\templates\sw_auth\activation_complete.html.py:9
 msgid "You can now login using your credentials"
 msgstr "Vous pouvez maintenant vous connecter en utilisant votre identifiant et mot de passe."
@@ -1821,11 +1832,11 @@ msgstr ""
 msgid "By clicking on this link, your account has been reactivated."
 msgstr "En cliquant sur ce lien, votre compte a été réactivé."
 
-#: .\templates\sw_auth\deactivate_planned.html.py:16
+#: .\templates\sw_auth\deactivate_planned.html.py:19
 msgid "If your want to deactivate your account click on the button below"
 msgstr "Si vous souhaitez que votre compte soit <b>désactivé</b>, cliquez sur le bouton ci-dessous"
 
-#: .\templates\sw_auth\deactivate_planned.html.py:19
+#: .\templates\sw_auth\deactivate_planned.html.py:21
 msgid "I confirm deactivation of my account"
 msgstr "Je confirme la désactivation de mon compte"
 
@@ -1914,44 +1925,60 @@ msgstr "Ce courriel a été adressé à"
 msgid "Registration instructions"
 msgstr "Pour vous inscrire vous devez fournir<br/>* Un nom d'utilisateur ou votre email. Ne pas utiliser de caractère avec accent.<br/>* Une adresse email<br/>* Un mot de passe (vous pourrez le changer, nous n'y avons pas accès), lettres, chiffres ou ponctuaction (évitez les accents !).<br/><br/>Le code d'invitation n'est pas obligatoire et ne sert que si vous avez été parrainé par quelqu'un."
 
-#: .\templates\sw_auth\mail\account_deactivated.txt.py:2
+#: .\templates\sw_auth\mail\account_deactivated.html.py:2
 #, python-format
 msgid ""
-"Your account has been deactivated and your account information (login, password, email).\n"
 "\n"
-"If you didnt want your account to be deactivated, please contact us and indicate your account\n"
-"number.\n"
-" \n"
-"Your Account number : %(id)s\n"
+"<p>Dear participant,</p>\n"
 "\n"
+"<p>Your account has been deactivated and your personnal information (login, password, email) has been deleted.</p>\n"
+"\n"
+"<p>If you didnt want your account to be deactivated, please contact us and indicate your account\n"
+"number.</p>\n"
+"\n"
+"<p>Your Account number : %(id)s</p>\n"
+"\n"
+"<p>Sincerly,</p>\n"
+"\n"
+"<p>InfluenzaNet team.</p>\n"
 msgstr ""
-"Votre compte GrippeNet.fr a été désactivé et les informations de connexion (login, mot de passe, emails, nom des participants) supprimées . Les données que vous avez fournies dans les questionnaires ont été anonymisées.\n"
 "\n"
-"Si vous ne souhaitiez pas que votre compte soit désactivé, vous pouvez nous contacter afin de le réactiver en nous indiquant le numéro de compte ci-dessous.\n"
+"<p>Cher participant</p>\n"
+"\n"
+"<p>Votre compte GrippeNet.fr a été désactivé et les informations de connexion (login, mot de passe, emails, nom des participants) supprimées . Les données que vous avez fournies dans les questionnaires ont été anonymisées.</p>\n"
+"\n"
+"<p>Si vous ne souhaitiez pas que votre compte soit désactivé, vous pouvez nous contacter afin de le réactiver en nous indiquant le numéro de compte ci-dessous.</p>\n"
 " \n"
-"Votre numéro de compte GrippeNet.Fr : %(id)s\n"
+"<p>Votre numéro de compte GrippeNet.Fr : %(id)s</p>\n"
 "\n"
-"L'équipe GrippeNet.fr vous souhaite une bonne continuation.\n"
+"<p>L'équipe GrippeNet.fr vous souhaite une bonne continuation.</p>\n"
 
 #: .\templates\sw_auth\mail\account_deactivated_subject.txt.py:1
 msgid "Your account have been deactivated"
 msgstr "Votre compte a été désactivé"
 
-#: .\templates\sw_auth\mail\deactivate_warning.txt.py:2
+#: .\templates\sw_auth\mail\deactivate_warning.html.py:2
 #, python-format
 msgid ""
-"You did not connect since %(delay)s days to the website.\n"
-"Your account will be deactivated and your connection information will be deleted.\n"
+"<p>You did not connect since %(login_delay)s days to the website. </p>\n"
+"<p>Your account will be deactivated and your connection information will be deleted in <b>%(waiting_delay)s</b> days.</p>\n"
 "\n"
-"If you dont want your account to be deactivated, please login to the website or click\n"
-"on the link below:\n"
-"%(login_token)s\n"
+"<p>If you dont want your account to be deactivated, please login to the website or click\n"
+"on the link below <b>before %(waiting_delay)s days</b> :</p>\n"
+"<p style=\"text-align:center\">\n"
+" <a href=\"%(login_token)s\">%(login_token)s</a>\n"
+"</p>\n"
+"<p>After this delay, your account information will be lost and you will need to provide your account number : <b>%(account_id)s</b> to reactivate.</p>\n"
 msgstr ""
-"Vous ne vous êtes pas connecté à votre compte GrippeNet.fr depuis %(delay)s jours.\n"
+"<p>Vous ne vous êtes pas connecté à votre compte GrippeNet.fr depuis %(login_delay)s jours. </p>\n"
+"<p>Your account will be deactivated and your connection information will be deleted in <b>%(waiting_delay)s</b> days.</p>\n"
 "\n"
-"En l'absence de connection de votre part, votre compte sera désactivé et vos informations de connections seront supprimées. \n"
-"\n"
-"Si vous souhaitez conserver votre compte, veuillez cliquer sur le lien ci-dessous afin de vous connecter au site: %(login_token)s\n"
+"<p>En l'absence de connection de votre part, votre compte sera désactivé et vos informations de connections seront supprimées sous  <b>%(waiting_delay)s</b>jours.</p>\n"
+"<p>Si vous souhaitez conserver votre compte, veuillez cliquer sur le lien ci-dessous afin de vous connecter au site</p>\n"
+"<p style=\"text-align:center\">\n"
+" <a href=\"%(login_token)s\">%(login_token)s</a>\n"
+"</p>\n"
+"<p>Après ce délai les informations personnelles (login, mot de passe, email, noms et avatars attribués aux participants) de votre compte seront supprimées. Votre numéro GrippeNet : <b>%(account_id)s</b>restera le seul lien avec les données anonymisées de GrippeNet.fr</p>\n"
 
 #: .\templates\sw_auth\mail\deactivate_warning_subject.txt.py:1
 #, python-format

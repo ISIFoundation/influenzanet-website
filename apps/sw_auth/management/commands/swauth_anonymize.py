@@ -2,6 +2,7 @@ from django.core.management.base import CommandError, BaseCommand
 from optparse import make_option
 from ...models import EpiworkUser
 from ...anonymize import Anonymizer
+from django.utils.translation import activate
 
 from datetime import date, datetime
 from apps.sw_auth.models import AnonymizeRequest
@@ -163,7 +164,15 @@ class Command(BaseCommand):
         print("Requests: %d, %d anonymized, %d waiting, %d skipped" % (count, count_anonymized, count_waiting, count_skip))
 
 
+    def test_mail(self, user):
+        anonymize = Anonymizer()
+        anonymize.send_warning(user, test=True)
+        anonymize.send_request(user, test=True)
+        anonymize.send_anonymized(user.id, user.email, test=True)
+
     def handle(self, *args, **options):
+
+        activate('fr')
 
         # fake the action
         fake = options.get('fake')
@@ -189,5 +198,7 @@ class Command(BaseCommand):
             elif command == 'delay':
                 print("Processing account deactivation")
                 self.lookup_old_account(fake=fake, limit=limit, user=user)
+            elif command == 'mail':
+                self.test_mail(user=user)
             else:
                 CommandError("Unknown subcommand %s" % command)

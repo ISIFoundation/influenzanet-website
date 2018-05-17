@@ -1,1 +1,1 @@
-{% load i18n %}{% trans "Your account have been deactivated"%}
+{% load i18n %}{%if is_test %}[TEST] {% endif %}{% trans "Your account have been deactivated"%}

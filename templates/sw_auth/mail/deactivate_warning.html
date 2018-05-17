@@ -1,4 +1,5 @@
 {% load i18n %}
+{%if is_test %}<p>[email sent for test purpose no action has been proceeded]</p>{% endif %}
 {% blocktrans %}<p>You did not connect since {{ login_delay }} days to the website. </p>
 <p>Your account will be deactivated and your connection information will be deleted in <b>{{ waiting_delay }}</b> days.</p>
 

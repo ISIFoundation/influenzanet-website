@@ -1,1 +1,1 @@
-{% load i18n %}{% blocktrans %}Your account will be deactivated in {{ waiting_delay }} days{% endblocktrans %}
+{% load i18n %}{%if is_test %}[TEST] {% endif %}{% blocktrans %}Your account will be deactivated in {{ waiting_delay }} days{% endblocktrans %}
