@@ -3,7 +3,7 @@ from optparse import make_option
 from ...models import EpiworkUser
 from ...anonymize import Anonymizer
 
-from datetime import date, datetime, timedelta
+from datetime import date, datetime
 from apps.sw_auth.models import AnonymizeRequest
 
 class Command(BaseCommand):
@@ -24,8 +24,11 @@ class Command(BaseCommand):
             dest='fake', default=False,
             help='Fake the resent (show list).'),
         make_option('-l', '--limit', action='store',
-            dest='limit', default=None,
+            dest='limit', default=-1, type="int",
             help='Number of user to process'),
+        make_option('-u', '--user', action='store',
+            dest='user', default=None,
+            help='User login to restrict action to'),
     )
 
     def delay(self, d):
@@ -43,8 +46,12 @@ class Command(BaseCommand):
         print(" + [fake] %s for user %d" % (action, user.id))
 
 
-    def lookup_old_account(self, fake, limit):
-        users = EpiworkUser.objects.filter(is_active=True)
+    def lookup_old_account(self, fake, limit, user):
+
+        if user is not None:
+            users = [user]
+        else:
+            users = EpiworkUser.objects.filter(is_active=True)
 
         anonymizer = Anonymizer()
 
@@ -57,6 +64,11 @@ class Command(BaseCommand):
         count_errors = 0
         count_waiting = 0
         for user in users:
+
+            if not user.is_active:
+                print("#%d user is already inactive, skip" % user.id)
+                next
+
             dju = user.get_django_user()
             login_delay = self.delay(dju.last_login)
             if user.anonymize_warn is not None:
@@ -97,7 +109,7 @@ class Command(BaseCommand):
                         self.fake('warn', user)
 
             count = count_anonymize + count_cancel + count_warning
-            if limit is not None:
+            if limit > 0:
                 if count >= limit:
                     print('Processed accounts Limit reached. Stopping')
                     break
@@ -105,8 +117,12 @@ class Command(BaseCommand):
         print("%d accounts processed, %d warning, %d anonymize, %d cancel, %d waiting" % (count, count_warning, count_anonymize, count_cancel, count_waiting))
 
 
-    def handle_request(self, fake, limit):
-        requests = AnonymizeRequest.objects.all()
+    def handle_request(self, fake, limit, user):
+
+        if user is not None:
+            requests = AnonymizeRequest.objects.filter(user=user)
+        else:
+            requests = AnonymizeRequest.objects.all()
 
         anonymize = Anonymizer()
 
@@ -153,6 +169,15 @@ class Command(BaseCommand):
         fake = options.get('fake')
         limit = int(options.get('limit'))
 
+        user = options.get('user')
+
+        if user is not None:
+            try:
+                user = EpiworkUser.objects.get(login=user)
+            except EpiworkUser.DoesNotExist:
+                print("User '%s' not found ")
+                return
+
         if len(args) == 0:
             raise CommandError("Please provide at least one subcommand")
 
@@ -160,9 +185,9 @@ class Command(BaseCommand):
             command = command.lower()
             if command == 'request':
                 print("Processing anonymize request")
-                self.handle_request(fake, limit)
+                self.handle_request(fake=fake, limit=limit, user=user)
             elif command == 'delay':
                 print("Processing account deactivation")
-                self.lookup_old_account(fake, limit)
+                self.lookup_old_account(fake=fake, limit=limit, user=user)
             else:
                 CommandError("Unknown subcommand %s" % command)
