@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-05-17 19:24+0200\n"
-"PO-Revision-Date: 2018-05-18 21:45+0200\n"
+"POT-Creation-Date: 2018-05-22 15:44+0200\n"
+"PO-Revision-Date: 2018-05-22 16:28+0200\n"
 "Last-Translator: Clément Turbelin\n"
 "Language-Team: \n"
 "Language: fr\n"
@@ -16,7 +16,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
-"X-Generator: Poedit 2.0.7\n"
+"X-Generator: Poedit 2.0.6\n"
 
 #: .\apps\accounts\forms.py:17 .\apps\accounts\forms.py:21
 #: .\apps\accounts\forms.py:26 .\apps\sw_auth\forms.py:25
@@ -515,11 +515,11 @@ msgstr ""
 msgid "Before we take you to the symptoms questionnaire, please complete the short background questionnaire below. You will only have to complete this once."
 msgstr "Avant d'accéder au questionnaire hebdomadaire, complétez s'il-vous-plaît ce questionnaire préliminaire. Vous n'aurez à remplir ce questionnaire qu'une seule fois, mais pourrez revenir le modifier quand vous le souhaitez."
 
-#: .\apps\sw_auth\anonymize.py:77
+#: .\apps\sw_auth\anonymize.py:76
 msgid "Account Closing request"
 msgstr "Demande de fermeture de compte"
 
-#: .\apps\sw_auth\anonymize.py:77
+#: .\apps\sw_auth\anonymize.py:76
 #, python-format
 msgid "A account closing request has been provided for account number %d"
 msgstr "Une demande de fermeture de compte faite pour le compte %d"
@@ -656,10 +656,9 @@ msgstr "Vos paramètres ont été mis à jour"
 msgid "An email has been sent to %(email)s with a link you need to follow to activate this address"
 msgstr "Un courriel a été adressé à %(email)s. Il contient un lien que vous devez utiliser (en cliquant dessus ou en le copiant dans la barre d'adresse d'un navigateur internet) pour activer votre compte."
 
-#: .\apps\sw_auth\views.py:291
-#: .\templates\sw_auth\deactivate_planned.html.py:17
+#: .\apps\sw_auth\views.py:291 .\templates\sw_auth\deactivate_confirm.html.py:9
 msgid "The request to close your account has been registered"
-msgstr "En cliquant sur ce lien, votre compte a été réactivé."
+msgstr "La confirmation de clôture de votre compte a bien été enregistrée."
 
 #: .\apps\sw_cohort\models.py:41
 msgid "No usage left for this token"
@@ -805,7 +804,7 @@ msgstr "Erreur"
 
 #: .\templates\500.html.py:8
 msgid "An unexpected system error has occured. We apologize for the inconvenience. Go to"
-msgstr "Une erreur inattendue est survenue. Nous nous excusons pour ce désagrément. Retour à la page "
+msgstr "Une erreur inattendue est survenue. Nous nous excusons pour ce désagrément. Retour à la page"
 
 #: .\templates\accounts\logged_out.html.py:4
 #: .\templates\registration\logout.html.py:4
@@ -967,6 +966,7 @@ msgid "Contact"
 msgstr "Contact"
 
 #: .\templates\base\sitebase.html.py:58
+#: .\templates\sw_auth\deactivate_confirm.html.py:13
 #: .\templates\sw_auth\my_settings.html.py:36
 msgid "My settings"
 msgstr "Mes paramètres"
@@ -1675,11 +1675,11 @@ msgstr ""
 "</li>\n"
 "</ul>\n"
 "<h3>Déclarer aucun symptôme</h3>\n"
-"<p>Si l'un des participants n'a présenté aucun symptôme depuis son dernier questionnaire hebdomadaire, vous pouvez le sélectionner (en cliquant sur la case à cocher à gauche de son surnom), puis cliquer sur \"Déclarer aucun symptome\" afin de remplir en un clic son questionnaire hebdomadaire.</p>\n"
+"<p>Si l'un des participants n'a présenté aucun symptôme depuis son dernier questionnaire hebdomadaire, vous pouvez le sélectionner (en cliquant sur la case à cocher à gauche de son surnom), puis cliquer sur \"Déclarer aucun symptôme\" afin de remplir en un clic son questionnaire hebdomadaire.</p>\n"
 "<h3>Mettre à jour sa vaccination</h3>\n"
 "<p>Si un participant a été vacciné après le début de son inscription à GrippeNet.fr, il est possible de mettre à jour son questionnaire \"préliminaire\" pour changer ses information. Cliquez sur le lien du questionnaire préliminaire et mettez à jour la vaccination puis sauvegardez. Nous gardons chaque version du questionnaire que vous enregistrez. Nous saurons ainsi que le participant n'était pas vacciné en début de saison, puis vacciné.</p>\n"
 "<h3>Les sous-projets</h3>\n"
-"<p>GrippeNet.fr peut mettre en oeuvre des projets ne concernant qu'un petit groupe de participants. Afin de les identifier de manière anonyme au sein des autres participants, nous leur fournissons un code permettant de s'inscrire au sous-projet. Si vous n'appartenez à aucun sous-projet, il est normal que vous ne disposiez d'aucun code.</p>"
+"<p>GrippeNet.fr peut mettre en œuvre des projets ne concernant qu'un petit groupe de participants. Afin de les identifier de manière anonyme au sein des autres participants, nous leur fournissons un code permettant de s'inscrire au sous-projet. Si vous n'appartenez à aucun sous-projet, il est normal que vous ne disposiez d'aucun code.</p>"
 
 #: .\templates\survey\index.html.py:16
 msgid "Survey Form"
@@ -1808,7 +1808,7 @@ msgstr "Votre login :"
 
 #: .\templates\sw_auth\activation_complete.html.py:11
 msgid "Email : "
-msgstr "Email :"
+msgstr "Email : "
 
 #: .\templates\sw_auth\activation_failed.html.py:13
 msgid "register"
@@ -1818,25 +1818,29 @@ msgstr "vous inscrire"
 msgid "Recommencez l'activation"
 msgstr "Recommencez l'activation"
 
+#: .\templates\sw_auth\deactivate_confirm.html.py:5
 #: .\templates\sw_auth\deactivate_planned.html.py:5
 msgid "Reactivation of your account"
 msgstr "Réactivation de votre compte"
 
+#: .\templates\sw_auth\deactivate_confirm.html.py:7
 #: .\templates\sw_auth\deactivate_planned.html.py:7
 msgid "Your account was planned to be deactivated because of its lack of activity"
-msgstr ""
-"Vous ne vous êtes pas connecté à GrippeNet.fr depuis longtemps. \n"
-"La désactivation de votre compte a été programmée."
+msgstr "Vous ne vous êtes pas connecté à GrippeNet.fr depuis longtemps. La désactivation automatique de votre compte avait été programmée."
+
+#: .\templates\sw_auth\deactivate_confirm.html.py:11
+msgid "If you want to cancel this closing request, please got to your settings page"
+msgstr "Si vous souhaitez annuler la procédure de fermeture de votre compte, rendez vous sur la page \"Mes Paramètres\"."
 
 #: .\templates\sw_auth\deactivate_planned.html.py:9
 msgid "By clicking on this link, your account has been reactivated."
-msgstr "En cliquant sur ce lien, votre compte a été réactivé."
+msgstr "En cliquant sur ce lien vous avez annulé la procédure de désactivation automatique, votre compte ne sera pas désactivé."
 
-#: .\templates\sw_auth\deactivate_planned.html.py:19
-msgid "If your want to deactivate your account click on the button below"
-msgstr "Si vous souhaitez que votre compte soit <b>désactivé</b>, cliquez sur le bouton ci-dessous"
+#: .\templates\sw_auth\deactivate_planned.html.py:11
+msgid "If you want to deactivate your account click on the button below"
+msgstr "Si vous souhaitez toutefois poursuivre la procédure et que votre compte soit <b>désactivé</b>, cliquez sur le bouton ci-dessous"
 
-#: .\templates\sw_auth\deactivate_planned.html.py:21
+#: .\templates\sw_auth\deactivate_planned.html.py:13
 msgid "I confirm deactivation of my account"
 msgstr "Je confirme la désactivation de mon compte"
 
@@ -1878,7 +1882,7 @@ msgstr "Changer d'email"
 
 #: .\templates\sw_auth\my_settings.html.py:95
 msgid "An account closing request was registred on "
-msgstr "Une demande de fermeture de compte a été enregistrée le"
+msgstr "Une demande de fermeture de compte a été enregistrée le "
 
 #: .\templates\sw_auth\my_settings.html.py:97
 msgid "Cancel the account closing request"
@@ -1925,7 +1929,7 @@ msgstr "Ce courriel a été adressé à"
 msgid "Registration instructions"
 msgstr "Pour vous inscrire vous devez fournir<br/>* Un nom d'utilisateur ou votre email. Ne pas utiliser de caractère avec accent.<br/>* Une adresse email<br/>* Un mot de passe (vous pourrez le changer, nous n'y avons pas accès), lettres, chiffres ou ponctuaction (évitez les accents !).<br/><br/>Le code d'invitation n'est pas obligatoire et ne sert que si vous avez été parrainé par quelqu'un."
 
-#: .\templates\sw_auth\mail\account_deactivated.html.py:2
+#: .\templates\sw_auth\mail\account_deactivated.html.py:3
 #, python-format
 msgid ""
 "\n"
@@ -1957,7 +1961,7 @@ msgstr ""
 msgid "Your account have been deactivated"
 msgstr "Votre compte a été désactivé"
 
-#: .\templates\sw_auth\mail\deactivate_warning.html.py:2
+#: .\templates\sw_auth\mail\deactivate_warning.html.py:3
 #, python-format
 msgid ""
 "<p>You did not connect since %(login_delay)s days to the website. </p>\n"
@@ -1971,7 +1975,7 @@ msgid ""
 "<p>After this delay, your account information will be lost and you will need to provide your account number : <b>%(account_id)s</b> to reactivate.</p>\n"
 msgstr ""
 "<p>Cher/Chère participant(e),</p>\n"
-"<p>Vous ne vous êtes pas connecté(e) à votre compte GrippeNet.fr depuis plus de %(login_delay)s jours. </p>\n"
+"<p>Vous ne vous êtes pas connecté(e) à votre compte GrippeNet.fr depuis plusieurs mois (%(login_delay)s jours). </p>\n"
 "<p>En l'absence de connexion au site de GrippeNet.fr de votre part, votre compte sera désactivé et vos informations de connexions seront supprimées sous  <b>%(waiting_delay)s</b> jours.</p>\n"
 "<p>Si vous souhaitez conserver votre compte, veuillez cliquer sur le lien ci-dessous afin de vous connecter au site</p>\n"
 "<p style=\"text-align:center\">\n"
@@ -1979,7 +1983,7 @@ msgstr ""
 "</p>\n"
 "<p>Sans action de votre part à l’issue de ce délai vos informations personnelles renseignées (login, mot de passe, email, noms et avatars attribués aux participants) sur votre compte seront supprimées.</p>\n"
 "<p>Seules les données anonymisées fournies lors du remplissage des questionnaires seront conservées sous votre numéro de participant(e) GrippeNet  <b>%(account_id)s</b>.</p>\n"
-"<p>N’hésitez pas à nous contacter à contact@grippenet.fr pour plus d’information.</p>\n"
+"<p>N’hésitez pas à nous contacter à <a href=\"contact@grippenet.fr\">contact@grippenet.fr</a> pour plus d’information.</p>\n"
 "<p>Bien cordialement,</p>\n"
 "<p>L'équipe GrippeNet.fr</p>\n"
 

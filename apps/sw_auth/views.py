@@ -320,15 +320,17 @@ def deactivate(request, *args):
     confirm = request.GET.get('confirm', default=False)
 
     if confirm:
+        template = 'deactivate_confirm'
         try:
             epiwork_user = request.session['epiwork_user']
             anonymizer = Anonymizer()
             anonymizer.request_close(epiwork_user)
         except KeyError:
             return render_template('no_settings', request)
+    else:
+        template = 'deactivate_planned'
 
-
-    return render_template('deactivate_planned', request, {'confirm': confirm})
+    return render_template(template, request)
 
 def index(request):
     """

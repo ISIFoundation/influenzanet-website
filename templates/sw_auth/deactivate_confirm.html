@@ -1,0 +1,14 @@
+{% extends "base/twocol.html" %}
+{% load i18n %}
+
+{% block col1 %}
+<h1>{% trans "Reactivation of your account" %}</h1>
+
+<p class="success">{%trans "The request to close your account has been registered" %}</p>
+
+<p> {%trans "If you want to cancel this closing request, please got to your settings page"%}</p>
+<p class="centered">
+	<a href="{% url my_settings %}" class="button">{%trans "My settings" %}</a>
+</p>
+
+{% endblock %}

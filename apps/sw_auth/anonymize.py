@@ -35,7 +35,6 @@ class Anonymizer:
         expires = datetime.datetime.now() + datetime.timedelta(days=self.waiting_delay + 1)
         next = reverse('deactivate_planned')
         token = user.create_login_token(usage_left=1, expires=expires, next=next)
-
         data = {'login_delay': self.login_delay, 'waiting_delay': self.waiting_delay, 'login_token': token.get_url(), 'account_id': user.id, 'is_test': test}
         message = create_message_from_template(EMAIL_TEMPLATE_PATH + 'deactivate_warning', data)
         send_message(user.email, message)

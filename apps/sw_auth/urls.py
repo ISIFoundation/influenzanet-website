@@ -84,7 +84,7 @@ urlpatterns = patterns('',
         {'template_name': 'sw_auth/password_reset_done.html'},
         name='auth_password_reset_done'),
 
-    url(r'^settings/$', views.my_settings),
+    url(r'^settings/$', views.my_settings, name="my_settings"),
 
     url(r'^deactivate(/planned)?/$', views.deactivate, name="deactivate_planned"),
 
