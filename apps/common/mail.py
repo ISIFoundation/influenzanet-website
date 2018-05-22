@@ -1,13 +1,32 @@
 from django.core.mail import EmailMultiAlternatives
-from django.core.mail import send_mail
 from django.template.loader import render_to_string, get_template
 from django.utils.html import strip_tags
 from django.conf import settings
 from apps.partnersites.context_processors import site_context
 import re
 from django.template.base import TemplateDoesNotExist, Context
+from django.core.mail.message import EmailMessage
 
 def create_message_from_template(template_name, data, wrap_layout=True):
+    """
+        Create an email message from templates
+
+        Expect 3 kind of files:
+            [template_name]_subject.txt : subject template
+            [template_name].txt : body text template
+            [template_name].html: template contents for html version
+
+        Parameters
+        ----
+        template_name: str
+            template prefix (path and template name without extension)
+        data: dict
+            Data dictionnary used to bind values into template
+
+        wrap_layout: bool
+            If true use html base email layout and wrap contents with it
+
+    """
 
     subject = render_to_string(template_name +'_subject.txt', dictionary=data)
 
@@ -48,14 +67,18 @@ def create_message_from_template(template_name, data, wrap_layout=True):
             html_content = render_to_string("base/email_layout.html", context)
 
     return {
-        'subject': subject,
+        'subject': str(subject),
         'html': html_content,
         'text': text_content,
     }
 
 def create_email_message(subject, text=None, html=None):
+    """
+        Create message structure usable with send_message
+    """
     if text is None and html is None:
         raise Exception("At least one html or text should be provided")
+
     return {
         'subject': subject,
         'html': html,
@@ -63,18 +86,41 @@ def create_email_message(subject, text=None, html=None):
     }
 
 
-def send_message(email, message):
+def send_message(email, message, use_prefix=True):
+    """
+    Send an email message
+
+    Parameters
+    ---------
+        email: str
+            email address to send to
+        message: dict
+            dict with subject, html, text keys. Can use create_email_message
+    """
+
+    headers = {
+     'Sender': settings.EMAIL_DEFAULT_SENDER,
+     'Return-Path': settings.EMAIL_DEFAULT_SENDER,
+     'Reply-To': settings.EMAIL_CONTACT_TEAM,
+     'From': settings.DEFAULT_FROM_EMAIL
+    }
+
     if message['html']:
-        msg = EmailMultiAlternatives()
-        msg.subject = message['subject']
-        msg.body = message['text']
-        msg.to = [email]
+        msg = EmailMultiAlternatives(headers=headers)
         msg.attach_alternative(message['html'], "text/html")
-        msg.send()
     else:
         if not message['text']:
-            raise Exception("No text content")
-        send_mail(message['subject'], message['text'], None, [email])
+            raise Exception("Email message doesnt contains text content")
+        msg = EmailMessage(headers=headers)
+
+    subject = message['subject']
+    if use_prefix:
+        subject = settings.EMAIL_SUBJECT_PREFIX + subject
+
+    msg.subject = subject
+    msg.to = [email]
+    msg.body = message['text']
+    msg.send()
     return True
 
 def send_team_message(message):
