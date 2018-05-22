@@ -6,19 +6,20 @@
 	<div>
 	<button type="submit" class="button">Se connecter</button>
 	</div>
-<p id="passwd-reset"><a href="/accounts/password/reset/">{% trans "Forgot password?" %}</a></p>
+<p id="passwd-reset"><a href="{% url auth_password_reset %}">{% trans "Forgot password?" %}</a></p>
 </form>
 <div id="user-buttons">
-	<a href="/accounts/register" id="register-button">S'inscrire</a>
+	<a href="{% url registration_register %}" id="register-button">S'inscrire</a>
 	<a href="/survey/" id="login-button">Remplir un questionnaire</a>
 </div>
 {% else %}
 <div class="widget-box" id="user-box">
 <h2>Mon espace</h2>
 <ul>
-	<li id="link-group"><i class="icon icon-users"></i><a href="/survey/group_management/">{% trans "Manage household" %}</a></li>
-	<li id="link-dashboard"><i class="icon icon-dashboard"></i><a href="/dashboard/">{% trans "My results" %}</a></li>
-	<li id="link-invite"><i class="icon icon-invite"></i><a href="/invite/">{% trans "Invite people" %}</a></li>
+	<li id="link-group"><i class="icon icon-users"></i><a href="{% url group_management %}">{% trans "Manage household" %}</a></li>
+	<li id="link-dashboard"><i class="icon icon-dashboard"></i><a href="{% url dashboard_index %}">{% trans "My results" %}</a></li>
+	<li id="link-invite"><i class="icon icon-invite"></i><a href="{% url invite_index %}">{% trans "Invite people" %}</a></li>
+	<li id="link-settings"><i class="icon icon-setting"></i><a href="{% url my_settings %}">{%trans "My settings" %}</a>
 </ul>
 {% if household_count == 1 %}
 	<h3>Mes Questionnaires</h3>
