@@ -107,19 +107,23 @@ def send_message(email, message, use_prefix=True):
 
     if message['html']:
         msg = EmailMultiAlternatives(headers=headers)
-        msg.attach_alternative(message['html'], "text/html")
+        msg.attach_alternative(str(message['html']), "text/html")
     else:
         if not message['text']:
             raise Exception("Email message doesnt contains text content")
         msg = EmailMessage(headers=headers)
 
-    subject = message['subject']
+    subject = str(message['subject'])
     if use_prefix:
         subject = settings.EMAIL_SUBJECT_PREFIX + subject
 
     msg.subject = subject
-    msg.to = [email]
-    msg.body = message['text']
+
+    if isinstance(email, list):
+        msg.to = email
+    else:
+        msg.to = [email]
+    msg.body = str(message['text'])
     msg.send()
     return True
 
