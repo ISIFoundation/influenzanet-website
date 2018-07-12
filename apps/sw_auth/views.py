@@ -33,8 +33,6 @@ def render_template(name, request, context=None):
                               context_instance=RequestContext(request)
     )
 
-def send_email_user_old(user, subject, template, context):
-
 
 @csrf_protect
 def register_user(request):

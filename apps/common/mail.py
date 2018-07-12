@@ -107,7 +107,7 @@ def send_message(email, message, use_prefix=True):
 
     if message['html']:
         msg = EmailMultiAlternatives(headers=headers)
-        msg.attach_alternative(str(message['html']), "text/html")
+        msg.attach_alternative(unicode(message['html']), "text/html")
     else:
         if not message['text']:
             raise Exception("Email message doesnt contains text content")
@@ -123,7 +123,7 @@ def send_message(email, message, use_prefix=True):
         msg.to = email
     else:
         msg.to = [email]
-    msg.body = str(message['text'])
+    msg.body = unicode(message['text'])
     msg.send()
     return True
 
