@@ -33,6 +33,7 @@ class UserListChecker:
             self.user_list = None
 
     def get_userlist(self, table):
+        print "Using %s for userlist" % (table)
         query = "SELECT user_id FROM " + table
         cursor = connection.cursor()
         cursor.execute(query)
