@@ -17,25 +17,25 @@ class Command(BaseCommand):
     )
 
     def handle(self, *args, **options):
-        
+
         users = None
-        
+
         if options['user'] is not None:
             users = [EpiworkUser.objects.get(id=options['user'])]
-        
+
         if options['user'] is not None:
             users = [EpiworkUser.objects.get(id=options['user'])]
-        
+
         if users is None:
             users = EpiworkUser.objects.filter(is_active=False)
-        
+
         max_delay = options['max_delay']
         min_delay = options['min_delay']
         self.fake = options['fake']
         self.verbosity = options['verbosity']
-        
+
         self.resend_activation(users, max_delay, min_delay)
-    
+
     def check_double_email(self, user):
         # Check if there is another account activated with this email
         email = user.email
@@ -48,7 +48,7 @@ class Command(BaseCommand):
         except EpiworkUser.DoesNotExist:
             pass
         return True
-    
+
     def resend_activation(self, users, max_delay, min_delay):
         site = Site.objects.get_current()
         today = date.today()
@@ -66,7 +66,7 @@ class Command(BaseCommand):
                 print e
                 pass
             delay = None
-            skip = False 
+            skip = False
             if dju.date_joined:
                 delay = today - dju.date_joined.date()
                 delay = delay.days
@@ -77,26 +77,26 @@ class Command(BaseCommand):
                 if skip:
                     if int(self.verbosity) > 1:
                         print "joined %d days ago, skip" % delay
-                
+
             if skip:
                 print "skip"
                 continue
-            
+
             print "resend activation %s" % u.login,
-            
+
             if self.fake:
                 print " fake"
             else:
                 if u.email is None:
 					print "No email, skip"
 					continue
-				if u.email.endswith('@localhost'):
+
+                if u.email.endswith('@localhost'):
 					print "localhost address, anonymized account"
 					continue
-				try:
-					send_activation_email(u, site, renew=False)
-					print " sent"
-				except Exception, e:
-					print e
-					pass
-                
+                try:
+                	send_activation_email(u, site, renew=False)
+                	print " sent"
+                except Exception, e:
+                	print e
+                	pass
