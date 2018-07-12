@@ -29,7 +29,7 @@ class Command(BaseCommand):
             raise CommandError('new Mail is not provided')
 
         if options['id'] is not None:
-            users = EpiworkUser.objects.get(id=options['id'])
+            users = [EpiworkUser.objects.get(id=options['id'])]
         else:
             mail = options['mail']
             # Dont check for source email validity (could be invalid=
