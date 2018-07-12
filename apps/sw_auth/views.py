@@ -25,6 +25,8 @@ from .forms import PasswordResetForm, RegistrationForm, SetPasswordForm, UserEma
 from apps.sw_auth.anonymize import Anonymizer
 from django.utils.http import int_to_base36
 
+
+# Local helper to render template in this apps
 def render_template(name, request, context=None):
     return render_to_response('sw_auth/'+name+'.html',
                               context,
@@ -32,8 +34,7 @@ def render_template(name, request, context=None):
     )
 
 def send_email_user_old(user, subject, template, context):
-    t = get_template(template)
-    send_mail(subject, t.render(Context(context)), None, [user.email])
+
 
 @csrf_protect
 def register_user(request):
@@ -132,7 +133,7 @@ def password_reset(request):
                         'protocol': request.is_secure() and 'https' or 'http',
                     }
 
-                    send_email_user_old(user, _("Password reset on %s") % site_name, 'sw_auth/password_reset_email.html', c)
+                    send_user_email('password_reset_email', user.email, c)
             c = {
                 'has_several': has_several,
                 'count': len(form.users_cache),

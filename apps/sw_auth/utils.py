@@ -2,10 +2,9 @@ from django.utils.http import int_to_base36, base36_to_int
 from datetime import date
 from random import choice
 from django.conf import settings
-from django.template.loader import render_to_string
-from django.core.mail import send_mail
 
 from crypto import AES256
+from apps.common.mail import create_message_from_template, send_message
 
 TOKEN_ACTIVATE = 1
 TOKEN_PASSWORD = 2
@@ -13,7 +12,6 @@ TOKEN_LOGIN    = 3
 TOKEN_EMAIL    = 4
 
 EMAIL_TEMPLATE_PATH = 'sw_auth/mail/'
-
 
 class EpiworkToken:
     """
@@ -116,24 +114,15 @@ def send_activation_email(user, site, renew=True, skip_younger=None):
         'expiration_days': delay,
         'site': site
     }
-    subject = render_to_string('sw_auth/activation_email_subject.txt', ctx_dict)
-    # Email subject *must not* contain newlines
-    subject = ''.join(subject.splitlines())
-    message = render_to_string('sw_auth/activation_email.txt', ctx_dict)
 
-    send_mail(subject, message, None, [user.email])
+    message = create_message_from_template('sw_auth/activation_email', data=ctx_dict)
+    send_message(user.email, message)
     return True
 
 def send_user_email(template, email, data=None):
-    subject = render_to_string('sw_auth/mail/'+ template +'_subject.txt', dictionary=data)
-    # Email subject *must not* contain newlines
-    subject = ''.join(subject.splitlines())
-    message = render_to_string('sw_auth/mail/'+ template +'.txt', dictionary=data)
-    if not isinstance(email, list):
-        email = [email]
-    send_mail(subject, message, None, email)
+    message = create_message_from_template(EMAIL_TEMPLATE_PATH + template, data=data)
+    send_message(email, message)
     return True
-
 
 """
 Cipher Config
