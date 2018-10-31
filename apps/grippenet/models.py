@@ -1,5 +1,5 @@
 from django.db import models
-
+from django.contrib.auth.models import User
 from apps.survey.models import SurveyUser
 
 class PregnantCohort(models.Model):
@@ -43,3 +43,19 @@ class Participation(models.Model):
     survey_user = models.ForeignKey(SurveyUser)
     first_season = models.IntegerField()
     last_season = models.IntegerField()
+
+
+class MaskCohort(models.Model):
+    """
+        Mask cohort 
+        Notify the first user of each household (account)
+    """
+    user = models.ForeignKey(User, unique=True, primary_key=True)
+
+    # Inclusion date
+    date_created = models.DateField(auto_now_add=True)
+
+    # Is active in cohort
+    active = models.BooleanField(default=True)
+
+    notification = models.BooleanField(default=False)
