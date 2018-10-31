@@ -47,13 +47,16 @@ class Participation(models.Model):
 
 class MaskCohort(models.Model):
     """
-        Mask cohort 
+        Mask cohort
         Notify the first user of each household (account)
     """
     user = models.ForeignKey(User, unique=True, primary_key=True)
 
     # Inclusion date
     date_created = models.DateField(auto_now_add=True)
+
+    # Survey user who triggered the notification
+    survey_user = models.ForeignKey(SurveyUser)
 
     # Is active in cohort
     active = models.BooleanField(default=True)

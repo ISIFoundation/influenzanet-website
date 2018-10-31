@@ -1,8 +1,10 @@
 from django.conf import settings
 from django.core.urlresolvers import reverse
-from django.template import Context, loader
 from django.contrib.sites.models import Site
 from django.utils.translation import activate
+
+from apps.common.mail import create_message_from_template
+
 
 import loginurl.utils
 from apps.partnersites.context_processors import site_context
@@ -21,25 +23,20 @@ def get_login_url(user, next):
 
     return '%s/%s' % (loginurl_base, key.key)
 
-def create_message(user, next=None, template='pregnant.html', layout='ggrippenet.html'):
-    
+def create_reminder_message(user, next=None, template_name='reminder', wrap_layout=True):
+
     activate('fr')
 
-    t = loader.get_template(template)
     c = {
         'url': get_login_url(user, next),
     }
+
     c.update(site_context())
-    
+
     site_url = 'https://%s' % Site.objects.get_current().domain
     media_url = '%s%s' % (site_url, settings.MEDIA_URL)
-    
+
     c['site_url'] = site_url
-    inner = t.render(Context(c))
-    
-    t = loader.get_template(layout)
-    
-    c['inner'] = inner
     c['MEDIA_URL'] = media_url
-    
-    return inner, t.render(Context(c))
+
+    return create_message_from_template(template_name, c, wrap_layout=wrap_layout)

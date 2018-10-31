@@ -1,20 +1,20 @@
 from django.core.management.base import BaseCommand
 from optparse import make_option
 
-from apps.grippenet.models import PregnantCohort
 from django.core.urlresolvers import reverse
-from django.core.mail import EmailMultiAlternatives
-from django.utils.html import strip_tags
+from django.contrib.auth.models import User
+from apps.survey.models import SurveyUser
 
 import datetime
 import time
 
 from apps.common.db import get_cursor
+from apps.common.mail import send_message
 from apps.sw_auth.models import EpiworkUserProxy
 
-from ...models import MaskCohort 
+from ...models import MaskCohort
 
-from ...reminder import create_message
+from ...reminder import create_reminder_message
 
 class Command(BaseCommand):
     help = 'Send Reminder about Pregnant survey'
@@ -26,28 +26,21 @@ class Command(BaseCommand):
     def __init__(self, *args, **kwargs):
         super(Command, self).__init__(*args, **kwargs)
         self.fake = False
+        self.survey = 'gripmask'
+        self.template = 'grippenet/masques'
 
     def send_email(self, user, gid, email):
 
         next = reverse('survey_fill', kwargs={'shortname': self.survey}) + '?gid=' + gid
 
-        text_content, html_content = create_message(user, next=next, template=self.template +'.html' )
-
-        text_content = strip_tags(text_content)
-        msg = EmailMultiAlternatives(
-            'Etude G-GrippeNet',
-            body=text_content,
-            to=[email],
-            )
-
-        msg.attach_alternative(html_content, "text/html")
+        message = create_reminder_message(user, next=next, template=self.template )
 
         if self.fake:
             print ' [fake]'
             return True
 
         try:
-            msg.send()
+            send_message(email, message)
             print ' sent.'
             return True
         except Exception, e:
@@ -55,19 +48,19 @@ class Command(BaseCommand):
             return False
 
     """
-        SELECT p.id, weekly_id, p.user as account_id, p.timestamp, s.id as person_id, h.status from pollster_results_weekly p left join pollster_health_status h on h.pollster_results_weekly_id=p.id left join survey_surveyuser s on p.global_id=s.global_id where status='ILI' order by timestamp 
+        SELECT p.id, weekly_id, p.user as account_id, p.timestamp, s.id as person_id, h.status from pollster_results_weekly p left join pollster_health_status h on h.pollster_results_weekly_id=p.id left join survey_surveyuser s on p.global_id=s.global_id where status='ILI' order by timestamp
     """
 
     def get_respondents(self):
         cursor = get_cursor()
-        query = 'SELECT s.id as "person_id", count(*) "nb", min(timestamp) "first", max(timestamp) "last" from pollster_results_weekly p left join pollster_health_status h on h.pollster_results_weekly_id=p.id left join survey_surveyuser s on p.global_id=s.global_id where status=''ILI'' group by person_id'
+        query = 'SELECT s.id as "person_id", s.user as "user_id", count(*) "nb", min(timestamp) "first", max(timestamp) "last" from pollster_results_weekly p left join pollster_health_status h on h.pollster_results_weekly_id=p.id left join survey_surveyuser s on p.global_id=s.global_id where status=\'ILI\' group by person_id'
         cursor.execute(query)
         desc = cursor.description
         columns = [col[0] for col in desc]
-    
+
         for r in cursor.fetchall():
             yield dict(zip(columns, r))
-        
+
     def get_participants(self):
         """
             registred participants in the cohort
@@ -75,44 +68,50 @@ class Command(BaseCommand):
         """
         participants = {}
         for p in MaskCohort.objects.all():
-            participants[p.survey_user] = p
+            participants[p.user.id] = p
         return participants
 
     def handle(self, *args, **options):
 
+        count_sent = 0
+
         self.fake = options.get('fake')
+
+        now = datetime.date.today()
 
         provider = EpiworkUserProxy()
 
         participants = self.get_participants()
 
         # Get respondents
-        respondents = self.get_respondents(survey)
+        respondents = self.get_respondents()
+
+        # First date to start reminder
+        reminder_date = now - datetime.timedelta(days=15)
 
         for r in respondents:
-            person_id = r.person_id
-            if person_id in participants:
-                print "Already in participants"
+            person_id = r['person_id']
+            user_id = r['user_id']
+            first = r['first']
+            if user_id in participants:
+                print "Account already in participants"
                 next
-            
 
-        print "%d particpants to scan" % ( len(participants))
-        for p in participants:
-            su = p.survey_user
-            suid = su.id
-            dju = su.user
-            if suid in respondents:
-                print "participant #%d already responded" % (suid,)
-                continue
+            if first > reminder_date:
+               print "Too soon"
+               next
 
-            account = provider.find_by_django(dju)
-            if account is not None:
-                print "sending reminder to participant #%d <%s>" %(suid, account.email),
-                if self.send_email(dju, su.global_id, account.email):
-                    p.reminder_count = p.reminder_count + 1
-                    p.date_reminder = now + datetime.timedelta(days=15) # future date
-                    p.save()
-            else:
-                print "Unable to find email for participant #%d" %(suid,)
-        time.sleep(1)
+            survey_user = SurveyUser.objects.get(id=person_id)
+            django_user = User.objects.get(id=user_id)
 
+            account = provider.find_by_django(django_user)
+            if self.send_email(django_user, survey_user.global_id, account.email):
+                print "user %d notified" % (user_id)
+                part = MaskCohort()
+                part.user = django_user
+                part.survey_user = survey_user
+                part.active = True
+                part.save()
+                count_sent += 1
+                if count_sent % 20 == 0:
+                    time.sleep(5)
