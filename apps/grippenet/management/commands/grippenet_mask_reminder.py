@@ -33,7 +33,7 @@ class Command(BaseCommand):
 
         next = reverse('survey_fill', kwargs={'shortname': self.survey}) + '?gid=' + gid
 
-        message = create_reminder_message(user, next=next, template=self.template )
+        message = create_reminder_message(user, next=next, template_name=self.template )
 
         if self.fake:
             print ' [fake]'
@@ -53,7 +53,7 @@ class Command(BaseCommand):
 
     def get_respondents(self):
         cursor = get_cursor()
-        query = 'SELECT s.id as "person_id", s.user as "user_id", count(*) "nb", min(timestamp) "first", max(timestamp) "last" from pollster_results_weekly p left join pollster_health_status h on h.pollster_results_weekly_id=p.id left join survey_surveyuser s on p.global_id=s.global_id where status=\'ILI\' group by person_id'
+        query = 'SELECT s.id as "person_id", s.user_id, count(*) "nb", min(timestamp) "first", max(timestamp) "last" from pollster_results_weekly p left join pollster_health_status h on h.pollster_results_weekly_id=p.id left join survey_surveyuser s on p.global_id=s.global_id where status=\'ILI\' group by person_id'
         cursor.execute(query)
         desc = cursor.description
         columns = [col[0] for col in desc]
@@ -77,7 +77,8 @@ class Command(BaseCommand):
 
         self.fake = options.get('fake')
 
-        now = datetime.date.today()
+        now = datetime.datetime.now()
+        print now
 
         provider = EpiworkUserProxy()
 
@@ -115,3 +116,5 @@ class Command(BaseCommand):
                 count_sent += 1
                 if count_sent % 20 == 0:
                     time.sleep(5)
+        print "ok"
+        exit
