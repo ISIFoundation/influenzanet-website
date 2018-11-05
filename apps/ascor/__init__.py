@@ -5,3 +5,5 @@ if not hasattr(settings, 'ASCOR_RSA_PRIVATE_KEY'):
 
 if not hasattr(settings, 'ASCOR_RSA_PUBLIC_KEY'):
     raise Exception("Ascor config: missing private key configuration")
+
+ASCOR_DEBUG = getattr(settings, 'ASCOR_DEBUG', False)
