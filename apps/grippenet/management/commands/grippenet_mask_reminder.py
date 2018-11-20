@@ -17,23 +17,28 @@ from ...models import MaskCohort
 from ...reminder import create_reminder_message
 
 class Command(BaseCommand):
-    help = 'Send Reminder about Pregnant survey'
+
+    help = 'Send Reminder for Mask Study'
 
     option_list = BaseCommand.option_list + (
         make_option('-f', '--fake', action='store_true',  dest='fake', help='fake sending', default=False),
+        make_option('-l', '--limit', action='store',  dest='limit', help='Number of user to process', default=0),
+        make_option('-t', '--mock', action='store',  dest='table', help='Use mock table to test algorithm', default=None),
+        make_option('-n', '--from', action='store',  dest='from', help='Reminder date (for test)', default=None),
     )
 
     def __init__(self, *args, **kwargs):
         super(Command, self).__init__(*args, **kwargs)
         self.fake = False
-        self.survey = 'gripmask'
+        self.survey = 'mask1'
         self.template = 'grippenet/masques'
 
-    def send_email(self, user, gid, email):
+    def send_email(self, user, participant, email):
 
-        next = reverse('survey_fill', kwargs={'shortname': self.survey}) + '?gid=' + gid
+        gid = participant.global_id
+        next_uri = reverse('survey_fill', kwargs={'shortname': self.survey}) + '?gid=' + gid
 
-        message = create_reminder_message(user, next=next, template_name=self.template )
+        message = create_reminder_message(user, next=next_uri, template_name=self.template )
 
         if self.fake:
             print ' [fake]'
@@ -41,7 +46,6 @@ class Command(BaseCommand):
 
         try:
             send_message(email, message)
-            print ' sent.'
             return True
         except Exception, e:
             print e
@@ -53,7 +57,14 @@ class Command(BaseCommand):
 
     def get_respondents(self):
         cursor = get_cursor()
-        query = 'SELECT s.id as "person_id", s.user_id, count(*) "nb", min(timestamp) "first", max(timestamp) "last" from pollster_results_weekly p left join pollster_health_status h on h.pollster_results_weekly_id=p.id left join survey_surveyuser s on p.global_id=s.global_id where status=\'ILI\' group by person_id'
+
+        if self.mock is not None:
+            # Table should have
+            #
+            query = 'SELECT "person_id", user_id, "nb", "first", "last" from %s' % (self.table, )
+        else:
+            query = 'SELECT s.id as "person_id", s.user_id, count(*) "nb", date(min(timestamp)) "first", date(max(timestamp)) "last" from pollster_results_weekly p left join pollster_health_status h on h.pollster_results_weekly_id=p.id left join survey_surveyuser s on p.global_id=s.global_id where status=\'ILI\' group by person_id'
+
         cursor.execute(query)
         desc = cursor.description
         columns = [col[0] for col in desc]
@@ -61,60 +72,104 @@ class Command(BaseCommand):
         for r in cursor.fetchall():
             yield dict(zip(columns, r))
 
-    def get_participants(self):
+    def get_accounts(self):
         """
-            registred participants in the cohort
+            registred accounts in the cohort
             Already notified
         """
-        participants = {}
+        accounts = {}
         for p in MaskCohort.objects.all():
-            participants[p.user.id] = p
-        return participants
+            accounts[p.user.id] = p
+        return accounts
 
     def handle(self, *args, **options):
 
-        count_sent = 0
 
         self.fake = options.get('fake')
+        self.mock = options.get('mock')
 
-        now = datetime.datetime.now()
-        print now
+        verbosity = options.get('verbosity')
+
+        limit = int(options.get('limit'))
+
+        mocking = self.mock is not None
+
+        date_from = options.get('from')
+
 
         provider = EpiworkUserProxy()
 
-        participants = self.get_participants()
+        if mocking:
+            accounts = {}
+        else:
+            accounts = self.get_accounts()
 
         # Get respondents
         respondents = self.get_respondents()
 
         # First date to start reminder
-        reminder_date = now - datetime.timedelta(days=15)
+        if date_from is None:
+            reminder_date = datetime.date.today() - datetime.timedelta(days=15)
+        else:
+            reminder_date = datetime.datetime.strptime(date_from, '%Y-%m-%d').date()
+
+        print "First reminder will be sent on %s" % (reminder_date, )
+
+        count_sent = 0 # Email sent
+        count = 0 # Account proccessed
 
         for r in respondents:
+
             person_id = r['person_id']
             user_id = r['user_id']
             first = r['first']
-            if user_id in participants:
-                print "Account already in participants"
-                next
 
-            if first > reminder_date:
-               print "Too soon"
-               next
+            if verbosity >= 1:
+                if verbosity > 1:
+                    print "p%-6d u%-6d first: %10s last: %10s nb: %-2d" % (person_id, user_id, first, r['last'], r['nb'] ),
+                else:
+                    print "%6d %6d" % (person_id, user_id),
+
+            if user_id in accounts:
+
+                if verbosity > 1:
+                    print "Account already in participants"
+
+                continue
+
+            if first < reminder_date:
+
+                if verbosity > 1:
+                    print "Too soon"
+
+                continue
 
             survey_user = SurveyUser.objects.get(id=person_id)
             django_user = User.objects.get(id=user_id)
 
             account = provider.find_by_django(django_user)
-            if self.send_email(django_user, survey_user.global_id, account.email):
+
+            if self.send_email(django_user, survey_user, account.email):
+
                 print "user %d notified" % (user_id)
-                part = MaskCohort()
-                part.user = django_user
-                part.survey_user = survey_user
-                part.active = True
-                part.save()
+
+                if not mocking and not self.fake:
+                    part = MaskCohort()
+                    part.user = django_user
+                    part.survey_user = survey_user
+                    part.active = True
+                    part.notification = True
+                    part.date_created = datetime.date.today()
+                    part.save()
                 count_sent += 1
+
                 if count_sent % 20 == 0:
                     time.sleep(5)
-        print "ok"
-        exit
+
+            count += 1
+
+            if limit > 0 and count > limit:
+                print ""
+                print "Reached limit of %d " % (limit, )
+                break
+
