@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2018-05-22 15:44+0200\n"
-"PO-Revision-Date: 2018-05-24 09:26+0200\n"
+"PO-Revision-Date: 2018-11-21 13:26+0100\n"
 "Last-Translator: Clément Turbelin\n"
 "Language-Team: \n"
 "Language: fr\n"
@@ -297,7 +297,7 @@ msgstr "Votre réponse est bien enregistrée, merci d'avoir pris le temps de rem
 
 #: .\apps\pollster\views.py:246 .\apps\survey\workflow\influenzanet.py:52
 msgid "At the beginning of the season we ask you to verify last year's information. Please check the information below."
-msgstr "Cette page a été pré-remplie avec certaines des réponses que vous aviez fourni la saison précédente pour ce participant. Certaines réponses n'ont cependant pas été reprises. Vérifiez bien que ces informations sont correctes et correspondent bien à la situation du participant !"
+msgstr "Cette page a été pré-remplie avec certaines des réponses que vous aviez fournies la saison précédente pour ce participant. Certaines réponses n'ont cependant pas été reprises. Vérifiez bien que les informations pré-remplies sont correctes et correspondent bien à la situation du participant !"
 
 #: .\apps\pollster\db\models\fields.py:10
 msgid "Year and month (in YYYY-MM format)"
@@ -513,7 +513,7 @@ msgstr ""
 
 #: .\apps\survey\workflow\influenzanet.py:27
 msgid "Before we take you to the symptoms questionnaire, please complete the short background questionnaire below. You will only have to complete this once."
-msgstr "Avant d'accéder au questionnaire hebdomadaire, complétez s'il-vous-plaît ce questionnaire préliminaire. Vous n'aurez à remplir ce questionnaire qu'une seule fois, mais pourrez revenir le modifier quand vous le souhaitez."
+msgstr "Avant d'accéder au questionnaire hebdomadaire, complétez s'il-vous-plaît ce questionnaire préliminaire. Vous n'aurez à le remplir qu'une seule fois, mais pourrez revenir le modifier quand vous le souhaitez."
 
 #: .\apps\sw_auth\anonymize.py:76
 msgid "Account Closing request"
@@ -1637,7 +1637,7 @@ msgstr "Comment nous informer de votre vaccination anti-grippale ?"
 
 #: .\templates\survey\group_management_sw.html.py:147
 msgid "Update vaccination help"
-msgstr "Si vous avez été vacciné contre la grippe et que vous nous aviez indiqué ne pas être vacciné en début de saison, il vous suffit de cliquer à nouveau sur le bouton de votre questionnaire préliminaire (pour le participant concerné) et de modifier votre réponse à la question concernant la vaccination anti-grippale puis de valider le questionnaire. Nous prendons en compte ce changement d'information dans nos analyses !"
+msgstr "Si vous avez été vacciné contre la grippe et que vous nous aviez indiqué ne pas être vacciné en début de saison, il vous suffit de cliquer à nouveau sur le bouton de votre questionnaire préliminaire (pour le participant concerné) et de modifier votre réponse à la question concernant la vaccination anti-grippale, puis de valider le questionnaire. Nous prendrons en compte ce changement d'information dans nos analyses."
 
 #: .\templates\survey\group_management_sw.html.py:152
 #: .\templates\survey\wait_launch.html.py:11
