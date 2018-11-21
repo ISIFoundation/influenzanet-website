@@ -17,7 +17,7 @@
 						var scale_start ='Très mal';
 						var scale_end = 'Tout va bien';
 						var icon = true;
-						console.log(tags);
+						//console.log(tags);
 
 						if(typeof(tags) == "string") {
 							tags = jQuery.parseJSON(tags);
@@ -82,6 +82,13 @@
 
 						$r.append($m);
 						$r.append('<div style="clear:both">&nbsp;</div>');
+
+						if(jQuery.browser.mobile) {
+							var $h = $('<div class="scale-mobile">');
+							$h.append(b1);
+							$h.append(b2);
+							$r.append($h);
+						}
 
 						var t, k;
 						if(!has_value) {
