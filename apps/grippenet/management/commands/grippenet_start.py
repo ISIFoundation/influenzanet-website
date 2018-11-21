@@ -82,6 +82,6 @@ class Command(BaseCommand):
         cn = last.__module__ + '.' + last.__class__.__name__
         if cn == 'apps.survey.workflow.InfluenzanetWorkflow':
             self.log(LOG_OK, 'Influenzanet Workflow set')
-        else:http://marketplace.eclipse.org/marketplace-client-intro?mpc_install=2956962
+        else:
             self.log(LOG_ERROR, 'Influenzanet workflow is not the last workflow')
 
