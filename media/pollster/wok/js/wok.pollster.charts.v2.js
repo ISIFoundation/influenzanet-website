@@ -10,6 +10,7 @@
             return wok.error("unable to get chart container element");
 
         var url = self.$container.attr('data-chart-url');
+
         if (url) {
             function getData(callback) {
                 var params = {};
@@ -32,7 +33,7 @@
 
             	var map = L.map(self.$container[0]).setView([data.bounds.lat, data.bounds.lng], data.bounds.z);
 
-        		L.tileLayer('https://a.tile.openstreetmap.fr/osmfr/{z}/{x}/{y}.png', {
+        		L.tileLayer('https://{s}.tile.openstreetmap.fr/osmfr/{z}/{x}/{y}.png', {
         		    attribution: 'Map data &copy; <a href="https://www.openstreetmap.org/">OpenStreetMap</a> contributors, <a href="https://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>',
         		    maxZoom: 18,
         		}).addTo(map);
@@ -42,10 +43,24 @@
         		    maxZoom: 18,
         		}).addTo(map);
 
-        		tile.on('click', function(event) {
-        			console.log(event);
-        		});
 
+        		var popup = L.popup();
+
+        		map.on('click', function(e) {
+        			$.getJSON(tileBase + "/click/" + e.latlng.lat + "/" + e.latlng.lng, function(json) {
+                        if (!json.zip_code_key)
+                            return;
+						var title = (json.zip_title) ? json.zip_title : json.zip_code_key;
+                        var html = '<div><strong>'+title+'</strong><br/>';
+                        for (var k in json) {
+                            if (k !== "zip_code_key" && k !== "zip_code_country" && k !== "zip_title")
+                                html += '<span>' + k + ': </span>' + json[k] + '<br/>';
+                        }
+                        html += '</div>';
+
+                        popup.setLatLng(e.latlng).setContent(html).openOn(map);
+                    });
+        		});
             });
         }
 
@@ -59,12 +74,10 @@
             openEditor: openEditor
         });
 
-        if (self.$container.data("chart-type") === "google-charts")
-            draw_chart(url, self.$container);
-        else if (self.$container.data("chart-type") === "google-map")
-            draw_map(url, self.$container, false);
-        else if (self.$container.data("chart-type") === "google-map-centered")
-            draw_map(url, self.$container, true);
+        var type = self.$container.data("chart-type");
+        if(type == "google-map-centered" || type == "google-map" ) {
+        	draw_map(url, self.$container, type == "google-map-centered");
+        }
     }
 
     window.wok.pollster.charts.init = function(callback) {
