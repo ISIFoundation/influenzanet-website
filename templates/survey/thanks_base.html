@@ -1,0 +1,12 @@
+{% extends "survey/base.html" %}
+{% load i18n %}
+
+{% block col1 %}
+<h3>Vos réponses au questionnaire ont bien été prises en compte !</h3>
+
+<p>Toute l'équipe de GrippeNet.fr vous remercie sincèrement d'avoir pris le temps de le remplir.</p>
+<p>L'équipe GrippeNet.fr</p>
+
+<a href="{% url group_management %}" class="button">Retourner à votre espace personnel</a>
+
+{% endblock %}
