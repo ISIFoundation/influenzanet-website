@@ -1,16 +1,20 @@
 # -*- coding: utf-8 -*-
-from django.utils import simplejson
 from django.core.urlresolvers import get_resolver, reverse
 from django.http import HttpResponse, HttpResponseRedirect, Http404
-from django.contrib.auth.decorators import login_required
+
 from django.shortcuts import render, render_to_response, redirect, get_object_or_404
+
 from django.utils.safestring import mark_safe
 from django.utils.translation import to_locale, get_language, ugettext as _
+from django.utils import simplejson
 from django.template import RequestContext
+
 from django.contrib import messages
 from django.contrib.admin.views.decorators import staff_member_required
 from django.contrib.auth.views import redirect_to_login
 from django.contrib.auth import authenticate, login
+from django.contrib.auth.decorators import login_required
+
 from django.conf import settings
 
 from cms import settings as cms_settings
@@ -133,15 +137,21 @@ def survey_test(request, id, language=None):
     # In test env, do not get the user_id from global_id
     # to allow test with real data (for debugging)
     global_id = request.GET.get('gid')
+    force_previous = request.GET.get('previous', False)
     user_id = None
     if global_id:
         try:
             survey_user = SurveyUser.objects.get(global_id=global_id)
             user_id = survey_user.user.id
-            last_participation_data = survey.get_prefill_data(user_id, global_id)
+            if force_previous:
+                last_participation_data = models.previous_season_data(survey.shortname, user_id, global_id)
+            else:
+                last_participation_data = survey.get_prefill_data(user_id, global_id)
         except SurveyUser.DoesNotExist:
             pass
 
+
+    post_data = None
 
     if request.method == 'POST':
         data = request.POST.copy()
@@ -150,11 +160,7 @@ def survey_test(request, id, language=None):
         data['timestamp'] = datetime.datetime.now()
         form = survey.as_form()(data)
         if form.is_valid():
-            if language:
-                next_url = _get_next_url(request, reverse(survey_test, kwargs={'id':id, 'language': language}))
-            else:
-                next_url = _get_next_url(request, reverse(survey_test, kwargs={'id':id}))
-            return HttpResponseRedirect(next_url)
+           post_data = data
         else:
             survey.set_form(form)
     encoder = json.JSONEncoder(ensure_ascii=False, indent=2)
@@ -167,7 +173,8 @@ def survey_test(request, id, language=None):
         "default_postal_code_format": fields.PostalCodeField.get_default_postal_code_format(),
         "last_participation_data_json": last_participation_data_json,
         "language": language,
-        "form": form
+        "form": form,
+        "post_data": post_data,
     })
 
 def survey_run(request, shortname, next=None, clean_template=False):

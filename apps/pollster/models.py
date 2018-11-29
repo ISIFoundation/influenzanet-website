@@ -208,26 +208,30 @@ def _get_or_default(queryset, default=None):
         return r[0]
     return default
 
+def previous_season_data(shortname, user_id, global_id):
+    cursor = connection.cursor()
+    query = "select * from pollster_results_%s_previousdata where \"global_id\"='%s' and \"user\"='%s'" % (shortname, global_id, str(user_id))
+    cursor.execute(query)
+    res = cursor.fetchone()
+    desc = cursor.description
+    if res is not None:
+        res = dict(zip([col[0] for col in desc], res))
+        # Put a flag in the data
+        res["_source_"] = "previousdata"
+    return res
+
+
+## Prefill strategy using previous season data
 def prefill_previous_data(survey, user_id, global_id):
-     """
-     fetch data to prefill a user's survey looking first at the current data table and then to another
-     table containing previous data for the user (for example from the last year data table)
-     The only assumption made on this table are the keys global_id and user_id, and the table name
-     """
-     data = survey.get_last_participation_data(user_id, global_id)
-     if data is not None:
-         return data
-     shortname = survey.shortname
-     cursor = connection.cursor()
-     query = "select * from pollster_results_%s_previousdata where \"global_id\"='%s' and \"user\"='%s'" % (shortname, global_id, str(user_id))
-     cursor.execute(query)
-     res = cursor.fetchone()
-     desc = cursor.description
-     if res is not None:
-         res = dict(zip([col[0] for col in desc], res))
-         # Put a flag in the data
-         res["_source_"] = "previousdata"
-     return res
+    """
+    fetch data to prefill a user's survey looking first at the current data table and then to another
+    table containing previous data for the user (for example from the last year data table)
+    The only assumption made on this table are the keys global_id and user_id, and the table name
+    """
+    data = survey.get_last_participation_data(user_id, global_id)
+    if data is not None:
+        return data
+    return previous_season_data(survey.shortname, user_id, global_id)
 
 class Survey(models.Model):
     parent = models.ForeignKey('self', db_index=True, blank=True, null=True)
