@@ -20,6 +20,7 @@ import apps.pollster as pollster
 
 from apps.grippenet.cohorts import get_survey_user_channel, get_cohort_users
 from apps.grippenet.models import PregnantCohort
+from django.template.base import TemplateDoesNotExist
 
 def _get_avatars(with_list=True):
 
@@ -389,7 +390,15 @@ def thanks_run(request, shortname):
         survey_user = get_active_survey_user(request)
     except ValueError:
         pass
-    return render_to_response('survey/thanks_'+ shortname +'.html', {'person': survey_user}, context_instance=RequestContext(request))
+
+    data = {'person': survey_user}
+    ctx = RequestContext(request)
+
+    try:
+        response = render_to_response('survey/thanks_'+ shortname +'.html', data, context_instance=ctx)
+    except TemplateDoesNotExist:
+        response = render_to_response('survey/thanks_base.html', data, context_instance=ctx)
+    return response
 
 @login_required
 def people_edit(request):

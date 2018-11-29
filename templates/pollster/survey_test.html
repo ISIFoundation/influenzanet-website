@@ -28,4 +28,11 @@
 <div id="wok-main-panel-content">
     {% include "pollster/questions_run.html" %}
 </div>
+{% if post_data %}
+	<ul>
+	{% for name,value in post_data.iteritems %}
+	  <li><var>{{name}}</var> = {{value}}</li>
+	{% endfor %}
+	</ul>
+{% endif%}
 {% endblock %}
