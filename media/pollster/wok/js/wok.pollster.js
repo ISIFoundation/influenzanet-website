@@ -19,13 +19,14 @@
             return other;
         };
     }
-    
+
     // MODULE: wok.pollster
 
     window.wok = window.wok || {
         version: '1.0',
         error: function(msg) { alert("wok error: " + msg); }
     };
+
     window.wok.pollster = {
         options: {
             // UI part selectors.
@@ -35,11 +36,15 @@
             questionClass: "question"
         }
     };
-	
+
 	function debug_rule(rule, target) {
-		console.log(rule);
+		if(window.wok.debug_rule) {
+			window.wok.debug_rule(rule, target);
+		} else {
+			console.log(rule);
+		}
 	}
-	
+
     // POLLSTER SURVEY
 
     function PollsterRuntime(context, options) {
@@ -84,7 +89,7 @@
             pollster_fill_rules(rules_by_question);
         if (window.pollster_fill_derived_values)
             pollster_fill_derived_values(derived_values);
-        
+
         // Fill the "by object" and "state" rule dictionaries.
 
         for (var q in rules_by_question) {
@@ -334,7 +339,7 @@
 					var r = sufficient_ok[k][1];
 					r.apply($survey, target);
 					if(this.debug) {
-						debug_rule(r, target);					
+						debug_rule(r, target);
 					}
 				}
             }
@@ -344,7 +349,7 @@
 					var r = required_fail[k][1];
 					r.apply($survey, target);
 					if(this.debug) {
-						debug_rule(r, target);					
+						debug_rule(r, target);
 					}
 				}
             }

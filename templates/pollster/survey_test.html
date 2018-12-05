@@ -5,10 +5,111 @@
 {% block extrahead %}
         <script type="text/javascript" src="/media/assets/pollster_run.js"></script>
 		<script type="text/javascript">
+    	 var questions = {};
+
     	 window.wok.pollster.onCreate.push(function() {
 		 	window.wok.pollster_runtime.setDebug(true);
+
+			$('.question').each(function() {
+				var $q = $(this);
+				var id = $q.attr('id');
+				id = id.replace('question-','');
+				$q.prepend('<span class="debug question-id">'+id +'</span>');
+
+				var type = $q.data('question-type');
+				var qn = false;
+				if(type == 'single-choice') {
+					var $i =  $q.find('.user-field').first();
+					if($i.length) {
+						qn = $i.attr('name');
+					}
+				}
+				if(type == 'multiple-choice') {
+					var $i =  $q.find('.user-field').first();
+					if($i.length) {
+						qn = $i.attr('name');
+						qn = qn.substring(0, qn.indexOf('_'));
+					}
+				}
+
+				if(qn) {
+					questions[id] = qn;
+					$q.prepend('<span class="debug question-name">['+ qn +']</span>');
+				}
+
+			});
+
+			$('.user-field').each(function() {
+				var $e = $(this);
+				var $p =$e.parent();
+				var $q = $e.parents('.question');
+				$p.append('<span class="debug data-name">' + $e.attr('name') + '</span>');
+
+				if($e.attr('type') == 'checkbox' || $e.attr('type') == 'radio') {
+					$p.append('<span class="debug data-value">[' + $e.attr('value') + ']</span>');
+				}
+
+			});
+
+
+
 		 });
+
+
+
+
+		 window.wok.debug_rule = function(rule, target) {
+
+		 	var rule_name = rule.__proto__.name;
+
+			if(rule.subjectQuestion) {
+				var qn = '[' + questions[rule.subjectQuestion] + ']' || ('id=' +rule.subjectQuestion);
+			};
+
+			var m = qn +'  ' + rule_name;
+
+			console.log(typeof(rule.objectQuestion));
+
+			if(!jQuery.isEmptyObject(rule.objectQuestion)) {
+				var on = questions[rule.objectQuestion] || ('id=' +rule.objectQuestion);
+
+				m += ' => ' + on;
+
+				if(rule.objectOptions.length > 0) {
+					var oo = [];
+					rule.objectOptions.forEach(function(id) {
+						var $o = $('option-'+id);
+						if($o.length > 0) {
+							oo.push($o.attr('value'));
+						};
+					});
+
+					if(oo.length > 0) {
+						m += ' "' + oo.join('","', oo);
+					}
+				}
+			};
+
+			$('#wok-rule-debug').append('<div class="debug-rule">' + m +'</div>');
+
+			console.log('debug', rule, target);
+		 }
+
 	    </script>
+	    <style>
+	    	.debug {
+	    		font-size: .8em;
+	    		color: steelblue;
+	    		margin: 0 .3em;
+	    	}
+
+	    	.debug-rule {
+	    		margin: .5em 0;
+	    		border:1px solid #E4E4E4;
+	    		padding: .4em;
+	    	}
+
+	    </style>
 {% endblock %}
 
 {% block navigation %}
@@ -25,14 +126,20 @@
 {% endblock %}
 
 {% block content %}
-<div id="wok-main-panel-content">
+<div id="wok-main-panel-content" class="column wok-test">
     {% include "pollster/questions_run.html" %}
 </div>
-{% if post_data %}
-	<ul>
-	{% for name,value in post_data.iteritems %}
-	  <li><var>{{name}}</var> = {{value}}</li>
-	{% endfor %}
-	</ul>
-{% endif%}
+<div id="wok-debug-panel" class="column">
+	<div id="wok-rule-debug">
+	</div>
+	<div id="wok-post-data">
+	{% if post_data %}
+		<ul>
+		{% for name,value in post_data.iteritems %}
+		  <li><var>{{name}}</var> = {{value}}</li>
+		{% endfor %}
+		</ul>
+	{% endif%}
+	</div>
+</div>
 {% endblock %}

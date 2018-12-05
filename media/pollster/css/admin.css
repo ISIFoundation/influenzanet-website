@@ -1,0 +1,11 @@
+#wok-body { width: 80%; }
+
+.column {
+	width: 45%;
+	float: left;
+}
+
+#wok-debug-panel {
+	padding: 1em;
+	border: 2px solid #EEE;
+}

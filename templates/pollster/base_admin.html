@@ -23,7 +23,6 @@
     <script type="text/javascript" src="/media/pollster/datejs/js/date.js"></script>
     {% endif %}
 
-    {** <script type="text/javascript" src="//maps.googleapis.com/maps/api/js?sensor=false"></script> **}
     <script type="text/javascript" src="{{ CMS_MEDIA_URL }}js/csrf.js"></script>
     <script type="text/javascript">jQuery().cmsPatchCSRF()</script>
 
@@ -35,6 +34,7 @@
     {% block extrahead %}{% endblock %}
 
     <link rel="stylesheet" type="text/css" href="/media/pollster/css/skin.css" media="all" />
+	<link rel="stylesheet" type="text/css" href="/media/pollster/css/admin.css" media="all" />
 </head>
 <body>
     <div id="wok-body">
