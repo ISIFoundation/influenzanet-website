@@ -109,11 +109,11 @@ class Command(BaseCommand):
 
         # First date to start reminder
         if date_from is None:
-            reminder_date = datetime.date.today() - datetime.timedelta(days=15)
+            date_now = datetime.date.today()
         else:
-            reminder_date = datetime.datetime.strptime(date_from, '%Y-%m-%d').date()
+            date_now = datetime.datetime.strptime(date_from, '%Y-%m-%d').date()
 
-        print "First reminder will be sent on %s" % (reminder_date, )
+        print "First reminder will be sent on %s" % (date_now, )
 
         count_sent = 0 # Email sent
         count = 0 # Account proccessed
@@ -124,9 +124,11 @@ class Command(BaseCommand):
             user_id = r['user_id']
             first = r['first']
 
+            reminder_date = r['first'] + datetime.timedelta(days=15)
+
             if verbosity >= 1:
                 if verbosity > 1:
-                    print "p%-6d u%-6d first: %10s last: %10s nb: %-2d" % (person_id, user_id, first, r['last'], r['nb'] ),
+                    print "p%-6d u%-6d first: %10s last: %10s remind: %10s nb: %-2d" % (person_id, user_id, first, r['last'], reminder_date, r['nb'] ),
                 else:
                     print "%6d %6d" % (person_id, user_id),
 
@@ -137,7 +139,7 @@ class Command(BaseCommand):
 
                 continue
 
-            if first < reminder_date:
+            if date_now < reminder_date:
 
                 if verbosity > 1:
                     print "Too soon"
@@ -168,7 +170,7 @@ class Command(BaseCommand):
 
             count += 1
 
-            if limit > 0 and count > limit:
+            if limit > 0 and count >= limit:
                 print ""
                 print "Reached limit of %d " % (limit, )
                 break
