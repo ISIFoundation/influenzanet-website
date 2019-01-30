@@ -25,7 +25,6 @@ class Command(BaseCommand):
     option_list = BaseCommand.option_list + (
         make_option('-f', '--fake', action='store_true',  dest='fake', help='fake sending', default=False),
         make_option('-l', '--limit', action='store',  dest='limit', help='Number of user to process', default=0),
-        make_option('-t', '--mock', action='store',  dest='mock', help='Use mock file to test algorithm', default=None),
         make_option('-n', '--from', action='store',  dest='from', help='Reminder date (for test)', default=None),
     )
 
@@ -57,26 +56,24 @@ class Command(BaseCommand):
         SELECT p.id, weekly_id, p.user as account_id, p.timestamp, s.id as person_id, h.status from pollster_results_weekly p left join pollster_health_status h on h.pollster_results_weekly_id=p.id left join survey_surveyuser s on p.global_id=s.global_id where status='ILI' order by timestamp
     """
 
-
+    """
+    " Get respondends to the mask survey
+    """
     def get_respondents(self):
         cursor = get_cursor()
-        query = 'SELECT s.id as "person_id", s.user_id, count(*) "nb", date(min(timestamp)) "first", date(max(timestamp)) "last" from pollster_results_weekly p left join pollster_health_status h on h.pollster_results_weekly_id=p.id left join survey_surveyuser s on p.global_id=s.global_id where status=\'ILI\' group by person_id'
+        query = 'SELECT s.id as "person_id", s.user_id, count(*) "nb" from pollster_results_mask1 p left join survey_surveyuser s on p.global_id=s.global_id group by person_id'
 
         cursor.execute(query)
         desc = cursor.description
         columns = [col[0] for col in desc]
 
+        rr = {}
         for r in cursor.fetchall():
-            yield dict(zip(columns, r))
+            d = dict(zip(columns, r))
+            rr[ d['user_id'] ] = d
+        return d
 
-    def get_mock_respondents(self):
-        with open(self.mock) as csvfile:
-            reader = csv.DictReader(csvfile)
-            for r in reader:
-                yield r
-
-
-    def get_accounts(self):
+    def get_cohort_user(self):
         """
             registred accounts in the cohort
             Already notified
@@ -89,27 +86,16 @@ class Command(BaseCommand):
     def handle(self, *args, **options):
 
         self.fake = options.get('fake')
-        self.mock = options.get('mock')
-
         verbosity = options.get('verbosity')
 
         limit = int(options.get('limit'))
 
-        mocking = self.mock is not None
-
         date_from = options.get('from')
-
 
         provider = EpiworkUserProxy()
 
-        if mocking:
-            accounts = {}
-            respondents = self.get_mock_respondents()
-            print respondents
-            exit
-        else:
-            respondents = self.get_respondents()
-            accounts = self.get_accounts()
+        respondents = self.get_respondents()
+        cohort_users = self.get_cohort_user()
 
         
         # First date to start reminder
@@ -123,27 +109,33 @@ class Command(BaseCommand):
         count_sent = 0 # Email sent
         count = 0 # Account proccessed
 
-        for r in respondents:
+        for cohort in cohort_users:
 
-            user_id = r['user_id']
-
+            user_id = cohort.user
+            person_id = cohort.survey_user
+            created_at = cohort.date_created
+            
             if verbosity >= 1:
                 if verbosity > 1:
-                    print "p%-6d u%-6d first: %10s last: %10s nb: %-2d" % (user_id, r['nb'] ),
-                else:
-                    print "%6d %6d" % (person_id, user_id),
-
-            if user_id in accounts:
+                    print "u%-6d last: %10s" % (user_id, created_at ),
+               
+            if user_id in respondents:
 
                 if verbosity > 1:
-                    print "Account already in participants"
+                    print "Account already in responded to surveu"
 
                 continue
 
-            if first < reminder_date:
+            if created_at < reminder_date:
 
                 if verbosity > 1:
                     print "Too soon"
+
+                continue
+
+            if cohort.notification > 1:
+                if verbosity > 1:
+                    print "Already notified "
 
                 continue
 
@@ -156,13 +148,10 @@ class Command(BaseCommand):
 
                 print "user %d notified" % (user_id)
 
-                if not mocking and not self.fake:
-                    part = MaskCohort()
-                    part.user = django_user
-                    part.survey_user = survey_user
-                    part.active = True
-                    part.date_created = datetime.date.today()
-                    part.save()
+                if not self.fake:
+                    cohort.notification_count = 2
+                    cohort.last_notification = datetime.date.today()
+                    cohort.save()
                 count_sent += 1
 
                 if count_sent % 20 == 0:

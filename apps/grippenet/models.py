@@ -61,4 +61,7 @@ class MaskCohort(models.Model):
     # Is active in cohort
     active = models.BooleanField(default=True)
 
-    notification = models.BooleanField(default=False)
+    notification_count = models.IntegerField(default=1)
+
+    last_notification = models.DateField(null=True)
+
