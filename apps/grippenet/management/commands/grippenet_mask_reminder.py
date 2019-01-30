@@ -16,8 +16,6 @@ from ...models import MaskCohort
 
 from ...reminder import create_reminder_message
 
-import csv
-
 class Command(BaseCommand):
 
     help = 'Send Reminder for Mask Study'
@@ -25,7 +23,7 @@ class Command(BaseCommand):
     option_list = BaseCommand.option_list + (
         make_option('-f', '--fake', action='store_true',  dest='fake', help='fake sending', default=False),
         make_option('-l', '--limit', action='store',  dest='limit', help='Number of user to process', default=0),
-        make_option('-t', '--mock', action='store',  dest='mock', help='Use mock file to test algorithm', default=None),
+        make_option('-t', '--mock', action='store',  dest='table', help='Use mock table to test algorithm', default=None),
         make_option('-n', '--from', action='store',  dest='from', help='Reminder date (for test)', default=None),
     )
 
@@ -57,10 +55,15 @@ class Command(BaseCommand):
         SELECT p.id, weekly_id, p.user as account_id, p.timestamp, s.id as person_id, h.status from pollster_results_weekly p left join pollster_health_status h on h.pollster_results_weekly_id=p.id left join survey_surveyuser s on p.global_id=s.global_id where status='ILI' order by timestamp
     """
 
-
     def get_respondents(self):
         cursor = get_cursor()
-        query = 'SELECT s.id as "person_id", s.user_id, count(*) "nb", date(min(timestamp)) "first", date(max(timestamp)) "last" from pollster_results_weekly p left join pollster_health_status h on h.pollster_results_weekly_id=p.id left join survey_surveyuser s on p.global_id=s.global_id where status=\'ILI\' group by person_id'
+
+        if self.mock is not None:
+            # Table should have
+            #
+            query = 'SELECT "person_id", user_id, "nb", "first", "last" from %s' % (self.table, )
+        else:
+            query = 'SELECT s.id as "person_id", s.user_id, count(*) "nb", date(min(timestamp)) "first", date(max(timestamp)) "last" from pollster_results_weekly p left join pollster_health_status h on h.pollster_results_weekly_id=p.id left join survey_surveyuser s on p.global_id=s.global_id where status=\'ILI\' group by person_id'
 
         cursor.execute(query)
         desc = cursor.description
@@ -68,13 +71,6 @@ class Command(BaseCommand):
 
         for r in cursor.fetchall():
             yield dict(zip(columns, r))
-
-    def get_mock_respondents(self):
-        with open(self.mock) as csvfile:
-            reader = csv.DictReader(csvfile)
-            for r in reader:
-                yield r
-
 
     def get_accounts(self):
         """
@@ -87,6 +83,7 @@ class Command(BaseCommand):
         return accounts
 
     def handle(self, *args, **options):
+
 
         self.fake = options.get('fake')
         self.mock = options.get('mock')
@@ -104,32 +101,34 @@ class Command(BaseCommand):
 
         if mocking:
             accounts = {}
-            respondents = self.get_mock_respondents()
-            print respondents
-            exit
         else:
-            respondents = self.get_respondents()
             accounts = self.get_accounts()
 
-        
+        # Get respondents
+        respondents = self.get_respondents()
+
         # First date to start reminder
         if date_from is None:
-            reminder_date = datetime.date.today() - datetime.timedelta(days=15)
+            date_now = datetime.date.today()
         else:
-            reminder_date = datetime.datetime.strptime(date_from, '%Y-%m-%d').date()
+            date_now = datetime.datetime.strptime(date_from, '%Y-%m-%d').date()
 
-        print "First reminder will be sent on %s" % (reminder_date, )
+        print "First reminder will be sent on %s" % (date_now, )
 
         count_sent = 0 # Email sent
         count = 0 # Account proccessed
 
         for r in respondents:
 
+            person_id = r['person_id']
             user_id = r['user_id']
+            first = r['first']
+
+            reminder_date = r['first'] + datetime.timedelta(days=15)
 
             if verbosity >= 1:
                 if verbosity > 1:
-                    print "p%-6d u%-6d first: %10s last: %10s nb: %-2d" % (user_id, r['nb'] ),
+                    print "p%-6d u%-6d first: %10s last: %10s remind: %10s nb: %-2d" % (person_id, user_id, first, r['last'], reminder_date, r['nb'] ),
                 else:
                     print "%6d %6d" % (person_id, user_id),
 
@@ -140,7 +139,7 @@ class Command(BaseCommand):
 
                 continue
 
-            if first < reminder_date:
+            if date_now < reminder_date:
 
                 if verbosity > 1:
                     print "Too soon"
@@ -170,7 +169,8 @@ class Command(BaseCommand):
 
             count += 1
 
-            if limit > 0 and count > limit:
+            if limit > 0 and count >= limit:
                 print ""
                 print "Reached limit of %d " % (limit, )
                 break
+
