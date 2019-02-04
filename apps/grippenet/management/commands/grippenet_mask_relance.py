@@ -16,8 +16,6 @@ from ...models import MaskCohort
 
 from ...reminder import create_reminder_message
 
-import csv
-
 class Command(BaseCommand):
 
     help = 'Send Reminder for Mask Study'
@@ -97,10 +95,11 @@ class Command(BaseCommand):
         respondents = self.get_respondents()
         cohort_users = self.get_cohort_user()
 
-        
         # First date to start reminder
+        cohort_min_date = datetime.date.today() - datetime.timedelta(days=15)
+
         if date_from is None:
-            reminder_date = datetime.date.today() - datetime.timedelta(days=15)
+            reminder_date = datetime.date.today() - datetime.timedelta(days=5)
         else:
             reminder_date = datetime.datetime.strptime(date_from, '%Y-%m-%d').date()
 
@@ -109,38 +108,45 @@ class Command(BaseCommand):
         count_sent = 0 # Email sent
         count = 0 # Account proccessed
 
-        for cohort in cohort_users:
+        for cohort in cohort_users.itervalues():
 
-            user_id = cohort.user
-            person_id = cohort.survey_user
+            user_id = cohort.user.id
+            survey_user = cohort.survey_user
             created_at = cohort.date_created
-            
+
             if verbosity >= 1:
                 if verbosity > 1:
                     print "u%-6d last: %10s" % (user_id, created_at ),
-               
+
             if user_id in respondents:
 
                 if verbosity > 1:
-                    print "Account already in responded to surveu"
+                    print "Account already in responded to survey"
 
                 continue
 
-            if created_at < reminder_date:
+            if created_at < cohort_min_date:
+                if verbosity > 1:
+                    print "too old"
+                continue
+
+            ## created_at > -15
+            ## created_at < -5 jour
+
+            if created_at > reminder_date:
 
                 if verbosity > 1:
                     print "Too soon"
 
                 continue
 
-            if cohort.notification > 1:
+            if cohort.notification_count > 1:
                 if verbosity > 1:
                     print "Already notified "
 
                 continue
 
-            survey_user = SurveyUser.objects.get(id=person_id)
-            django_user = User.objects.get(id=user_id)
+            django_user = cohort.user
 
             account = provider.find_by_django(django_user)
 
