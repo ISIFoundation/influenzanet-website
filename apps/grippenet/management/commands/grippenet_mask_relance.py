@@ -96,7 +96,7 @@ class Command(BaseCommand):
         cohort_users = self.get_cohort_user()
 
         # First date to start reminder
-        cohort_min_date = datetime.date.today() - datetime.timedelta(days=15)
+        cohort_min_date = datetime.date(2019, 1, 30)
 
         if date_from is None:
             reminder_date = datetime.date.today() - datetime.timedelta(days=5)
