@@ -23,6 +23,7 @@ class Command(BaseCommand):
     option_list = BaseCommand.option_list + (
         make_option('-f', '--fake', action='store_true',  dest='fake', help='fake sending', default=False),
         make_option('-l', '--limit', action='store',  dest='limit', help='Number of user to process', default=0),
+        make_option('-u', '--user', action='store',  dest='user', help='User to process', default=None),
         make_option('-n', '--from', action='store',  dest='from', help='Reminder date (for test)', default=None),
     )
 
@@ -69,15 +70,22 @@ class Command(BaseCommand):
         for r in cursor.fetchall():
             d = dict(zip(columns, r))
             rr[ d['user_id'] ] = d
-        return d
+        return rr
 
-    def get_cohort_user(self):
+    def get_cohort_user(self, user_id=None):
         """
             registred accounts in the cohort
             Already notified
         """
         accounts = {}
-        for p in MaskCohort.objects.all():
+
+        if(user_id is not None):
+            user = User.objects.get(id=user_id)
+            qb = [ MaskCohort.objects.get(user=user) ]
+        else:
+            qb = MaskCohort.objects.all()
+
+        for p in qb:
             accounts[p.user.id] = p
         return accounts
 
@@ -93,7 +101,7 @@ class Command(BaseCommand):
         provider = EpiworkUserProxy()
 
         respondents = self.get_respondents()
-        cohort_users = self.get_cohort_user()
+        cohort_users = self.get_cohort_user(options.get('user'))
 
         # First date to start reminder
         cohort_min_date = datetime.date(2019, 1, 30)
@@ -118,7 +126,7 @@ class Command(BaseCommand):
                 if verbosity > 1:
                     print "u%-6d last: %10s" % (user_id, created_at ),
 
-            if user_id in respondents:
+            if respondents.has_key(user_id):
 
                 if verbosity > 1:
                     print "Account already in responded to survey"
