@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 '''
 Created on 5 nov. 2018
 
@@ -5,18 +6,29 @@ Created on 5 nov. 2018
 '''
 
 from base64 import  b64decode
-from binascii import hexlify
+from binascii import hexlify, unhexlify
 from Crypto.PublicKey import RSA
-from Crypto.Cipher import PKCS1_OAEP
-from Crypto.Cipher import AES
-from apps.sw_auth.models import EpiworkUser
-from django.conf import settings
+from Crypto.Cipher import PKCS1_OAEP,AES
 from Crypto.Random import get_random_bytes
 from Crypto.Hash import SHA256, HMAC
 
-AES_KEY_LENGTH = 32
+from django.conf import settings
+from django.contrib.auth import authenticate
+
+from apps.sw_auth.models import EpiworkUser
+
+
+import json
+
+AES_KEY_LENGTH = 32 # #Valeurs a mettre en brut?
 HMAC_KEY_LENGTH = 32
 IV_LENGTH = 16
+
+BLOCK_SIZE = 16  # Bytes
+pad = lambda s: s + (BLOCK_SIZE - len(s) % BLOCK_SIZE) * \
+                chr(BLOCK_SIZE - len(s) % BLOCK_SIZE)
+unpad = lambda s: s[:-ord(s[len(s) - 1:])]
+
 
 class APIError(Exception):
     def __init__(self, message, data=None):
@@ -35,39 +47,50 @@ class APIError(Exception):
         }
 
 class HandshakeData:
-    def __init__(self, aesKey, hmacKey, login): # , IV=0
+    def __init__(self, aesKey, hmacKey):#, login
         self.aesKey = aesKey
         self.hmacKey = hmacKey
-        self.login = login
-        #self.IV = IV
+        #self.login = login
 
 
     def to_json(self):
         return {
         'aes': hexlify(self.aesKey),
         'hmac': hexlify(self.hmacKey),
-        'login': self.login,
-        #'IV' : self.IV
+        #'login': self.login
     }
 
+class AuthData:
+    def __init__(self, enc, IV, Hmac):
+        self.enc = enc
+        self.IV = IV
+        self.Hmac = Hmac
+
+    def to_json(self):
+        return {
+        'enc': hexlify(self.enc),
+        'IV': hexlify(self.IV),
+        'Hmac': hexlify(self.Hmac)
+    }
 
 class AscorAPI:
 
     ACTION_HANDSHAKE = 'sym_key_exchange_auth'
 
+    ACTION_SURVEY ='show_survey_list'
+
     def __init__(self):
         pass
 
     def load_private_key(self):
-
         f = open(settings.ASCOR_RSA_PRIVATE_KEY, 'r')
         return RSA.importKey(f)
 
 
-    def AES256BCB(self, msg, keys, iv):
-        cipher = AES.new(keys.aesKey, AES.MODE_CBC, iv)
-        msgEnc = cipher.encrypt(msg)
-
+    def AES256CBC(self, msg, key, iv):
+        cipher = AES.new(key, AES.MODE_CBC, iv)
+        msg_pad = pad(msg)
+        msgEnc = cipher.encrypt(msg_pad)
         return msgEnc
 
     def hash_hmac(self, msg):
@@ -76,88 +99,86 @@ class AscorAPI:
         return hashmsg
 
     def _decodeHandshake(self, data):
-
-        # Encrypted text
         cftext = b64decode(str(data))
-
         pkey = self.load_private_key()
-
         cipher = PKCS1_OAEP.new(pkey)
-
         text = cipher.decrypt(cftext)
+        payload = [text[:int(AES_KEY_LENGTH*2)], text[int(HMAC_KEY_LENGTH*2):]]
 
-        #Obsolete?
-        payload = text.split(':::')
-
-        if not isinstance(payload, list):
+        # Voir pour + de verifications
+        if len(text) != (len(payload[0])+len(payload[1])) :
+            print("Unable to parse payload")
             raise APIError("Unable to parse payload")
 
-        if len(payload) < 3:
-            raise APIError("Bad payload count")
-
-        hd = HandshakeData(payload[0], payload[1], payload[2])
-        return hd
-
+        hsd = HandshakeData(payload[0], payload[1])
+        return hsd
 
     def handshake(self, data):
-        hs = self._decodeHandshake(data)
+        hs = self._decodeHandshake(data['RSA4096'])
+        aesKeyBin = unhexlify(hs.aesKey)
+        HMACkeyBin = unhexlify(hs.hmacKey)
 
-        if not len(hs.aesKey) == AES_KEY_LENGTH:
-            raise APIError("Bad AES key length, expect %d got %d " % (AES_KEY_LENGTH,len(hs.aesKey), ), hs)
+        if not len(aesKeyBin) == AES_KEY_LENGTH:
+            print("Bad AES key length, expect %d got %d " % (AES_KEY_LENGTH, len(aesKeyBin), ), hs)
+            raise APIError("Bad AES key length, expect %d got %d " % (AES_KEY_LENGTH,len(aesKeyBin), ), hs)
 
-        if not len(hs.hmacKey) == HMAC_KEY_LENGTH:
-            raise APIError("Bad HMAC key length, expect %d got %d " % (HMAC_KEY_LENGTH, len(hs.hmacKey), ), hs)
+        if not len(HMACkeyBin) == HMAC_KEY_LENGTH:
+            print("Bad HMAC key length, expect %d got %d " % (HMAC_KEY_LENGTH, len(HMACkeyBin), ), hs)
+            raise APIError("Bad HMAC key length, expect %d got %d " % (HMAC_KEY_LENGTH, len(HMACkeyBin), ), hs)
 
-        login = hs.login
+        AES256 = data['AES256']
+
+        hmac_cree = HMAC.new(hs.hmacKey, digestmod=SHA256.new())
+        hmac_cree.update(AES256['IV']+AES256['enc'])
+        hmac_hexa = hmac_cree.hexdigest()
+
+        if hmac_hexa == AES256['Hmac']:
+            iv_bin = unhexlify(AES256['IV'])
+            if not len(iv_bin) == IV_LENGTH:
+                print("Bad IV  length, expect %d got %d " % (IV_LENGTH,len(AES256['IV'])))
+
+            AESCipher = AES.new(aesKeyBin, AES.MODE_CBC, iv_bin)
+            msg_decrypt = unpad(AESCipher.decrypt(b64decode(AES256['enc'])))
+            msg_decrypt_json = json.loads(msg_decrypt)
+
+        #authentification a verifier
+        login = msg_decrypt_json['mail']
+        password = msg_decrypt_json['password']
 
         try:
-            user = EpiworkUser.objects.get(login=login)
+            user = authenticate(username=login, password=password)
+            if user is None :
+                print("Bad login user")
+                raise APIError("Bad login")
         except EpiworkUser.DoesNotExist:
-            raise APIError("Bad login", hs)
+            print("Bad login user")
+            raise APIError("Bad login")
 
         #random IV generation
         IV = get_random_bytes(IV_LENGTH)
 
         #hash calculation
-        hashmsg_dec = self.hash_hmac(data)
+        hashmsg_dec = self.hash_hmac(data['RSA4096'])
 
-        # Format response
+        # Format response, TODO :forunir un token utilisateur
         resMSG = {
             'login' : login,
-            'hash' : hashmsg_dec
+            'hash' : hashmsg_dec,
             }
 
         # AES encryption of the response
-        resMsgEnc = self.AES256CBC(resMSG, hs, IV)
-        #cipher = AES.new(hs.aesKey, AES.MODE_CBC)
-        #resMsgEnc = cipher.encrypt(resMSG)
-
-        HmacObject = HMAC.new(hs.hmacKey, resMsgEnc+IV , "SHA256")
+        resMSGjson = json.dumps(resMSG)
+        resMsgEnc = self.AES256CBC(resMSGjson, aesKeyBin, IV)
 
         response = {
             'body' : {
-                'MSG_ENC' : resMsgEnc
+                'MSG_ENC' : hexlify(resMsgEnc)
             },
-            'IV' : IV,
-            'Hmac' : HmacObject.hexdigest()
+            'IV' : hexlify(IV),
         }
-
-        return response
-
-    def auth(self, data):
-        #TODO : recuperation BDD?Cookies? valeurs handshakes + valeurs retournees par client API
-        r= {}
-
-        hashmsg_dec = self.hash_hmac(data)
-        if not hashmsg_dec == data.Hmac:
-            raise APIError("Bad hash, expect %s got %s " % (data.Hmac,hashmsg_dec) )
-
-        IV = get_random_bytes(IV_LENGTH)
+        return(response)
 
 
-        aes = AES.new(data.msg, AES.MODE_CBC, data.iv)
-        decd = aes.decrypt(data.msg)
 
 
-        return r
 
