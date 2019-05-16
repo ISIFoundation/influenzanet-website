@@ -31,3 +31,4 @@ lib64/
 .pydevproject
 env.bat
 _dev
+.vscode/
