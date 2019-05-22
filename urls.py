@@ -29,7 +29,6 @@ urlpatterns = patterns('',
 
 #    (r'^googlec96088c11ef7e5c4.html$', 'django.views.generic.simple.direct_to_template', {'template': 'googlec96088c11ef7e5c4.html'}),
 #    (r'nu.html$', 'django.views.generic.simple.direct_to_template', {'template': 'nu.html'}),
-
 #    (r'^mobile/login/$', 'apps.sw_auth.mobile.mobile_login'),
     (r'^mobile/surveys/(?P<shortname>.+)/$', 'apps.pollster.views.survey_run', {'clean_template': True, 'next': '/mobile/success/'}),
 #    (r'^mobile/surveys/(?P<shortname>.+)/$', 'django.views.generic.simple.direct_to_template', {'template': 'survey/mobile_success.html'}),
@@ -54,8 +53,9 @@ urlpatterns = patterns('',
     url(r'^login/$', redirect_to, {'url': settings.LOGIN_URL}, name='loginurl-index'),
     (r'^login/', include('loginurl.urls')),
     (r'^count/', include('apps.count.urls')),
+    (r'^admin/top5/', include('apps.top5.urls_admin')),
+    url(r'^top5/', include('apps.top5.urls')),
 #    (r'^contest/', include('apps.contest.urls')),
-
     url(r'^contact/$', redirect_to, {'url':'/contacts/'}, name='contact_form'),
 
 #    url(r'^contact/$', 'contact_form.views.contact_form', {'form_class': ContactForm}, name='contact_form'),
@@ -87,6 +87,7 @@ urlpatterns += patterns('',
     url(r'^invite/', include('apps.sw_invitation.urls')),
     url(r'^dashboard/', include('apps.dashboard.urls')),
     url(r'^ascor/', include('apps.ascor.urls')),
+
 )
 
 # Catchall

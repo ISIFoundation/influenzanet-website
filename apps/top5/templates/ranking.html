@@ -1,0 +1,68 @@
+{% extends "base/twocol.html" %}
+
+<head>
+	{% block add_css %}
+		<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css"> <!---->
+	 	<link rel="stylesheet" type="text/css" href="{{ MEDIA_URL }}top5/top5.css" >
+	{% endblock %}
+	{% block add_js %}
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script> <!-- Grippenet  1.5.2 au max-->
+	<script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.10.3/jquery-ui.min.js"></script>
+
+		<script type="text/javascript">
+	    	var $jq = jQuery.noConflict();
+	    </script>
+		<script type="text/javascript" src="{{ MEDIA_URL }}top5/top5.js"></script>
+	    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
+	    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/js/bootstrap.min.js"></script>  <!--pb si 1.5.2, incompatible  -->
+	{% endblock %}
+</head>
+
+<body>
+	{% block col1 %}
+<div class="panel panel-group" >
+	<div class="panel panel-heading">
+		Veuillez selectionner les 5 services qui vous semblent les plus surmédicaliser pour passer à l'étape d'après
+	</div>
+	<!-- mauvaise technique -->
+	<div id="accordion-resume" class="panel panel-body" >
+		{% for service in ranking %}
+			<div id="resume-panel-{{service.id}}" class="panel panel-dragable portlet panel-success" data-rank="{{ forloop.counter }}" data-service="{{ service.id }}">
+				<div id="resume-heading-{{service.id}}" class="panel-heading portlet-header">
+					<a role="button" data-parent="#accordion" data-toggle="collapse" href="#resume-colapse-{{ service.id }}" aria-expanded="true" aria-controls="resume-colapse-{{ service.id }}">
+						<strong id="rank-{{ service.id }}">{{ forloop.counter }}</strong> - {{ service.service_id.name }}
+				   	</a>
+				</div>
+				<div id="resume-colapse-{{ service.id }}" class="panel-collapse collapse">
+				    <h1 class="service-title center">{{ service.service_id.fullname }} </h1>
+				     {{ service.service_id.text_html|safe }}
+				     <div class="bottom-notes"> . </div>
+				    	<!-- test resolution bug divs <button type="submit" class="positive" name="save" id="save" style="display:none;"> -->
+				</div>
+			</div>
+		{% endfor %}
+	</div>
+</div>
+<div>
+	<div class="alignleft">
+		<a class="btn btn-warning" href="{% url top5_selection_service %}"  role="button">Retour à la s&eacute;lection</a>
+	</div>
+	<!-- Action a changer, juste pour le test-->
+	<form id="form-rank" method="post" action="{% url top5_save_rank %}"> {% csrf_token %}
+	<!-- Besoin de tous les rank -->
+	    {% for rank_serv in ranking %}
+	        {% if rank_serv.rank  and serv.rank != 0 %}
+	        	<input name="hidden-rank-{{ rank_serv.id }}" id="hidden-rank-{{ rank_serv.id }}" data-service="{{ rank_serv.id }}" value="{{ rank_serv.rank }}" hidden>
+	        {% else %}
+	        	<input name="hidden-rank-{{ rank_serv.id }}" id="hidden-rank-{{ rank_serv.id }}"  data-service="{{ rank_serv.service_id }}"  value="{{ forloop.counter }}" hidden>
+	        {% endif %}
+	    {% endfor %}
+	    <div class="text-right">
+	        <button name="save" class="btn btn-info" id="save-rank" type="submit" value="temporary" data-form="#form-rank" ><span class="glyphicon glyphicon-floppy-disk">&nbsp;</span>Sauvegarder votre classement</button>
+	        <button name="save" class="btn btn-success" id="submit-rank" type="submit" value="final" data-form="#form-rank" ><span class="glyphicon glyphicon-ok">&nbsp;</span>Valider votre classement</button>
+	    </div>
+	</form>
+</div>
+
+{% endblock col1 %}
+</body>
