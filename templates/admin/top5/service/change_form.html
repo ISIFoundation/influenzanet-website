@@ -1,0 +1,12 @@
+{% extends "admin/change_form.html" %}
+{% load i18n %}
+{% block object-tools %}
+{% if change %}{% if not is_popup %}
+  <ul class="object-tools">
+    <li><a href="history/" class="historylink">{% trans "History" %}</a></li>
+        <li>
+        	<a href="{% url top5_create_html original.id %}" class="viewsitelink">{% trans "html creation " %}</a>
+        </li>
+  </ul>
+{% endif %}{% endif %}
+{% endblock %}
