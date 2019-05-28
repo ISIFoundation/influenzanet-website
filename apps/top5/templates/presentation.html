@@ -3,7 +3,9 @@
 <head>
 {% block add_css %}
 	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css"> <!---->
+	<link type="text/css" rel="stylesheet" media="all" href="{{ MEDIA_URL }}assets/base.css?v={{assets_version}}" />
  	<link rel="stylesheet" type="text/css" href="{{ MEDIA_URL }}top5/top5.css" >
+
 {% endblock %}
 	{% block add_js %}
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script> <!-- Grippenet  1.5.2 au max-->
@@ -20,22 +22,26 @@
 
 <body>
 	{% block col1 %}
-		<h4>Présentation de l’étude :</h4>
-		<h2>Bonjour et merci de participer à cette <b>étude sur la surmédicalisation en médecine générale.</b></h2>
-		<h2>Cette étude vise à établir une liste de cinq examens médicaux ou traitements souvent prescrits en médecine générale en France et dont la balance bénéfice-risque n'est pas satisfaisante (on appelle cette liste une « Top 5 »). Des études similaires ont été réalisées dans de nombreux pays, mais en interrogeant uniquement des médecins. Il s’agit de la <b>première étude de ce type interrogeant des patients</b>. Elle s’adresse à tous les Grippenautes majeurs. Cette étude est plus longue que les précédentes auxquelles vous avez participé : elle vous prendra <b>environ 1 heure</b> et peut être réalisée en plusieurs fois.</h2>
-		<h2>On parle de surmédicalisation lorsqu’un examen ou un médicament est proposé à un patient sans que l’on soit sûr des bénéfices ou lorsque cet examen ou ce médicament est potentiellement dangereux pour le patient sans que les bénéfices attendus ne compensent les risques. Ceci peut avoir pour conséquences un effet négatif sur la santé des patients. Par exemple, certaines maladies peuvent être diagnostiquées alors que le patient n’aurait jamais eu de signe au cours de sa vie, ce qui conduit à des traitements ou examens inutiles et expose le patient à des effets indésirables. La seconde conséquence est financière : ces soins inutiles représentent un coût important pour les patients et l’assurance maladie.</h2>
-		<h2>En France, une liste « Top 5 » a déjà été réalisée par des médecins généralistes. Nous souhaiterions maintenant recueillir l’avis des patients, et dresser une liste « Top 5 » patients.</h2>
-		<h2>Des résumés de la littérature scientifique ont été écrits pour 15 services médicaux, identifiés par des médecins généralistes en France comme relevant de la surmédicalisation. Ces résumés présentent les recommandations actuelles, les bénéfices et risques des examens ou traitements ainsi que leur coût pour l’assurance maladie.</h2>
-		<h4>Comment participer à cette étude ?</h4>
-		<ul><h2>
+		<h1 align="center">Présentation de l’étude</h1>
+
+		<p>Bonjour et merci de participer à cette <b>étude sur la surmédicalisation en médecine générale.</b></p>
+		<p>Cette étude vise à établir une liste de cinq examens médicaux ou traitements souvent prescrits en médecine générale en France et dont la balance bénéfice-risque n'est pas satisfaisante (on appelle cette liste une « Top 5 »). Des études similaires ont été réalisées dans de nombreux pays, mais en interrogeant uniquement des médecins. Il s’agit de la <b>première étude de ce type interrogeant des patients</b>. Elle s’adresse à tous les Grippenautes majeurs. Cette étude est plus longue que les précédentes auxquelles vous avez participé : elle vous prendra <b>environ 1 heure</b> et peut être réalisée en plusieurs fois.</p>
+		<p>On parle de surmédicalisation lorsqu’un examen ou un médicament est proposé à un patient sans que l’on soit sûr des bénéfices ou lorsque cet examen ou ce médicament est potentiellement dangereux pour le patient sans que les bénéfices attendus ne compensent les risques. Ceci peut avoir pour conséquences un effet négatif sur la santé des patients. Par exemple, certaines maladies peuvent être diagnostiquées alors que le patient n’aurait jamais eu de signe au cours de sa vie, ce qui conduit à des traitements ou examens inutiles et expose le patient à des effets indésirables. La seconde conséquence est financière : ces soins inutiles représentent un coût important pour les patients et l’assurance maladie.</p>
+		<p>En France, une liste « Top 5 » a déjà été réalisée par des médecins généralistes. Nous souhaiterions maintenant recueillir l’avis des patients, et dresser une liste « Top 5 » patients.</p>
+		<p>Des résumés de la littérature scientifique ont été écrits pour 15 services médicaux, identifiés par des médecins généralistes en France comme relevant de la surmédicalisation. Ces résumés présentent les recommandations actuelles, les bénéfices et risques des examens ou traitements ainsi que leur coût pour l’assurance maladie.</p>
+
+		<h1 align="center">Comment participer à cette étude ?</h1>
+
+		<ul>
 			<li>Vous trouverez ci-dessous un lien vers le questionnaire. Ce questionnaire est constitué d'une liste de 15 services médicaux. Nous vous invitons à cliquer sur chaque service médical pour obtenir plus d’information et <b>afficher le résumé</b>. Pour  savoir comment cette liste de 15 a été obtenue et comment ces résumés ont été réalisés, cliquez sur « <U>Protocole de l’étude</U> ». Pour consulter la liste des articles utilisés pour réaliser chaque résumé, cliquez sur « Références ». </li>
 			<li>Vous devrez tout d'abord <b>sélectionner les 5 services médicaux</b> qui selon vous relèvent le plus de la surmédicalisation (dont il est, selon vous, prioritaire de réduire les prescriptions en médecine générale). Pour ajouter un item à votre liste « Top 5 », cliquez sur « J’ajoute à ma Top 5 ». Si vous souhaitez enlever un item de votre « Top 5 », cliquez sur « J’enlève de ma Top 5 ».</li>
 			<li>Lorsque que vous aurez sélectionné les cinq services médicaux qui constituent votre  « Top 5 », cliquez sur le bouton « Accéder à votre classement » en bas de page, afin de <b>classer ces 5 services médicaux</b> par ordre de priorité (le premier service étant celui pour lequel il est le plus important de réduire les prescriptions).
 			</li>
-		</h2></ul>
-		<h2>Une fois votre “Top 5” constituée, un cours questionnaire vous sera proposé afin de connaître les raisons de votre choix.</h2>
-		<h2>Vos choix restent enregistrés lorsque vous quittez cette page, vous pouvez donc effectuer votre sélection en plusieurs fois. Tant que votre sélection n'a pas été validée, vous pouvez accéder au questionnaire que vous avez commencé à remplir en cliquant de nouveau sur le lien que vous avez reçu par email, ou en vous connectant à votre espace personnel sur www.grippenet.fr."</h2>
-		<h2>Pour toutes questions ou complément d’information, contacter: contact@grippenet.fr</h2>
+		</ul>
+		<p>Une fois votre “Top 5” constituée, un court questionnaire vous sera proposé afin de connaître les raisons de votre choix.</p>
+		<p>Vos choix restent enregistrés lorsque vous quittez cette page, vous pouvez donc effectuer votre sélection en plusieurs fois. Tant que votre sélection n'a pas été validée, vous pouvez accéder au questionnaire que vous avez commencé à remplir en cliquant de nouveau sur le lien que vous avez reçu par email, ou en vous connectant à votre espace personnel sur www.grippenet.fr.</p>
+		<p>Pour toutes questions ou complément d’information, contacter: <a href="/fr/grippenet/contact/">contact@grippenet.fr</a>.</p>
+
 		<p align="center" >
 			<a class="btn btn-success" style="align:center" href="{% url top5_selection_service %}"  role="button">Commencer le questionnaire</a>
 		</p>

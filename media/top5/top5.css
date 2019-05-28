@@ -147,6 +147,11 @@ h4 {
 
 .column-left {
 	border-right-style: solid;
-}]
+}
 /* Clear floats after the columns */
+
+.portlet-toggle {
+	font-size: 13px;
+}
+
 

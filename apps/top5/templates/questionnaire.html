@@ -5,6 +5,7 @@
 {% block add_css %}
 	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css"> <!---->
  	<link rel="stylesheet" type="text/css" href="{{ MEDIA_URL }}top5/top5.css" >
+ 	<link type="text/css" rel="stylesheet" media="all" href="{{ MEDIA_URL }}assets/base.css?v={{assets_version}}" />
 {% endblock %}
 {% block add_js %}
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script> <!-- Grippenet  1.5.2 au max-->
@@ -40,8 +41,11 @@
 {% block col1 %}
 <div class="panel panel-group" >
 	<div class="panel panel-heading">
-		Veuillez selectionner les 5 services qui vous semblent les plus surmédicaliser pour passer à l'étape d'après
+		Veuillez sélectionner les 5 services qui selon vous relèvent le plus de la surmédicalisation.
+		<p> Cliquez sur chaque service médical pour obtenir plus d’information et afficher le résumé. Pour ajouter un item à votre liste « Top 5 », cliquez en bas de son résumé sur « J’ajoute à ma Top 5 ». La ligne de cet item apparaîtra ensuite en rose. Pour fermer le résumé, cliquez de nouveau sur le nom du service médical concerné. Pour supprimer un service de votre « Top 5 », cliquez en bas de son résumé sur « J’enlève de ma Top 5 ».
+Lorsque vous aurez sélectionnés cinq service (les cinq lignes apparaitront en rose), vous pourrez cliquer sur « Accéder à votre classement ». </p>
 	</div>
+
 	<!-- mauvaise technique -->
 	<div class="panel panel-body" id="accordion">
 		{% for service in services %}
@@ -59,22 +63,22 @@
 			{% else %}
 				<script>var nbRated = 0 </script>
 			{% endif %}
-			<div id="resume-panel-{{service.id}}" class="panel panel-warning">
+			<div id="resume-panel-{{service.id}}" class="panel panel-warning" >
 				<div id="resume-heading-{{service.id}}" class="panel-heading portlet-toggle">
 					 <form id="form-toggle-{{ service.id }}" class="form-creation" method="post" action="{% url top5_creation_rank_service %}"  > {% csrf_token %}
 					 </form>
-						<a class="btn-toggle" data-form="#form-toggle-{{ service.id }}" data-service="{{service.id}}" role="button" data-parent="#accordion" data-toggle="collapse" href="#resume-colapse-{{ service.id }}" aria-expanded="false" aria-controls="resume-colapse-{{ service.id }}">
-							{{service.name}}
+						<a class="btn-toggle" data-form="#form-toggle-{{ service.id }}" data-service="{{service.id}}" role="button" data-toggle="collapse" href="#resume-collapse-{{ service.id }}" >
+							{{service.fullname}}
 					   	</a>
 				</div>
-				<div id="resume-colapse-{{ service.id }}" class="panel-collapse collapse" role="tabpanel" aria-labelledby="resume-heading-{{ service.id }}">
+				<div id="resume-collapse-{{ service.id }}" class="panel-collapse collapse" role="tabpanel" aria-labelledby="resume-heading-{{ service.id }}">
 				    <h4 class="service-title">{{service.fullname}}</h4>
 				    {{service.text_html|safe}}
 			    	<div class="center">
-			    	    <button id="btn-r-{{ service.id }}" data-service="{{ service.id }}" class="btn btn-danger pertinency-revue" data-form="#form-revue-pertinency-{{ service.id }}" data-input="#pertinent-{{ service.id }}" data-panel="#resume-panel-{{ service.id }}" data-span="#span-{{ service.id }}" data-cpt="#count">
-							<span id="span-{{ service.id }}" name="span-{{ service.id }}" class="glyphicon glyphicon-star "> J’ajoute à ma top 5 {{text_btn}}</span>
+			    	    <button id="btn-r-{{ service.id }}" data-service="{{ service.id }}" class="btn btn-danger pertinency-revue" data-form="#form-revue-pertinency-{{ service.id }}" data-input="#pertinent-{{ service.id }}" data-panel="#resume-panel-{{ service.id }}" data-span="#span-{{ service.id }}" data-collapse="#resume-collapse-{{ service.id }}">
+							<span id="span-{{ service.id }}" name="span-{{ service.id }}" class="glyphicon glyphicon-star" > J’ajoute à ma top 5 {{text_btn}}</span>
 						</button>
-					</div> <!-- Autre bouton ou changement -->
+					</div>
 					<div class="text-right">
 			            <form id="form-revue-pertinency-{{ service.id }}" class="form-rank" method="post" action="{% url top5_chmgt_statut_service %}"  > {% csrf_token %}
 							<input id ="pertinent-{{ service.id }}" name="pertinency" data-form="#form-revue-pertinency-{{ service.id }}" type="checkbox" value="0" checked=false hidden> <!-- initialiser value et checked si déja existante -->

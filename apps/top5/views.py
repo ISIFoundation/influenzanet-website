@@ -12,6 +12,7 @@ from django.contrib.auth.decorators import login_required
 from .models import Service, Ranking, Part, get_service, formating_part
 
 from apps.reminder.views import json_dumps
+from apps.survey import urls as survey_urls
 
 
 @login_required
@@ -24,7 +25,8 @@ def temp_index(request):
             done = True
             break
     if done :
-        return render(request, 'ranking_end.html') #temporaire, redirigeer vers suite du questionnaire?
+        return HttpResponseRedirect('/survey/run/top5-patients/')
+        #return render(request, 'ranking_end.html') #temporaire, redirigeer vers suite du questionnaire?
     return render(request, 'presentation.html')
 
 @login_required
@@ -56,6 +58,7 @@ def create_service_html(request, service_id):
     for part in parts_service :
         part_text = formating_part(part)
         temp_text = temp_text + part_text
+
     service.text_html = temp_text
     service.save()
 
@@ -153,7 +156,6 @@ def chgmt_statut_service(request):
 @login_required
 def ranking(request): #,action
     user = request.user
-    #services = Service.objects.order_by('-name')
     ranking_user = Ranking.objects.filter(user = user)
     ranking = ranking_user.filter(pertinency = 1).order_by('temporary_rank')
 
@@ -161,7 +163,6 @@ def ranking(request): #,action
         'user' : user,
         'ranking' : ranking,
     }
-
     return render(request, 'ranking.html', context)
 
 @csrf_protect
@@ -180,5 +181,5 @@ def saving_rank(request):
             else:
                 rank.modif_date = datetime.now()
             rank.save()
-
-    return render(request, 'ranking_end.html')
+    return HttpResponseRedirect('/survey/run/top5-patients/')
+    #return render(request, '/survey/top5-patients/')

@@ -73,6 +73,7 @@ $jq(document).ready(function() {
 	        		console.log(data.action)
 	        },
 	        error: function(data){
+	        	console.log("error btn toggle")
 	        	console.log("data : "+Object.keys(data))
 	        	console.log("status : "+data.status +' - '+ data.statusText)
 	        }
@@ -100,6 +101,7 @@ $jq(document).ready(function() {
 		$span.toggleClass('glyphicon-star glyphicon-star-empty');
 		$panel.toggleClass('panel-danger panel-warning');
 
+		var $collapse = $($this.data('collapse'));
 		var $service = $this.data('service'); //service ou service.id? a modifier dans le html
 		console.log($service);
 		var $pertinency = $input_chbox.val();
@@ -117,21 +119,36 @@ $jq(document).ready(function() {
 	        			console.log(data.action)
 	        			console.log(data.nbRated)
 	        			nbRated = data.nbRated;
+
 	        		}else{
 	        			alert("le service n'existe pas");
 	        		}
 	        },
 	        error: function(data){
+	        	console.log("error pertinency revue")
 	        	console.log("data : "+Object.keys(data))
 	        	console.log("status : "+data.status +' - '+ data.statusText)
 	        }
         });
-
+		if($pertinency == 1){
+			alert('le service a bien été ajouté à votre liste.');
+		}else{
+			alert('le service a bien été retiré de votre liste.');
+		}
+		console.log($panel)
+		console.log($collapse)
+		$collapse.toggleClass('in');
 	});
 	$jq('#goto-rank').click(function(e) {
         if (nbRated != 5) {
             e.preventDefault();
-        	alert('Vous avez sélectionné '+nbRated+' service(s). Vous devez en sélectionner 5 afin d\'accéder à votre classement.');
+            if(nbRated < 5){
+            	nb = 5 - nbRated;
+            	alert('Vous avez sélectionné '+nbRated+' service(s). Vous devez encore en sélectionner '+nb+' afin d\'accéder à votre classement.');
+            }else{
+            	nb = nbRated - 5;
+            	alert('Vous avez sélectionné '+nbRated+' services. Vous devez en retirer '+nb+' afin d\'accéder à votre classement. Pour cela, cliquez sur leur nom du service que vous souhaiter retirer puis tout en bas du résumé sur le bouton \"J\'enlève de ma Top 5\"');
+            }
         }
     });
 
