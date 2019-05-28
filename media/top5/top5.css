@@ -1,101 +1,101 @@
 .Description {
-	  border-radius: 25px;
-	  background-color: #e6e6e6;
-	  padding:10px;
-	  float:left;
-	  width:98.5%;
-	  margin: 5px;
-	}
+    border-radius: 25px;
+    background-color: #e6e6e6;
+    padding:10px;
+    float:left;
+    width:98.5%;
+    margin: 5px;
+  }
 .Description h4{
-	color : #211E1E;
+  color : #211E1E;
 }
 
 .Recommandation {
-	  margin: 5px;
-	  border-radius: 25px;
-	  background-color: #ffffcc;
-	  padding:10px;
-	  float:left;
-	  width:98.5%;
-	}
+    margin: 5px;
+    border-radius: 25px;
+    background-color: #ffffcc;
+    padding:10px;
+    float:left;
+    width:98.5%;
+  }
 .Recommandation h4{
-	color : #FCE300;
+  color : #FCE300;
 }
 .Epidemiologie {
-	  margin: 5px;
-	  border-radius: 25px;
-	  background-color: #c1e2fd;
-	  padding:10px;
-	  float:left;
-	  width:98.5%;
-	}
+    margin: 5px;
+    border-radius: 25px;
+    background-color: #c1e2fd;
+    padding:10px;
+    float:left;
+    width:98.5%;
+  }
 .Epidemiologie h4{
-	color : #4358DC;
+  color : #4358DC;
 }
 .Efficacite {
-	  margin: 2.5px;
-	  border-radius: 25px;
-	  background-color: #e6ffe6;
-	  padding:10px;
-	  float:left;
-	  display: flex;
-  	  flex-direction: column;
-	/*  width:35%; */
-	}
+    margin: 2.5px;
+    border-radius: 25px;
+    background-color: #e6ffe6;
+    padding:10px;
+    float:left;
+    display: flex;
+      flex-direction: column;
+  /*  width:35%; */
+  }
 .Efficacite h4{
-	color : #27C927;
+  color : #27C927;
 }
 .Tolerance {
-	  margin: 2.5px;
-	  border-radius: 25px;
-	  background-color: #ffe6cc;
-	  padding:10px;
-	  float:right;
-	  display: flex;
-  	  flex-direction: column;
-	  /*width:63.5%; */
-	}
+    margin: 2.5px;
+    border-radius: 25px;
+    background-color: #ffe6cc;
+    padding:10px;
+    float:right;
+    display: flex;
+      flex-direction: column;
+    /*width:63.5%; */
+  }
 .Tolerance h4{
-	color : #FC9A2B;
+  color : #FC9A2B;
 }
 .Cout {
-	  margin: 5px;
-	  border-radius: 25px;
-	  background-color: #ffe6ff;
-	  padding:10px;
-	  float:left;
-	  width:98.5%;
-	}
+    margin: 5px;
+    border-radius: 25px;
+    background-color: #ffe6ff;
+    padding:10px;
+    float:left;
+    width:98.5%;
+  }
 .Cout h4{
-	color : #E85AE8;
+  color : #E85AE8;
 }
 .effic_tolerance {
       display: flex;
-  	  flex-wrap: wrap;
-	  margin: 5px;
-	  border-radius: 0px;
-	  padding:0px;
-	  float:left;
-	  width:98.5%;
-	}
+      flex-wrap: wrap;
+    margin: 5px;
+    border-radius: 0px;
+    padding:0px;
+    float:left;
+    width:98.5%;
+  }
 
 .center{
-	   text-align: center;
-	}
+     text-align: center;
+  }
 
 /*.button-danger{
-		background-color: red;
-	} */
+    background-color: red;
+  } */
 
 .service-title{
       text-decoration: underline;
       font-weight: bold;
-	}
+  }
 
 .bottom-notes{
-	text-align: right;
-	text-decoration: italic;
-	font-size: 80%;
+  text-align: right;
+  text-decoration: italic;
+  font-size: 80%;
 }
 .colonne{
     display: table-cell;
@@ -112,9 +112,9 @@
   padding: 10px;
 }
 .row{
-	margin-left: auto;
-  	margin-right: auto;
-	width: 100% ;
+  margin-left: auto;
+    margin-right: auto;
+  width: 100% ;
 }
 h4 {
   text-align: center;
@@ -127,31 +127,34 @@ h4 {
   width: 75%;
 }
  .top-row {
-	border-bottom-style: solid;
-	border-bottom-length: 10px;
+  border-bottom-style: solid;
+  border-bottom-length: 10px;
 
 }
 .Efficacite .column {
-	border-color: #27C927;
+  border-color: #27C927;
 }
 .Efficacite .row {
-	border-color: #27C927;
+  border-color: #27C927;
 }
 
 .Tolerance .column {
-	border-color: #FC9A2B;
+  border-color: #FC9A2B;
 }
 .Tolerance .row {
-	border-color: #FC9A2B;
+  border-color: #FC9A2B;
 }
 
 .column-left {
-	border-right-style: solid;
+  border-right-style: solid;
 }
 /* Clear floats after the columns */
 
 .portlet-toggle {
-	font-size: 13px;
+  font-size: 13px;
 }
 
+ul.main {
+  font-size: 0.7em;
+}
 

@@ -12,7 +12,6 @@ from django.contrib.auth.decorators import login_required
 from .models import Service, Ranking, Part, get_service, formating_part
 
 from apps.reminder.views import json_dumps
-from apps.survey import urls as survey_urls
 
 
 @login_required

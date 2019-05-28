@@ -67,7 +67,8 @@ Lorsque vous aurez sélectionnés cinq service (les cinq lignes apparaitront en 
 				<div id="resume-heading-{{service.id}}" class="panel-heading portlet-toggle">
 					 <form id="form-toggle-{{ service.id }}" class="form-creation" method="post" action="{% url top5_creation_rank_service %}"  > {% csrf_token %}
 					 </form>
-						<a class="btn-toggle" data-form="#form-toggle-{{ service.id }}" data-service="{{service.id}}" role="button" data-toggle="collapse" href="#resume-collapse-{{ service.id }}" >
+						<!--<a class="btn-toggle" data-form="#form-toggle-{{ service.id }}" data-service="{{service.id}}" role="button" data-parent="#accordion" data-toggle="collapse" href="#resume-colapse-{{ service.id }}" aria-expanded="false" aria-controls="resume-colapse-{{ service.id }}">-->
+						 <a class="btn-toggle" data-form="#form-toggle-{{ service.id }}" data-service="{{service.id}}" role="button" data-parent="#accordion" data-toggle="collapse" href="#resume-collapse-{{ service.id }}" >
 							{{service.fullname}}
 					   	</a>
 				</div>
