@@ -7,6 +7,9 @@
         <li>
         	<a href="{% url top5_create_html original.id %}" class="viewsitelink">{% trans "html creation " %}</a>
         </li>
+        <li>
+        	<a href="{% url top5_calcul_score original.id %}" class="viewsitelink">{% trans "Calcul du score" %}</a>
+        </li>
   </ul>
 {% endif %}{% endif %}
 {% endblock %}

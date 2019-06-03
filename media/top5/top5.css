@@ -92,6 +92,10 @@
       font-weight: bold;
   }
 
+h4 {
+  text-align: center;
+}
+
 .bottom-notes{
   text-align: right;
   text-decoration: italic;
@@ -114,7 +118,18 @@
   width: 50%;
   padding: 5px;
 }
+.column-tram {
+  float: left;
+  display: table-cell;
+  width: 33%;
+  padding: 5px;
+}
 
+.column-left {
+  border-right-style: solid;
+}
+
+/* Clear floats after the columns */
 /* Clearfix (clear floats) */
 .row::after {
   content: "";
@@ -122,40 +137,25 @@
   display: table;
 }
 
-
-h4 {
-  text-align: center;
-}
-
-.column img {
-  display: block;
-  margin-left: auto;
-  margin-right: auto;
-  width: 75%;
-}
- .top-row {
+.top-row {
   border-bottom-style: solid;
   border-bottom-length: 10px;
-
 }
+
 .Efficacite .column {
   border-color: #27C927;
 }
+
 .Efficacite .row {
   border-color: #27C927;
 }
 
-.Tolerance .column {
+.Tolerance .column-left {
   border-color: #FC9A2B;
 }
 .Tolerance .row {
   border-color: #FC9A2B;
 }
-
-.column-left {
-  border-right-style: solid;
-}
-/* Clear floats after the columns */
 
 .portlet-toggle {
   font-size: 13px;

@@ -31,17 +31,17 @@ def temp_index(request):
 @login_required
 def index(request):
     user = request.user
-    if Ranking.objects.filter(user = user).count()==0 :
+    if Ranking.objects.filter(user = user).count() == 0 :
         return render(request, 'presentation.html')
     ranking_user = Ranking.objects.filter(user = user)
 
-    done = False #Verification  questionnaire deja fait
+    done = False #checking : did user already answer the survey?
     for r in ranking_user :
         if r.rank != 0 and r.rank is not None :
             done = True
             break
     if done :
-        return render(request, 'ranking_end.html')
+        return HttpResponseRedirect('/survey/run/top5-patients/')
 
     nb_ranked = ranking_user.filter(pertinency = 1).count()
     if(nb_ranked == 5):
@@ -49,20 +49,9 @@ def index(request):
 
     return redirect(selection_service)
 
-@staff_member_required
-def create_service_html(request, service_id):
-    service = get_service(service_id)
-    parts_service = Part.objects.filter(service = service).order_by('part_type')
-    temp_text = ""
-    for part in parts_service :
-        part_text = formating_part(part)
-        temp_text = temp_text + part_text
 
-    service.text_html = temp_text
-    service.save()
 
-    #return HttpResponse(service.text_html, mimetype="application/javascript")
-    return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
+
 
 def selection_service(request):
     user = request.user
@@ -110,7 +99,6 @@ def creation_rank(request):
 
 @csrf_protect
 def chgmt_statut_service(request):
-    print("changement statut service starts")
     now = datetime.now()
     user = request.user
     service_id = request.POST.get('service', None)
@@ -172,13 +160,51 @@ def saving_rank(request):
         user = request.user
         ranking = Ranking.objects.filter(user = user).filter(pertinency = 1)
 
+    if post.get("save") == 'final' :
         for rank in ranking :
             rank.temporary_rank = post.get("hidden-rank-"+str(rank.id))
-            if post.get("save") == 'final' :
-                rank.rank = post.get("hidden-rank-"+str(rank.id))
-                rank.validation_date = now
-            else:
-                rank.modif_date = datetime.now()
+            rank.rank = post.get("hidden-rank-"+str(rank.id))
+            rank.validation_date = now
+        return HttpResponseRedirect('/survey/run/top5-patients/')
+    else:
+        for rank in ranking :
+            rank.temporary_rank = post.get("hidden-rank-"+str(rank.id))
+            rank.modif_date = datetime.now()
             rank.save()
-    return HttpResponseRedirect('/survey/run/top5-patients/')
+        return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
     #return render(request, '/survey/top5-patients/')
+
+
+
+@staff_member_required
+def create_service_html(request, service_id):
+    service = get_service(service_id)
+    parts_service = Part.objects.filter(service = service).order_by('part_type')
+    temp_text = ""
+    for part in parts_service :
+        part_text = formating_part(part)
+        temp_text = temp_text + part_text
+
+    service.text_html = temp_text
+    service.save()
+
+    #return HttpResponse(service.text_html, mimetype="application/javascript")
+    return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
+
+@staff_member_required
+def calcul_score(request, service_id):
+    service = get_service(service_id)
+    print(service)
+    all_ranked = Ranking.objects.filter(service = service).filter(pertinency = 1)
+
+    temp_text = ""
+    for part in all_ranked :
+        part_text = formating_part(part)
+        temp_text = temp_text + part_text
+
+    service.text_html = temp_text
+    service.save()
+
+    return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
+
+

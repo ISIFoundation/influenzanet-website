@@ -12,11 +12,7 @@ urlpatterns = patterns('apps.top5.views',
     url(r'^ranking/$', views.ranking, name='top5_ranking'),
     url(r'^save/$', views.saving_rank, name='top5_save_rank'),
 
-
-    #url('next/$', views.next_step, name='top5_next_step'),
-
-
-    url(r'^html_creation/$', include('apps.top5.urls_admin')),
+    url(r'^admins/$', include('apps.top5.urls_admin')),
 )
 
 

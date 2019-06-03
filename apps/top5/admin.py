@@ -33,7 +33,7 @@ class PartInline(admin.StackedInline):
 
 class ServiceAdmin(admin.ModelAdmin):
     form = ServiceForm
-    list_display = ('name','fullname', 'selected')
+    list_display = ('name','fullname')
     inlines = [PartInline]
 
     class Media:

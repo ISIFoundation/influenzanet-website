@@ -161,6 +161,9 @@ $jq(document).ready(function() {
 
         }
     });
-
+	$jq('#save-rank').click(function(e) {
+        var $this = $jq(this);
+        alert('Vous avez sauvegardé votre classement temporaire, vous pourrez le retrouver lors de votre prochaine connexion.');
+    });
 });
 

@@ -22,9 +22,8 @@
 	{% block col1 %}
 <div class="panel panel-group" >
 	<div class="panel panel-heading">
-		Veuillez selectionner les 5 services qui vous semblent les plus surmédicaliser pour passer à l'étape d'après
+		Merci de classer les 5 services que vous avez sélectionnés. <p>Pour cela, cliquez sur chaque ligne, et faites la glisser vers le bas ou vers le haut en maintenant le clic puis déposez la à l’emplacement souhaité (<b>"drag and drop"</b>). En « 1 » figure le service pour lequel il est selon vous le plus important de réduire les prescriptions.</p>
 	</div>
-	<!-- mauvaise technique -->
 	<div id="accordion-resume" class="panel panel-body" >
 		{% for service in ranking %}
 			<div id="resume-panel-{{service.id}}" class="panel panel-dragable portlet panel-success" data-rank="{{ forloop.counter }}" data-service="{{ service.id }}">
@@ -58,8 +57,8 @@
 	        {% endif %}
 	    {% endfor %}
 	    <div class="text-right">
-	        <button name="save" class="btn btn-info" id="save-rank" type="submit" value="temporary" data-form="#form-rank" ><span class="glyphicon glyphicon-floppy-disk">&nbsp;</span>Sauvegarder votre classement</button>
-	        <button name="save" class="btn btn-success" id="submit-rank" type="submit" value="final" data-form="#form-rank" ><span class="glyphicon glyphicon-ok">&nbsp;</span>Valider votre classement</button>
+	        <button name="save" class="btn btn-info" id="save-rank" type="submit" value="temporary" data-form="#form-rank" ><span class="glyphicon glyphicon-floppy-disk">&nbsp;</span>Sauvegarder temporairement votre classement</button>
+	        <button name="save" class="btn btn-success" id="submit-rank" type="submit" value="final" data-form="#form-rank" ><span class="glyphicon glyphicon-ok">&nbsp;</span>Valider définitivement votre classement</button>
 	    </div>
 	</form>
 </div>
