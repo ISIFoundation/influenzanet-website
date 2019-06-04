@@ -11,6 +11,7 @@
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script> <!-- Grippenet  1.5.2 au max-->
 	<script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.10.3/jquery-ui.min.js"></script>
 	<script src="https://cdn.jsdelivr.net/npm/js-cookie@2/src/js.cookie.min.js"></script>
+
 	<script type="text/javascript">
     	var $jq = jQuery.noConflict();
 		function initiate(service_id) {
@@ -42,11 +43,12 @@
 <div class="panel panel-group" >
 	<div class="panel panel-heading">
 		Veuillez sélectionner les <b>5 services</b> qui selon vous relèvent le plus de la surmédicalisation.
-		<p> Cliquez sur chaque service médical pour obtenir plus d’information et afficher le résumé.
-		Pour ajouter un item à votre liste « Top 5 », cliquez sur « J’ajoute à ma Top 5 » en bas de son résumé.
+		<p> Cliquez sur chaque service médical pour obtenir plus d’information et afficher le résumé. Dans chaque résumé, vous trouverez des mots en bleu. Il vous suffit de passer votre souris dessus pour faire apparaitre une définition.
+		</p>
+		<p>Pour <b>ajouter</b> un item à votre liste « Top 5 », cliquez sur <b>« J’ajoute à ma Top 5 »</b> en bas de son résumé.
 		La ligne de cet item apparaîtra ensuite en rose.
-		Pour supprimer un service de votre « Top 5 », cliquez en bas de son résumé sur « J’enlève de ma Top 5 ».</p>
-		<p>Lorsque vous aurez sélectionnés cinq service (les cinq lignes apparaitront en rose), vous pourrez cliquer sur « Accéder à votre classement ». </p>
+		Pour <b>retirer</b> un service de votre « Top 5 », cliquez en bas de son résumé sur <b>« J’enlève de ma Top 5 »</b>.</p>
+		<p>Lorsque vous aurez <b>sélectionnés cinq services</b> (les cinq lignes apparaitront en rose), vous pourrez cliquer sur <b>« Accéder à votre classement »</b>. </p>
 	</div>
 
 	<!-- mauvaise technique -->
@@ -83,6 +85,7 @@
 							<span id="span-{{ service.id }}" name="span-{{ service.id }}" class="glyphicon glyphicon-star" > J’ajoute à ma top 5 {{text_btn}}</span>
 						</button>
 					</div>
+
 					<div class="text-right">
 			            <form id="form-revue-pertinency-{{ service.id }}" class="form-rank" method="post" action="{% url top5_chmgt_statut_service %}"  > {% csrf_token %}
 							<input id ="pertinent-{{ service.id }}" name="pertinency" data-form="#form-revue-pertinency-{{ service.id }}" type="checkbox" value="0" checked=false hidden> <!-- initialiser value et checked si déja existante -->

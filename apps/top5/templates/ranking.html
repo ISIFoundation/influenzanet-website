@@ -4,14 +4,15 @@
 	{% block add_css %}
 		<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css"> <!---->
 	 	<link rel="stylesheet" type="text/css" href="{{ MEDIA_URL }}top5/top5.css" >
+	 	<link type="text/css" rel="stylesheet" media="all" href="{{ MEDIA_URL }}assets/base.css?v={{assets_version}}" />
 	{% endblock %}
 	{% block add_js %}
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script> <!-- Grippenet  1.5.2 au max-->
 	<script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.10.3/jquery-ui.min.js"></script>
-
 		<script type="text/javascript">
 	    	var $jq = jQuery.noConflict();
 	    </script>
+
 		<script type="text/javascript" src="{{ MEDIA_URL }}top5/top5.js"></script>
 	    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
 	    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/js/bootstrap.min.js"></script>  <!--pb si 1.5.2, incompatible  -->
@@ -22,7 +23,9 @@
 	{% block col1 %}
 <div class="panel panel-group" >
 	<div class="panel panel-heading">
-		Merci de classer les 5 services que vous avez sélectionnés. <p>Pour cela, cliquez sur chaque ligne, et faites la glisser vers le bas ou vers le haut en maintenant le clic puis déposez la à l’emplacement souhaité (<b>"drag and drop"</b>). En « 1 » figure le service pour lequel il est selon vous le plus important de réduire les prescriptions.</p>
+		<!--Merci de classer les 5 services que vous avez sélectionnés. <p>Pour cela, cliquez sur chaque ligne, et faites la glisser vers le bas ou vers le haut en maintenant le clic puis déposez-la à l’emplacement souhaité (<b>"drag and drop"</b>). En « <span class="ref"><a class="refnum">1</a><span class="refbody">Smith SM, Fahey T, Smucny J, Becker LA. Antibiotics for acute bronchitis. In: The Cochrane Collaboration, éditeur. Cochrane Database of Systematic Reviews. Chichester, UK: John Wiley & Sons, Ltd; 2017
+		</span></span> » figure le service pour lequel il est selon vous le plus important de réduire les prescriptions.</p>-->
+		Merci de classer les 5 services que vous avez sélectionnés. <p>Pour cela, cliquez sur chaque ligne, et faites la glisser vers le bas ou vers le haut en maintenant le clic puis déposez-la à l’emplacement souhaité (<b>"drag and drop"</b>). En « 1 » figure le service pour lequel il est selon vous le plus important de réduire les prescriptions.</p>
 	</div>
 	<div id="accordion-resume" class="panel panel-body" >
 		{% for service in ranking %}
@@ -35,6 +38,9 @@
 				<div id="resume-colapse-{{ service.id }}" class="panel-collapse collapse">
 				    <h1 class="service-title center">{{ service.service_id.fullname }} </h1>
 				     {{ service.service_id.text_html|safe }}
+				     <!-- <div style="right">
+						<a class="btn btn-block btn-danger" id="close" data-collapse="#resume-collapse-{{ service.id }}">Fermer le service</a>
+					</div> -->
 				     <div class="bottom-notes"> . </div>
 				    	<!-- test resolution bug divs <button type="submit" class="positive" name="save" id="save" style="display:none;"> -->
 				</div>
@@ -46,6 +52,7 @@
 	<div class="alignleft">
 		<a class="btn btn-warning" href="{% url top5_selection_service %}"  role="button">Retour à la s&eacute;lection</a>
 	</div>
+	<br/><br/>
 	<!-- Action a changer, juste pour le test-->
 	<form id="form-rank" method="post" action="{% url top5_save_rank %}"> {% csrf_token %}
 	<!-- Besoin de tous les rank -->

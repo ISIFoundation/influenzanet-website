@@ -121,7 +121,7 @@ $jq(document).ready(function() {
 	        			nbRated = data.nbRated;
 
 	        		}else{
-	        			alert("le service n'existe pas");
+	        			alert("Le service n'existe pas");
 	        		}
 	        },
 	        error: function(data){
@@ -131,9 +131,9 @@ $jq(document).ready(function() {
 	        }
         });
 		if($pertinency == 1){
-			alert('le service a bien été ajouté à votre liste.');
+			alert('Le service a bien été ajouté à votre liste.');
 		}else{
-			alert('le service a bien été retiré de votre liste.');
+			alert('Le service a bien été retiré de votre liste.');
 		}
 		console.log($panel)
 		console.log($collapse)
@@ -147,7 +147,7 @@ $jq(document).ready(function() {
             	alert('Vous avez sélectionné '+nbRated+' service(s). Vous devez encore en sélectionner '+nb+' afin d\'accéder à votre classement.');
             }else{
             	nb = nbRated - 5;
-            	alert('Vous avez sélectionné '+nbRated+' services. Vous devez en retirer '+nb+' afin d\'accéder à votre classement. Pour cela, cliquez sur leur nom du service que vous souhaiter retirer puis tout en bas du résumé sur le bouton \"J\'enlève de ma Top 5\"');
+            	alert('Vous avez sélectionné '+nbRated+' services. Vous devez en retirer '+nb+' afin d\'accéder à votre classement. Pour cela, cliquez sur le nom du service que vous souhaitez retirer puis tout en bas du résumé sur le bouton \"J\'enlève de ma Top 5\"');
             }
         }
     });
@@ -165,5 +165,24 @@ $jq(document).ready(function() {
         var $this = $jq(this);
         alert('Vous avez sauvegardé votre classement temporaire, vous pourrez le retrouver lors de votre prochaine connexion.');
     });
+
+	$jq('#close').click(function(e) {
+        var $this = $jq(this);
+        alert('Vous avez sauvegardé votre classement temporaire, vous pourrez le retrouver lors de votre prochaine connexion.');
+		var $collapse = $($this.data('collapse'));
+		$collapse.toggleClass('in');
+    });
+
+
+    $jq(".refbody").hide();
+
+	$jq(".refnum").click(function(event) {
+		$jq(this.nextSibling).toggle();
+          event.stopPropagation();
+        });
+	$jq("body").click(function(event) {
+		$jq(".refbody").hide();
+        });
+
 });
 
