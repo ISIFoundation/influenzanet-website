@@ -1,7 +1,7 @@
 #!/bin/sh
 set -e
 
-TARGET_HOST=epidb@www.influweb.it:upload/
+TARGET_HOST=epidb@vm7109.seewebcloud.it:upload/
 SOURCE_DBNAME=epiwork
 COUNTRY='fr'
 

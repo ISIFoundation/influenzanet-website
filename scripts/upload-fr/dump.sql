@@ -2,11 +2,11 @@
 * Current season season data
 */
 
-DELETE FROM epidb_fr.pollster_results_intake WHERE timestamp >= '2017-11-22';
-DELETE FROM epidb_fr.pollster_results_weekly WHERE timestamp >= '2017-11-22';
+DELETE FROM epidb_fr.pollster_results_intake WHERE timestamp >= '2018-11-21';
+DELETE FROM epidb_fr.pollster_results_weekly WHERE timestamp >= '2018-11-21';
 
 /* 
-* 2017-2018 data
+* 2018-2019 data
 */
 
 INSERT INTO epidb_fr.pollster_results_intake
@@ -31,9 +31,11 @@ SELECT 'FR',
 	"Q14_1", "Q14_2", "Q14_3", "Q14_4", "Q14_5", 
 	NULL, NULL, NULL, NULL, NULL, /* "Q15_0", "Q15_1", "Q15_2", "Q15_3", "Q15_4", */
 	"Q16_0", "Q16_1", "Q16_2", "Q16_3", "Q16_4", 
-	"Q17_0", "Q17_1", "Q17_2", "Q17_3", "Q17_4", "Q17_5" /* "Q17_0", "Q17_1", "Q17_2", "Q17_3", "Q17_4", "Q17_5"  */
+	"Q17_0", "Q17_1",
+	CASE WHEN "Q17_8"=True OR "Q17_9"=True OR "Q17_10"=True OR "Q17_12"=True THEN True ELSE False END as "Q17_2", "Q17_3", "Q17_4", "Q17_5" /* "Q17_0", "Q17_1", "Q17_2", "Q17_3", "Q17_4", "Q17_5"  */
 	FROM public.pollster_results_intake
 	WHERE channel='';	
+	
 /* 
 * 2017-2018 data
 */
