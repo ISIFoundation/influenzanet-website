@@ -104,6 +104,7 @@ h4 {
 
 * {
   box-sizing: border-box;
+  font-family:  Verdana,Geneva,sans-serif;
 }
 
 .row{
@@ -166,7 +167,7 @@ ul.main {
 }
 
 .ref .refbody {
-font-family: Verdana, sans-serif;
+font-family:  Verdana,Geneva,sans-serif;;
 font-size: .8em;
 line-height: 1.1;
 display: block;
@@ -178,6 +179,12 @@ background-color: #fff;
 word-wrap: break-word;
   z-index: 1;
 overflow: auto;
+}
+
+
+.btn-close {
+	height:33px;
+	width:150px;
 }
 
 

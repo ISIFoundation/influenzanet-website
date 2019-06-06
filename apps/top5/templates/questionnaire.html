@@ -43,7 +43,7 @@
 <div class="panel panel-group" >
 	<div class="panel panel-heading">
 		Veuillez sélectionner les <b>5 services</b> qui selon vous relèvent le plus de la surmédicalisation.
-		<p> Cliquez sur chaque service médical pour obtenir plus d’information et afficher le résumé. Dans chaque résumé, vous trouverez des mots en bleu. Il vous suffit de passer votre souris dessus pour faire apparaitre une définition.
+		<p> Cliquez sur chaque service médical pour obtenir plus d’information et afficher le résumé. Dans chaque résumé, vous trouverez des mots et nombres en bleu. Si vous passez votre souris sur un mot en bleu, sa définition apparaîtra. Si vous cliquez sur un nombre en bleu, le lien de la référence bibliographique utilisée dans le résumé apparaîtra dans une fenêtre. Vous pouvez accéder au lien en cliquant dessus, ou fermer la fenêtre en cliquant à un autre endroit de la page (en dehors de la fenêtre).
 		</p>
 		<p>Pour <b>ajouter</b> un item à votre liste « Top 5 », cliquez sur <b>« J’ajoute à ma Top 5 »</b> en bas de son résumé.
 		La ligne de cet item apparaîtra ensuite en rose.
@@ -85,10 +85,12 @@
 							<span id="span-{{ service.id }}" name="span-{{ service.id }}" class="glyphicon glyphicon-star" > J’ajoute à ma top 5 {{text_btn}}</span>
 						</button>
 					</div>
-
+			    	<div align="right">
+			    		<button class="btn btn-close btn-block btn-danger" data-service="{{ service.id }}" data-collapse="#resume-collapse-{{ service.id }}" >Fermer le résumé</button>
+					</div>
 					<div class="text-right">
 			            <form id="form-revue-pertinency-{{ service.id }}" class="form-rank" method="post" action="{% url top5_chmgt_statut_service %}"  > {% csrf_token %}
-							<input id ="pertinent-{{ service.id }}" name="pertinency" data-form="#form-revue-pertinency-{{ service.id }}" type="checkbox" value="0" checked=false hidden> <!-- initialiser value et checked si déja existante -->
+							<input id ="pertinent-{{ service.id }}" name="pertinency" data-form="#form-revue-pertinency-{{ service.id }}" type="checkbox" value="0" hidden checked=false > <!-- initialiser value et checked si déja existante -->
 							<input id="val_service_id" name="service_id" value="{{ service.id }}" hidden>
 						</form>
 					</div>

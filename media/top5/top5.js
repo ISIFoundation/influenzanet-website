@@ -116,10 +116,7 @@ $jq(document).ready(function() {
 	        dataType: 'json',
 	        success : function (data){
 	        		if (data.exists){
-	        			console.log(data.action)
-	        			console.log(data.nbRated)
 	        			nbRated = data.nbRated;
-
 	        		}else{
 	        			alert("Le service n'existe pas");
 	        		}
@@ -147,7 +144,7 @@ $jq(document).ready(function() {
             	alert('Vous avez sélectionné '+nbRated+' service(s). Vous devez encore en sélectionner '+nb+' afin d\'accéder à votre classement.');
             }else{
             	nb = nbRated - 5;
-            	alert('Vous avez sélectionné '+nbRated+' services. Vous devez en retirer '+nb+' afin d\'accéder à votre classement. Pour cela, cliquez sur le nom du service que vous souhaitez retirer puis tout en bas du résumé sur le bouton \"J\'enlève de ma Top 5\"');
+            	alert('Vous avez sélectionné '+nbRated+' services. Vous devez en retirer '+nb+' afin d\'accéder à votre classement. Pour cela, cliquez sur le nom du service que vous souhaitez retirer puis tout en bas du résumé sur le bouton \"J\'enlève de ma Top 5\".');
             }
         }
     });
@@ -166,10 +163,28 @@ $jq(document).ready(function() {
         alert('Vous avez sauvegardé votre classement temporaire, vous pourrez le retrouver lors de votre prochaine connexion.');
     });
 
-	$jq('#close').click(function(e) {
+	$jq('.btn-close').click(function(e) {
         var $this = $jq(this);
-        alert('Vous avez sauvegardé votre classement temporaire, vous pourrez le retrouver lors de votre prochaine connexion.');
-		var $collapse = $($this.data('collapse'));
+        var $collapse = $($this.data('collapse'));
+        var $service = $this.data('service');
+		$jq.ajax({
+			url: action="/fr/top5/close/",
+			data: {
+	        	'service' : $service,
+	        },
+			type: "POST",
+	        dataType: 'json',
+	        success : function (data){
+	        		if (data.close){
+	        			console.log("Closing time saved")
+	        		}
+	        },
+	        error: function(data){
+	        	console.log("error during closing tab")
+	        	console.log("data : "+Object.keys(data))
+	        	console.log("status : "+data.status +' - '+ data.statusText)
+	        }
+        });
 		$collapse.toggleClass('in');
     });
 

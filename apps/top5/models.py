@@ -7,7 +7,6 @@ from django.utils.translation import ugettext as _
 class Service(models.Model):
     name = models.CharField(max_length=60)
     fullname = models.CharField(max_length=255, blank=True, null=True)
-    selected = models.BooleanField(_("Is default selected"), help_text=_("If this option is checked this service will be in the pollster."))
 
     #rename : text_html
     text_html = models.TextField(blank=True, null=True)
@@ -35,10 +34,14 @@ def get_service(service_id):
 class Ranking(models.Model):
     user = models.ForeignKey(User , null=True)
     service_id = models.ForeignKey(Service)
-    creation_date = models.DateTimeField('creation date', blank=True, null=True)
-    ranking_date = models.DateTimeField('ranking date', blank=True, null=True)
-    modif_date = models.DateTimeField('modification date', blank=True, null=True)
-    validation_date = models.DateTimeField('final validation date', blank=True, null=True)
+
+    creation_date = models.DateTimeField('date of the service\'s tab\'s first opening', blank=True, null=True)
+    service_selection_date = models.DateTimeField('date of the service\'s selection', blank=True, null=True)
+    modif_date = models.DateTimeField('date of the last modification', blank=True, null=True)
+    top5_selection_date = models.DateTimeField('date of the top5 validation', blank=True, null=True)
+    validation_date = models.DateTimeField('date of the final validation (ranking)', blank=True, null=True)
+    closing_tab_date = models.DateTimeField('date of the closing of a service\'s tab', blank=True, null=True)
+
     pertinency = models.IntegerField(default=0, blank=False, null=True)
     temporary_rank = models.IntegerField(default=0, blank=False, null=True)
     rank = models.IntegerField(default=0, blank=True, null=True)
@@ -51,7 +54,7 @@ class PartTemplate(models.Model):
     part_name = models.CharField(max_length=60)
     order = models.IntegerField(default=None, blank=True, null=True) #ChoiceField?
     title_style = models.CharField(max_length=60, blank=True, null=True)
-    width = models.CharField(max_length=60, blank=True, null=True)
+    #width = models.CharField(max_length=60, blank=True, null=True)
 
     def __unicode__(self):
         return self.part_name

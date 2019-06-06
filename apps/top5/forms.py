@@ -13,7 +13,7 @@ class ServiceForm(ModelForm):
 
     class Meta:
         model = Service
-        fields = ['name','fullname', 'selected', 'text_html']
+        fields = ['name','fullname', 'text_html']
 
     def __init__(self, *args, **kwargs):
         super(ServiceForm, self).__init__(*args, **kwargs)
@@ -33,5 +33,5 @@ class PartTemplateForm(ModelForm):
 
     class Meta:
         model = PartTemplate
-        fields = ['part_name', 'order', 'width']
+        fields = ['part_name', 'order']
 

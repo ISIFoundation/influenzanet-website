@@ -11,6 +11,7 @@ urlpatterns = patterns('apps.top5.views',
     url(r'chgmt_statut_service/$', 'chgmt_statut_service', name='top5_chmgt_statut_service'),
     url(r'^ranking/$', views.ranking, name='top5_ranking'),
     url(r'^save/$', views.saving_rank, name='top5_save_rank'),
+    url(r'^close/', views.closing_tab, name='top5_close_tab'),
 
     url(r'^admins/$', include('apps.top5.urls_admin')),
 )

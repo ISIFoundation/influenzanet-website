@@ -30,7 +30,6 @@ class PartInline(admin.StackedInline):
             'js/lib/jquery.query.js',
         )]
 
-
 class ServiceAdmin(admin.ModelAdmin):
     form = ServiceForm
     list_display = ('name','fullname')
@@ -47,7 +46,7 @@ admin.site.register(Service, ServiceAdmin)
 
 class PartTemplateAdmin(admin.ModelAdmin):
     form = PartTemplateForm
-    list_display = ('part_name', 'order', 'width')
+    list_display = ('part_name', 'order')
 admin.site.register(PartTemplate, PartTemplateAdmin)
 
 
@@ -55,9 +54,9 @@ class RankingAdmin(admin.ModelAdmin):
     fieldsets = [
         (None,{'fields': ['user']}),
         ('Rank Services', {'fields': ['service_id','pertinency','temporary_rank','rank']}),
-        ('Date information', {'fields': ['creation_date','ranking_date','modif_date','validation_date']})
+        ('Date information', {'fields': ['creation_date','service_selection_date','top5_selection_date','closing_tab_date','modif_date','validation_date']})
     ]
-    list_display = ('user', 'service_id', 'rank', 'temporary_rank', 'pertinency','creation_date','ranking_date','modif_date', 'validation_date')
+    list_display = ('user', 'service_id', 'rank', 'temporary_rank', 'pertinency','creation_date','service_selection_date','modif_date','closing_tab_date','top5_selection_date', 'validation_date')
     #list_filter = [ 'Service_id']
     search_fields = ['user','service_id']
 

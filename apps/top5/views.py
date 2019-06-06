@@ -14,19 +14,6 @@ from .models import Service, Ranking, Part, get_service, formating_part
 from apps.reminder.views import json_dumps
 
 
-@login_required
-def temp_index(request):
-    user = request.user
-    ranking_user = Ranking.objects.filter(user = user)
-    done = False
-    for r in ranking_user :
-        if r.rank != 0 and r.rank is not None :
-            done = True
-            break
-    if done :
-        return HttpResponseRedirect('/survey/run/top5-patients/')
-        #return render(request, 'ranking_end.html') #temporaire, redirigeer vers suite du questionnaire?
-    return render(request, 'presentation.html')
 
 @login_required
 def index(request):
@@ -71,6 +58,26 @@ def selection_service(request):
         # Verification de l'existence du rank pour service et user unique
         #si oui : MJ de la valeur de pertinency, RaZ du rang provisoire,modif_date = now,  verif rang = 0 ?
         #Si non : creation d'un nouvel objet avec user,service,  creation_date = now, pertinency = 1
+
+
+def closing_tab(request):
+    now = datetime.now()
+    user = request.user
+    service_id = request.POST.get('service', None)
+
+    User_ranking = Ranking.objects.filter(user = user)
+    ranking_service = User_ranking.get(service_id = service_id)
+    ranking_service.closing_date = now
+    ranking_service.save()
+
+    data = {'ranking': ranking_service,
+            'close': '1',
+            }
+    data_json = json_dumps(data)
+    status = 200
+
+    return HttpResponse(data_json, content_type="application/json", status=status)
+
 
 @csrf_protect
 def creation_rank(request):
@@ -118,7 +125,6 @@ def chgmt_statut_service(request):
                 ranking_service.rank = 0   # laisser pour les tests, mais ormalement pas besoin car rank n'est enregistre que a la fin?
             else:
                 print("pertinency = 1 ?")
-
             if ranking_service.ranking_date :
                 ranking_service.modif_date = now
                 data.update({'action' : "modification"})
@@ -133,11 +139,11 @@ def chgmt_statut_service(request):
         ranking_service.save()
         nbRated = Ranking.objects.filter(user = user, pertinency = 1).count()
         data.update({'nbRated' : nbRated})
-        test = json_dumps(data)
+        data_json = json_dumps(data)
         status = 200
     except Exception, e:
-        test = "An error occurred during the changement:\n" + str(e)
-    return HttpResponse(test, content_type="application/json", status=status)
+        data_json = "An error occurred during the changement:\n" + str(e)
+    return HttpResponse(data_json, content_type="application/json", status=status)
 
 #Doit retourner la liste des questions + tester si il existe dans rank des donnees de ect utilisateur
 @login_required

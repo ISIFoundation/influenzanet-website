@@ -12,7 +12,6 @@
 		<script type="text/javascript">
 	    	var $jq = jQuery.noConflict();
 	    </script>
-
 		<script type="text/javascript" src="{{ MEDIA_URL }}top5/top5.js"></script>
 	    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
 	    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/js/bootstrap.min.js"></script>  <!--pb si 1.5.2, incompatible  -->
@@ -23,25 +22,22 @@
 	{% block col1 %}
 <div class="panel panel-group" >
 	<div class="panel panel-heading">
-		<!--Merci de classer les 5 services que vous avez sélectionnés. <p>Pour cela, cliquez sur chaque ligne, et faites la glisser vers le bas ou vers le haut en maintenant le clic puis déposez-la à l’emplacement souhaité (<b>"drag and drop"</b>). En « <span class="ref"><a class="refnum">1</a><span class="refbody">Smith SM, Fahey T, Smucny J, Becker LA. Antibiotics for acute bronchitis. In: The Cochrane Collaboration, éditeur. Cochrane Database of Systematic Reviews. Chichester, UK: John Wiley & Sons, Ltd; 2017
-		</span></span> » figure le service pour lequel il est selon vous le plus important de réduire les prescriptions.</p>-->
-		Merci de classer les 5 services que vous avez sélectionnés. <p>Pour cela, cliquez sur chaque ligne, et faites la glisser vers le bas ou vers le haut en maintenant le clic puis déposez-la à l’emplacement souhaité (<b>"drag and drop"</b>). En « 1 » figure le service pour lequel il est selon vous le plus important de réduire les prescriptions.</p>
+		Merci de classer les 5 services que vous avez sélectionnés. <p>Pour cela, cliquez sur chaque ligne, et faites-la glisser vers le bas ou vers le haut en maintenant le clic puis déposez-la à l’emplacement souhaité (<b>"drag and drop"</b>). En « 1 » figure le service pour lequel il est selon vous le plus important de réduire les prescriptions.</p>
 	</div>
 	<div id="accordion-resume" class="panel panel-body" >
 		{% for service in ranking %}
 			<div id="resume-panel-{{service.id}}" class="panel panel-dragable portlet panel-success" data-rank="{{ forloop.counter }}" data-service="{{ service.id }}">
 				<div id="resume-heading-{{service.id}}" class="panel-heading portlet-header">
-					<a role="button" data-parent="#accordion" data-toggle="collapse" href="#resume-colapse-{{ service.id }}" aria-expanded="true" aria-controls="resume-colapse-{{ service.id }}">
+					<a role="button" data-parent="#accordion" data-toggle="collapse" href="#resume-collapse-{{ service.id }}" aria-expanded="true" aria-controls="resume-collapse-{{ service.id }}">
 						<strong id="rank-{{ service.id }}">{{ forloop.counter }}</strong> - {{ service.service_id.name }}
 				   	</a>
 				</div>
-				<div id="resume-colapse-{{ service.id }}" class="panel-collapse collapse">
+				<div id="resume-collapse-{{ service.id }}" class="panel-collapse collapse">
 				    <h1 class="service-title center">{{ service.service_id.fullname }} </h1>
 				     {{ service.service_id.text_html|safe }}
-				     <!-- <div style="right">
-						<a class="btn btn-block btn-danger" id="close" data-collapse="#resume-collapse-{{ service.id }}">Fermer le service</a>
-					</div> -->
-				     <div class="bottom-notes"> . </div>
+			    	<div align="right">
+			    		<button class="btn btn-close btn-block btn-danger" data-collapse="#resume-collapse-{{ service.id }}" style="height:33px;width:130px">Fermer le résumé</button>
+					</div>
 				    	<!-- test resolution bug divs <button type="submit" class="positive" name="save" id="save" style="display:none;"> -->
 				</div>
 			</div>
