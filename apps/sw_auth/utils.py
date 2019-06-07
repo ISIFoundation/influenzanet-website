@@ -82,40 +82,70 @@ def create_token():
     return token
 
 
-def send_activation_email(user, site, renew=True, skip_younger=None):
+def send_password_reset_email(user, site, has_several=False):
+    """
+    send password reset email to user
+    user: EpiworkUser object
+    site: Site object
+    has_several: if user email has several accounts
+    """
+    site_name = site.name
+
+    c = {
+        'has_several': has_several,
+        'username': user.login,
+        'email': user.email,
+        'domain': site.domain,
+        'site_name': site_name,
+        'token': user.create_token_password(),
+        'protocol': 'https',
+    }
+
+    send_user_email('password_reset_email', user.email, c)
+
+
+def send_activation_email(user, site, renew=True, skip_younger=None, reactivation=False):
     """
     Send activation email for a user
     renew : if False, check if the user already has a token and reuse it if possible
     skip_younger : Number of days, skip the user if the token is younger than that number
     """
     delay = settings.ACCOUNT_ACTIVATION_DAYS
-    if renew:
-        token = user.create_token_activate()
-    else:
-        create = False # should we recreate the token?
-        token = user.get_token(TOKEN_ACTIVATE)
-        if token.is_empty() :
-            create = True
-        else:
-            age = token.get_age()
-            if age >= delay:
-                create = True
-            if skip_younger is not None and age <= skip_younger:
-                return False
-        if create:
-            # recreate the token
-            token = user.create_token_activate()
-        else:
-            # reuse the old token
-            token = token.as_token()
 
     ctx_dict = {
-        'activation_key': token,
         'expiration_days': delay,
         'site': site
     }
 
-    message = create_message_from_template('sw_auth/activation_email', data=ctx_dict)
+    if reactivation:
+        password_token = user.create_token_password()
+        ctx_dict['password_key'] = password_token
+        template = 'reactivation_email'
+    else:
+        if renew:
+            token = user.create_token_activate()
+        else:
+            create = False # should we recreate the token?
+            token = user.get_token(TOKEN_ACTIVATE)
+            if token.is_empty() :
+                create = True
+            else:
+                age = token.get_age()
+                if age >= delay:
+                    create = True
+                if skip_younger is not None and age <= skip_younger:
+                    return False
+            if create:
+                # recreate the token
+                token = user.create_token_activate()
+            else:
+                # reuse the old token
+                token = token.as_token()
+
+        ctx_dict['activation_key'] = token
+        template = 'activation_email'
+
+    message = create_message_from_template('sw_auth/' + template, data=ctx_dict)
     send_message(user.email, message)
     return True
 
