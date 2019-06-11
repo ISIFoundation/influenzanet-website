@@ -7,10 +7,6 @@ from django.db import models
 class Migration(SchemaMigration):
 
     def forwards(self, orm):
-        #rename_table(self, old_table_name, table_name)
-        #rename_table(self, old_table_name, table_name)
-        #rename_table(self, old_table_name, table_name)
-        #rename_table(self, old_table_name, table_name)
 
         # Renaming field 'Ranking.ranking_date' into 'Ranking.service_selection_date'
         db.rename_column('RankingService','ranking_date','service_selection_date' )
@@ -31,7 +27,6 @@ class Migration(SchemaMigration):
 
         # Deleting field 'Ranking.top5_selection_date'
         db.delete_column('RankingService', 'closing_service_date')
-
 
     models = {
         'auth.group': {
@@ -80,7 +75,7 @@ class Migration(SchemaMigration):
             'title': ('django.db.models.fields.CharField', [], {'max_length': '60'})
         },
         'top5.parttemplate': {
-            'Meta': {'object_name': 'PartTemplate', 'db_table': "'PartTemplate'"},
+            'Meta': {'object_name': 'PartTemplate'},
             'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
             'order': ('django.db.models.fields.IntegerField', [], {'default': 'None', 'null': 'True', 'blank': 'True'}),
             'part_name': ('django.db.models.fields.CharField', [], {'max_length': '60'}),
@@ -88,7 +83,7 @@ class Migration(SchemaMigration):
             'width': ('django.db.models.fields.CharField', [], {'max_length': '60', 'null': 'True', 'blank': 'True'})
         },
         'top5.ranking': {
-            'Meta': {'unique_together': "(('user', 'service_id'),)", 'object_name': 'Ranking', 'db_table': "'RankingService'"},
+            'Meta': {'unique_together': "(('user', 'service_id'),)", 'object_name': 'Ranking'},
             'closing_tab_date': ('django.db.models.fields.DateTimeField', [], {'null': 'True', 'blank': 'True'}),
             'creation_date': ('django.db.models.fields.DateTimeField', [], {'null': 'True', 'blank': 'True'}),
             'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
@@ -105,7 +100,7 @@ class Migration(SchemaMigration):
 
 
         'top5.service': {
-            'Meta': {'object_name': 'Service', 'db_table': "'Service'"},
+            'Meta': {'object_name': 'Service'},
             'fullname': ('django.db.models.fields.CharField', [], {'max_length': '255', 'null': 'True', 'blank': 'True'}),
             'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
             'name': ('django.db.models.fields.CharField', [], {'max_length': '60'}),
