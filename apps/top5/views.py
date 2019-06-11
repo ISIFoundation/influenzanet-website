@@ -60,34 +60,36 @@ def selection_service(request):
         #Si non : creation d'un nouvel objet avec user,service,  creation_date = now, pertinency = 1
 
 
+    # Used for saving date when user close the tab with
 def closing_tab(request):
     now = datetime.now()
     user = request.user
     service_id = request.POST.get('service', None)
+    try:
+        User_ranking = Ranking.objects.filter(user = user)
+        ranking_service = User_ranking.get(service_id = service_id)
+        ranking_service.closing_tab_date = now
+        ranking_service.save()
 
-    User_ranking = Ranking.objects.filter(user = user)
-    ranking_service = User_ranking.get(service_id = service_id)
-    ranking_service.closing_date = now
-    ranking_service.save()
-
-    data = {'ranking': ranking_service,
-            'close': '1',
-            }
-    data_json = json_dumps(data)
-    status = 200
+        data = {
+                'close': '1',
+                }
+        data_json = json_dumps(data)
+        status = 200
+    except Exception, e:
+        status = 500
+        data_json = "An error occurred during closing tab :\n" + str(e)
 
     return HttpResponse(data_json, content_type="application/json", status=status)
 
 
 @csrf_protect
 def creation_rank(request):
-    print(" rank creation")
     now = datetime.now()
     user = request.user
     service_id = request.POST.get('service', None)
     try:
         ranking_user = Ranking.objects.filter(user = user)
-        print("ranking user has been found")
         if(ranking_user.filter(service_id = service_id).count() == 0):
             service = Service.objects.get(id = service_id)
             ranking_service = Ranking.objects.create(user = user, service_id = service, creation_date = now, pertinency = 0)
@@ -110,7 +112,6 @@ def chgmt_statut_service(request):
     user = request.user
     service_id = request.POST.get('service', None)
     pertinency = request.POST.get('pertinency', None)
-    print("service : "+ service_id)
     User_ranking = Ranking.objects.filter(user = user)
     try :
         data = {
@@ -120,18 +121,18 @@ def chgmt_statut_service(request):
             ranking_service = User_ranking.get(service_id = service_id)
             ranking_service.pertinency = pertinency
             if pertinency == '0' :
-                print("pertinency = 0")
                 ranking_service.temporary_rank = 0
                 ranking_service.rank = 0   # laisser pour les tests, mais ormalement pas besoin car rank n'est enregistre que a la fin?
-            else:
-                print("pertinency = 1 ?")
-            if ranking_service.service_selection_date :
+                ranking_service.service_selection_date = None
+                ranking_service.top5_selection_date = None
                 ranking_service.modif_date = now
-                data.update({'action' : "modification"})
-                print()
             else :
-                ranking_service.service_selection_date = now
-                data.update({'action' : "selection"})
+                if ranking_service.service_selection_date :
+                    ranking_service.modif_date = now
+                    data.update({'action' : "modification"})
+                else :
+                    ranking_service.service_selection_date = now
+                    data.update({'action' : "selection"})
         else:
             service = Service.objects.get(id = service_id)
             ranking_service = Ranking.objects.create(user = user, service_id = service, creation_date = now, pertinency = 1)
@@ -140,20 +141,25 @@ def chgmt_statut_service(request):
         nbRated = Ranking.objects.filter(user = user, pertinency = 1).count()
         data.update({'nbRated' : nbRated})
         data_json = json_dumps(data)
-        print("service : "+ service_id)
         status = 200
     except Exception, e:
         status = 500
         data_json = "An error occurred during the changement:\n" + str(e)
     return HttpResponse(data_json, content_type="application/json", status=status)
 
+
 #Doit retourner la liste des questions + tester si il existe dans rank des donnees de ect utilisateur
 @login_required
 def ranking(request): #,action
     user = request.user
+    now = datetime.now()
+
     ranking_user = Ranking.objects.filter(user = user)
     ranking = ranking_user.filter(pertinency = 1).order_by('temporary_rank')
-
+    if request.POST :
+        for ranked_service in ranking :
+            ranked_service.top5_selection_date = now
+            ranked_service.save()
     context = {
         'user' : user,
         'ranking' : ranking,
@@ -202,7 +208,6 @@ def create_service_html(request, service_id):
 @staff_member_required
 def calcul_score(request, service_id):
     service = get_service(service_id)
-    print(service)
     all_ranked = Ranking.objects.filter(service = service).filter(pertinency = 1)
 
     temp_text = ""

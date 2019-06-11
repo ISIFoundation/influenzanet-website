@@ -101,8 +101,15 @@
 </div>
 <div class="text-center">
     <h4><span class="label label-warning"><span class="glyphicon glyphicon-arrow-down">&nbsp;</span>Vous devez sélectionner 5 services avant d'accéder au classement. <span class="glyphicon glyphicon-arrow-down">&nbsp;</span></span></h4>
-    <a class="btn btn-block btn-success" id="goto-rank" href="{% url top5_ranking %}" data-form="#form-rank" >
-    <span class="glyphicon glyphicon-list">&nbsp;</span>Accéder à votre classement</a>
+    <form action="{% url top5_ranking %}" method="post">{% csrf_token %}
+    	<button id="goto-rank" class="btn btn-block btn-success" type="submit" value="Submit"><a><span class="glyphicon glyphicon-list">&nbsp;</span>Accéder à votre classement</a></button>
+    	<!--
+    	<input class="btn btn-block btn-success" type="submit" value="<span class='glyphicon glyphicon-list'>&nbsp;</span>Accéder à votre classement">
+        <a class="btn btn-block btn-success"  href="{% url top5_ranking %}" data-form="#form-rank" >
+    	<span class="glyphicon glyphicon-list">&nbsp;</span>Accéder à votre classement</a>
+    	-->
+    </form>
+
 </div>
 
 {% endblock col1 %}
