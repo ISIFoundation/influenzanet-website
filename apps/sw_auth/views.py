@@ -17,12 +17,14 @@ from django.contrib.admin.views.decorators import staff_member_required
 
 from apps.common.wait import get_wait_launch_date
 from apps.sw_auth.models import EpiworkUser, AnonymizeRequest
-from apps.sw_auth.utils import send_activation_email,EpiworkToken, send_user_email
+from apps.sw_auth.utils import send_activation_email, EpiworkToken, send_user_email, send_password_reset_email
 from apps.sw_auth.logger import auth_notify
 
 from .forms import PasswordResetForm, RegistrationForm, SetPasswordForm, UserEmailForm, ReminderSettings,EmailForm
 
 from apps.sw_auth.anonymize import Anonymizer
+
+
 from django.utils.http import int_to_base36
 
 
@@ -118,20 +120,9 @@ def password_reset(request):
             if len(users) == 0:
                 messages.error(request,_("sorry no corresponding user info was found"))
             else:
+                current_site = get_current_site(request)
                 for user in users:
-                    current_site = get_current_site(request)
-                    site_name = current_site.name
-                    c = {
-                        'has_several': has_several,
-                        'username': user.login,
-                        'email': user.email,
-                        'domain': current_site.domain,
-                        'site_name': site_name,
-                        'token': user.create_token_password(),
-                        'protocol': request.is_secure() and 'https' or 'http',
-                    }
-
-                    send_user_email('password_reset_email', user.email, c)
+                    send_password_reset_email(user, current_site, has_several=has_several)
             c = {
                 'has_several': has_several,
                 'count': len(form.users_cache),

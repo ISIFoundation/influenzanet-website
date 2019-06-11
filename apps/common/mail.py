@@ -67,7 +67,7 @@ def create_message_from_template(template_name, data, wrap_layout=True):
             html_content = render_to_string("base/email_layout.html", context)
 
     return {
-        'subject': str(subject),
+        'subject': unicode(subject),
         'html': html_content,
         'text': text_content,
     }
@@ -113,7 +113,7 @@ def send_message(email, message, use_prefix=True):
             raise Exception("Email message doesnt contains text content")
         msg = EmailMessage(headers=headers)
 
-    subject = str(message['subject'])
+    subject = unicode(message['subject'])
     if use_prefix:
         subject = settings.EMAIL_SUBJECT_PREFIX + subject
 

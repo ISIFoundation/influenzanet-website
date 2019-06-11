@@ -1,0 +1,9 @@
+Réactivation de votre compte GrippeNet.fr
+
+Votre compte a été réactivé et associé à cette adresse email.
+
+Vous devez à présent redéfinir un mot de passe pour votre compte en vous rendant à l'adresse ci dessous:
+
+https://{{ site }}{% url auth_password_reset_confirm token=password_key %}
+
+Cette adresse ne restera active que durant {{ expiration_days }} jours.

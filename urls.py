@@ -86,8 +86,7 @@ urlpatterns += patterns('',
     url(r'^cohort/', include('apps.sw_cohort.urls')),
     url(r'^invite/', include('apps.sw_invitation.urls')),
     url(r'^dashboard/', include('apps.dashboard.urls')),
-    url(r'^ascor/', include('apps.ascor.urls')),
-
+  #  url(r'^ascor/', include('apps.ascor.urls')),
 )
 
 # Catchall

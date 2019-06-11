@@ -3,6 +3,6 @@
 
 Click the following URL or copy and paste it to the browser's address bar.
 
-http://{{ site }}/accounts/activate/{{ activation_key }}/
+https://{{ site }}/accounts/activate/{{ activation_key }}/
 
 This activation URL will expire in {{ expiration_days }} days.{% endblocktrans %}
