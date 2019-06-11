@@ -125,13 +125,13 @@ def chgmt_statut_service(request):
                 ranking_service.rank = 0   # laisser pour les tests, mais ormalement pas besoin car rank n'est enregistre que a la fin?
             else:
                 print("pertinency = 1 ?")
-            if ranking_service.ranking_date :
+            if ranking_service.service_selection_date :
                 ranking_service.modif_date = now
                 data.update({'action' : "modification"})
+                print()
             else :
-                ranking_service.ranking_date = now
+                ranking_service.service_selection_date = now
                 data.update({'action' : "selection"})
-
         else:
             service = Service.objects.get(id = service_id)
             ranking_service = Ranking.objects.create(user = user, service_id = service, creation_date = now, pertinency = 1)
@@ -140,8 +140,10 @@ def chgmt_statut_service(request):
         nbRated = Ranking.objects.filter(user = user, pertinency = 1).count()
         data.update({'nbRated' : nbRated})
         data_json = json_dumps(data)
+        print("service : "+ service_id)
         status = 200
     except Exception, e:
+        status = 500
         data_json = "An error occurred during the changement:\n" + str(e)
     return HttpResponse(data_json, content_type="application/json", status=status)
 

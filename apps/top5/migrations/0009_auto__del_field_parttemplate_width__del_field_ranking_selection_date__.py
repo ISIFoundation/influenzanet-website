@@ -8,31 +8,13 @@ class Migration(SchemaMigration):
 
     def forwards(self, orm):
 
-        # Renaming field 'Ranking.ranking_date' into 'Ranking.service_selection_date'
-        db.rename_column('top5_ranking','ranking_date','service_selection_date' )
-        #db.rename_column('RankingService','ranking_date','service_selection_date' )
-
-        # Adding field 'Ranking.top5_selection_date'
-        db.add_column('top5_ranking', 'top5_selection_date', self.gf('django.db.models.fields.DateTimeField')(null=True, blank=True), keep_default=False)
-        #db.add_column('RankingService', 'top5_selection_date', self.gf('django.db.models.fields.DateTimeField')(null=True, blank=True), keep_default=False)
-
-                # Adding field 'Ranking.top5_selection_date'
-        db.add_column('top5_ranking', 'top5_selection_date', self.gf('django.db.models.fields.DateTimeField')(null=True, blank=True), keep_default=False)
-        #db.add_column('RankingService', 'closing_tab_date', self.gf('django.db.models.fields.DateTimeField')(null=True, blank=True), keep_default=False)
-
+        # Deleting field 'PartTemplate.width'
+        db.delete_column('top5.parttemplate', 'width')
 
     def backwards(self, orm):
-        # Renaming field 'Ranking.service_selection_date' into 'Ranking.ranking_date'
-        db.rename_column('top5_ranking','service_selection_date','ranking_date' )
-        #db.rename_column('RankingService','service_selection_date' ,'ranking_date')
 
-        # Deleting field 'Ranking.top5_selection_date'
-        db.delete_column('top5_ranking', 'closing_service_date')
-        #db.delete_column('RankingService', 'top5_selection_date')
-
-        # Deleting field 'Ranking.top5_selection_date'
-        db.delete_column('top5_ranking', 'closing_service_date')
-        #db.delete_column('RankingService', 'closing_service_date')
+        # Adding field 'PartTemplate.width'
+        db.add_column('top5.parttemplate', 'width', self.gf('django.db.models.fields.CharField')(max_length=60, null=True, blank=True), keep_default=False)
 
     models = {
         'auth.group': {
@@ -85,8 +67,7 @@ class Migration(SchemaMigration):
             'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
             'order': ('django.db.models.fields.IntegerField', [], {'default': 'None', 'null': 'True', 'blank': 'True'}),
             'part_name': ('django.db.models.fields.CharField', [], {'max_length': '60'}),
-            'title_style': ('django.db.models.fields.CharField', [], {'max_length': '60', 'null': 'True', 'blank': 'True'}),
-            'width': ('django.db.models.fields.CharField', [], {'max_length': '60', 'null': 'True', 'blank': 'True'})
+            'title_style': ('django.db.models.fields.CharField', [], {'max_length': '60', 'null': 'True', 'blank': 'True'})
         },
         'top5.ranking': {
             'Meta': {'unique_together': "(('user', 'service_id'),)", 'object_name': 'Ranking'},
@@ -96,15 +77,13 @@ class Migration(SchemaMigration):
             'modif_date': ('django.db.models.fields.DateTimeField', [], {'null': 'True', 'blank': 'True'}),
             'pertinency': ('django.db.models.fields.IntegerField', [], {'default': '0', 'null': 'True'}),
             'rank': ('django.db.models.fields.IntegerField', [], {'default': '0', 'null': 'True', 'blank': 'True'}),
-            'service_selection_date': ('django.db.models.fields.DateTimeField', [], {'null': 'True', 'blank': 'True'}),
             'service_id': ('django.db.models.fields.related.ForeignKey', [], {'to': "orm['top5.Service']"}),
+            'service_selection_date': ('django.db.models.fields.DateTimeField', [], {'null': 'True', 'blank': 'True'}),
             'temporary_rank': ('django.db.models.fields.IntegerField', [], {'default': '0', 'null': 'True'}),
             'top5_selection_date': ('django.db.models.fields.DateTimeField', [], {'null': 'True', 'blank': 'True'}),
             'user': ('django.db.models.fields.related.ForeignKey', [], {'to': "orm['auth.User']", 'null': 'True'}),
             'validation_date': ('django.db.models.fields.DateTimeField', [], {'null': 'True', 'blank': 'True'})
         },
-
-
         'top5.service': {
             'Meta': {'object_name': 'Service'},
             'fullname': ('django.db.models.fields.CharField', [], {'max_length': '255', 'null': 'True', 'blank': 'True'}),
