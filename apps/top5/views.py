@@ -8,6 +8,7 @@ from django.views.decorators.csrf import csrf_protect
 
 from django.contrib.admin.views.decorators import staff_member_required
 from django.contrib.auth.decorators import login_required
+from django.contrib.auth import login as auth_login
 
 from .models import Service, Ranking, Part, get_service, formating_part
 
@@ -18,6 +19,8 @@ from apps.reminder.views import json_dumps
 @login_required
 def index(request):
     user = request.user
+    if user == 'AnonymousUser':
+        redirect(auth_login)
     if Ranking.objects.filter(user = user).count() == 0 :
         return render(request, 'presentation.html')
     ranking_user = Ranking.objects.filter(user = user)
@@ -42,6 +45,8 @@ def index(request):
 
 def selection_service(request):
     user = request.user
+    if user == 'AnonymousUser':
+        redirect(auth_login)
     services = list(Service.objects.all())
     shuffle(services)
     ranking_user = Ranking.objects.filter(user = user).filter(pertinency = 1)
@@ -64,6 +69,8 @@ def selection_service(request):
 def closing_tab(request):
     now = datetime.now()
     user = request.user
+    if user == 'AnonymousUser':
+        redirect(auth_login)
     service_id = request.POST.get('service', None)
     try:
         User_ranking = Ranking.objects.filter(user = user)
@@ -87,6 +94,9 @@ def closing_tab(request):
 def creation_rank(request):
     now = datetime.now()
     user = request.user
+    if user == 'AnonymousUser':
+        redirect(auth_login)
+
     service_id = request.POST.get('service', None)
     try:
         ranking_user = Ranking.objects.filter(user = user)
@@ -110,6 +120,8 @@ def creation_rank(request):
 def chgmt_statut_service(request):
     now = datetime.now()
     user = request.user
+    if user == 'AnonymousUser':
+        redirect(auth_login)
     service_id = request.POST.get('service', None)
     pertinency = request.POST.get('pertinency', None)
     User_ranking = Ranking.objects.filter(user = user)
@@ -152,6 +164,8 @@ def chgmt_statut_service(request):
 @login_required
 def ranking(request): #,action
     user = request.user
+    if user == 'AnonymousUser':
+        redirect(auth_login)
     now = datetime.now()
 
     ranking_user = Ranking.objects.filter(user = user)
@@ -172,6 +186,8 @@ def saving_rank(request):
     if request.POST :
         post = request.POST
         user = request.user
+        if user == 'AnonymousUser':
+            redirect(auth_login)
         ranking = Ranking.objects.filter(user = user).filter(pertinency = 1)
 
     if post.get("save") == 'final' :
