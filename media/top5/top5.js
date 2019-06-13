@@ -195,6 +195,7 @@ $jq(document).ready(function() {
 		$jq(this.nextSibling).toggle();
           event.stopPropagation();
         });
+
 	$jq("body").click(function(event) {
 		$jq(".refbody").hide();
         });

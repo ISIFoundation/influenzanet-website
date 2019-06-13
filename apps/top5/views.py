@@ -14,8 +14,7 @@ from .models import Service, Ranking, Part, get_service, formating_part
 
 from apps.reminder.views import json_dumps
 
-
-
+#Redirection according to the user progress
 @login_required
 def index(request):
     user = request.user
@@ -31,7 +30,7 @@ def index(request):
             done = True
             break
     if done :
-        return HttpResponseRedirect('/survey/run/top5-patients/')
+        return HttpResponseRedirect('/survey/run/top5_patients/')
 
     nb_ranked = ranking_user.filter(pertinency = 1).count()
     if(nb_ranked == 5):
@@ -40,9 +39,7 @@ def index(request):
     return redirect(selection_service)
 
 
-
-
-
+# show the 15 services ordered randomly
 def selection_service(request):
     user = request.user
     if user == 'AnonymousUser':
@@ -60,12 +57,8 @@ def selection_service(request):
 
     return render(request, 'questionnaire.html', context)
 
-        # Verification de l'existence du rank pour service et user unique
-        #si oui : MJ de la valeur de pertinency, RaZ du rang provisoire,modif_date = now,  verif rang = 0 ?
-        #Si non : creation d'un nouvel objet avec user,service,  creation_date = now, pertinency = 1
 
-
-    # Used for saving date when user close the tab with
+# Used for saving date when user close the tab with
 def closing_tab(request):
     now = datetime.now()
     user = request.user
@@ -77,7 +70,6 @@ def closing_tab(request):
         ranking_service = User_ranking.get(service_id = service_id)
         ranking_service.closing_tab_date = now
         ranking_service.save()
-
         data = {
                 'close': '1',
                 }
@@ -89,7 +81,7 @@ def closing_tab(request):
 
     return HttpResponse(data_json, content_type="application/json", status=status)
 
-
+# creation into ranking table of an empty rank for an user and a specific service when opening the tab
 @csrf_protect
 def creation_rank(request):
     now = datetime.now()
@@ -113,9 +105,11 @@ def creation_rank(request):
             }
         res = json_dumps(data)
     except Exception, e:
-        res = "An error occurred during the creation :\n" + str(e)
+        res = "An error occurred during creation :\n" + str(e)
     return HttpResponse(res, content_type="application/json")
 
+
+# change pertinency of a rank for an user and a specific service when clicking on the main button
 @csrf_protect
 def chgmt_statut_service(request):
     now = datetime.now()
@@ -133,8 +127,9 @@ def chgmt_statut_service(request):
             ranking_service = User_ranking.get(service_id = service_id)
             ranking_service.pertinency = pertinency
             if pertinency == '0' :
+                #reset rank values because the service is unselected
                 ranking_service.temporary_rank = 0
-                ranking_service.rank = 0   # laisser pour les tests, mais ormalement pas besoin car rank n'est enregistre que a la fin?
+                ranking_service.rank = 0   # laisser pour les tests, mais normalement pas besoin car rank n'est enregistre que a la fin?
                 ranking_service.service_selection_date = None
                 ranking_service.top5_selection_date = None
                 ranking_service.modif_date = now
@@ -160,7 +155,7 @@ def chgmt_statut_service(request):
     return HttpResponse(data_json, content_type="application/json", status=status)
 
 
-#Doit retourner la liste des questions + tester si il existe dans rank des donnees de ect utilisateur
+#Get the list o the 5 selected services (pertinency = 1), try to order it and return into the ranking page
 @login_required
 def ranking(request): #,action
     user = request.user
@@ -180,6 +175,8 @@ def ranking(request): #,action
     }
     return render(request, 'ranking.html', context)
 
+
+    # Save the rank into temporary_rank or rank
 @csrf_protect
 def saving_rank(request):
     now = datetime.now()
@@ -195,7 +192,7 @@ def saving_rank(request):
             rank.temporary_rank = post.get("hidden-rank-"+str(rank.id))
             rank.rank = post.get("hidden-rank-"+str(rank.id))
             rank.validation_date = now
-        return HttpResponseRedirect('/survey/run/top5-patients/')
+        return HttpResponseRedirect('/survey/run/top5_patients/')
     else:
         for rank in ranking :
             rank.temporary_rank = post.get("hidden-rank-"+str(rank.id))
@@ -206,6 +203,7 @@ def saving_rank(request):
 
 
 
+    # Formating the full text of a service from the diferrent part texts
 @staff_member_required
 def create_service_html(request, service_id):
     service = get_service(service_id)
@@ -218,9 +216,9 @@ def create_service_html(request, service_id):
     service.text_html = temp_text
     service.save()
 
-    #return HttpResponse(service.text_html, mimetype="application/javascript")
     return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
 
+# TODO in construction : For a specific service, Get all the ranks validated by users and calculate top5 score
 @staff_member_required
 def calcul_score(request, service_id):
     service = get_service(service_id)

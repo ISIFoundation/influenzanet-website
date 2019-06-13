@@ -198,6 +198,8 @@ INSTALLED_APPS = (
 #   'pure_pagination',
     'apps.dashboard',
     'apps.grippenet',
+    'apps.top5',
+    'apps.ascor',
 )
 
 HAYSTACK_SITECONF = 'search_sites'
@@ -277,4 +279,4 @@ except ImportError:
     pass
 
 INSTALLED_APPS += LOCAL_APPS
-MIDDLEWARE_CLASSES += LOCAL_MIDDLEWARE    
+MIDDLEWARE_CLASSES += LOCAL_MIDDLEWARE

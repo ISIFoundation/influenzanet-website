@@ -4,18 +4,18 @@ from django.db import models
 from django.contrib.auth.models import User
 from django.utils.translation import ugettext as _
 
+
 class Service(models.Model):
     name = models.CharField(max_length=60)
     fullname = models.CharField(max_length=255, blank=True, null=True)
 
-    #rename : text_html
     text_html = models.TextField(blank=True, null=True)
     score = models.IntegerField(default=0)
 
     class Meta:
         #Permet de definir le nom de la table
         db_table = 'Service'
-        #ordering = ("-points",)
+        #ordering = ("-score",)
     def __unicode__(self):
         return self.name
 
@@ -52,9 +52,8 @@ class Ranking(models.Model):
 
 class PartTemplate(models.Model):
     part_name = models.CharField(max_length=60)
-    order = models.IntegerField(default=None, blank=True, null=True) #ChoiceField?
+    order = models.IntegerField(default=None, blank=True, null=True)
     title_style = models.CharField(max_length=60, blank=True, null=True)
-    #width = models.CharField(max_length=60, blank=True, null=True)
 
     def __unicode__(self):
         return self.part_name
@@ -63,7 +62,6 @@ class PartTemplate(models.Model):
         db_table = 'PartTemplate'
 
 def formating_part(part):
-    #part.class_name
     start_div = ""
     end_div = ""
     if(part.special_style):
