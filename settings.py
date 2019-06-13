@@ -199,7 +199,6 @@ INSTALLED_APPS = (
     'apps.dashboard',
     'apps.grippenet',
     'apps.top5',
-    'apps.ascor',
 )
 
 HAYSTACK_SITECONF = 'search_sites'
