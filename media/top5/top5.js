@@ -61,7 +61,9 @@ $jq(document).ready(function() {
     $jq('.btn-toggle').click( function() {
     	var $this = $jq(this);
     	var $form = $($this.data('form'));
+    	var $panel = $($this.data('panel'));
     	var $service =  $this.data('service');
+
 		$jq.ajax({
 			url: $form.attr('action'),
 			data: {
@@ -71,6 +73,11 @@ $jq(document).ready(function() {
 	        dataType: 'json',
 	        success : function (data){
 	        		console.log(data.action)
+	        		if(data.action =="Creation") {
+	        			console.log("changement de class du panel")
+	        			$panel.removeClass("panel-default");
+	        			$panel.addClass("panel-warning");
+	        		}
 	        },
 	        error: function(data){
 	        	console.log("error btn toggle")

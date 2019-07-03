@@ -46,8 +46,8 @@ def selection_service(request):
         redirect(auth_login)
     services = list(Service.objects.all())
     shuffle(services)
-    ranking_user = Ranking.objects.filter(user = user).filter(pertinency = 1)
-    nb_ranked = ranking_user.count()
+    ranking_user = Ranking.objects.filter(user = user)
+    nb_ranked = ranking_user.filter(pertinency = 1).count()
     context = {
         'services' : services,
         'user' : user,
@@ -96,12 +96,12 @@ def creation_rank(request):
             service = Service.objects.get(id = service_id)
             ranking_service = Ranking.objects.create(user = user, service_id = service, creation_date = now, pertinency = 0)
             data = {
-                'action': "creation",
+                'action': "Creation",
             }
             ranking_service.save()
         else:
             data = {
-                'action': "nothing",
+                'action': "None",
             }
         res = json_dumps(data)
     except Exception, e:

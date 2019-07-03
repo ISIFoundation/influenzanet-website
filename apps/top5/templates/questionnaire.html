@@ -14,21 +14,22 @@
 
 	<script type="text/javascript">
     	var $jq = jQuery.noConflict();
-		function initiate(service_id) {
-			console.log(nbRated)
-	  		$id = "btn-r-"+service_id.toString();
+		function initiate(service_id, pertinency) {
+			$id = "btn-r-"+service_id.toString();
 	  		$btn = $jq(document.getElementById($id));
-	  		var $input_chbox = $($btn.data('input'));
-	  		console.log($input_chbox)
-			var $span = $($btn.data('span'));
-			var $panel = $($btn.data('panel'));
-			$span.text(" J\’enlève de ma top 5");
-			$input_chbox.attr("value", '1');
-			$input_chbox.attr( "checked", true );
-			$btn.toggleClass('btn-warning btn-danger');
-			$span.toggleClass('glyphicon-star glyphicon-star-empty');
-			$panel.toggleClass('panel-danger panel-warning');
-			console.log($input_chbox)
+	  		var $panel = $($btn.data('panel'));
+			if (pertinency == 1) {
+				var $input_chbox = $($btn.data('input'));
+				var $span = $($btn.data('span'));
+				$span.text(" J\’enlève de ma top 5");
+				$input_chbox.attr("value", '1');
+				$input_chbox.attr( "checked", true );
+				$btn.toggleClass('btn-warning btn-danger');
+				$span.toggleClass('glyphicon-star glyphicon-star-empty');
+				$panel.toggleClass('panel-danger panel-default');
+	        }else{
+	        	$panel.toggleClass('panel-warning panel-default');
+	        }
     	}
 
     </script>
@@ -57,10 +58,11 @@
 			{% if ranking %}
 				<script>var nbRated = {{ranking_size}}</script>
 				{% for service_rank in ranking %}
-					{% if service_rank.service_id == service and service_rank.pertinency == 1 %}
+				<script>console.log("valeur pertinency : "+ {{service_rank.pertinency}})</script>
+					{% if service_rank.service_id == service %}
 						<script type="text/javascript">
 							$jq(document).ready(function() {
-								initiate({{service.id}});
+								initiate({{service.id}}, {{service_rank.pertinency}});
 							});
 						</script>
 					{% endif %}
@@ -68,12 +70,12 @@
 			{% else %}
 				<script>var nbRated = 0 </script>
 			{% endif %}
-			<div id="resume-panel-{{service.id}}" class="panel panel-warning" >
+			<div id="resume-panel-{{service.id}}" class="panel panel-default" >
 				<div id="resume-heading-{{service.id}}" class="panel-heading portlet-toggle">
 					 <form id="form-toggle-{{ service.id }}" class="form-creation" method="post" action="{% url top5_creation_rank_service %}"  > {% csrf_token %}
 					 </form>
 						<!--<a class="btn-toggle" data-form="#form-toggle-{{ service.id }}" data-service="{{service.id}}" role="button" data-parent="#accordion" data-toggle="collapse" href="#resume-colapse-{{ service.id }}" aria-expanded="false" aria-controls="resume-colapse-{{ service.id }}">-->
-						 <a class="btn-toggle" data-form="#form-toggle-{{ service.id }}" data-service="{{service.id}}" role="button" data-parent="#accordion" data-toggle="collapse" href="#resume-collapse-{{ service.id }}" >
+						 <a class="btn-toggle" data-form="#form-toggle-{{ service.id }}" data-service="{{service.id}}" data-panel="#resume-panel-{{service.id}}" role="button" data-parent="#accordion" data-toggle="collapse" href="#resume-collapse-{{ service.id }}" >
 							{{service.fullname}}
 					   	</a>
 				</div>
