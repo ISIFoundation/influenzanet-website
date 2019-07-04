@@ -13,7 +13,7 @@ from Crypto.Random import get_random_bytes
 from Crypto.Hash import SHA256, HMAC
 
 from django.conf import settings
-from django.contrib.auth import authenticate
+from django.contrib import auth
 
 from apps.sw_auth.models import EpiworkUser
 
@@ -47,18 +47,16 @@ class APIError(Exception):
         }
 
 class HandshakeData:
-    def __init__(self, aesKey, hmacKey):#, login
+    def __init__(self, aesKey, hmacKey):
         self.aesKey = aesKey
         self.hmacKey = hmacKey
-        #self.login = login
-
 
     def to_json(self):
         return {
         'aes': hexlify(self.aesKey),
         'hmac': hexlify(self.hmacKey),
-        #'login': self.login
     }
+
 
 class AuthData:
     def __init__(self, enc, IV, Hmac):
@@ -68,9 +66,9 @@ class AuthData:
 
     def to_json(self):
         return {
-        'enc': hexlify(self.enc),
+        'ENC': hexlify(self.enc),
         'IV': hexlify(self.IV),
-        'Hmac': hexlify(self.Hmac)
+        'HMAC': hexlify(self.Hmac)
     }
 
 class AscorAPI:
@@ -113,8 +111,9 @@ class AscorAPI:
         hsd = HandshakeData(payload[0], payload[1])
         return hsd
 
-    def handshake(self, data):
+    def handshake(self,request, data):
         hs = self._decodeHandshake(data['RSA4096'])
+        #print("hs : "+str(hs))
         aesKeyBin = unhexlify(hs.aesKey)
         HMACkeyBin = unhexlify(hs.hmacKey)
 
@@ -129,29 +128,32 @@ class AscorAPI:
         AES256 = data['AES256']
 
         hmac_cree = HMAC.new(hs.hmacKey, digestmod=SHA256.new())
-        hmac_cree.update(AES256['IV']+AES256['enc'])
+        hmac_cree.update(AES256['IV']+AES256['ENC'])
         hmac_hexa = hmac_cree.hexdigest()
 
-        if hmac_hexa == AES256['Hmac']:
+        if hmac_hexa == AES256['HMAC']:
             iv_bin = unhexlify(AES256['IV'])
             if not len(iv_bin) == IV_LENGTH:
                 print("Bad IV  length, expect %d got %d " % (IV_LENGTH,len(AES256['IV'])))
 
             AESCipher = AES.new(aesKeyBin, AES.MODE_CBC, iv_bin)
-            msg_decrypt = unpad(AESCipher.decrypt(b64decode(AES256['enc'])))
+            msg_decrypt = unpad(AESCipher.decrypt(b64decode(AES256['ENC'])))
             msg_decrypt_json = json.loads(msg_decrypt)
 
-        #authentification a verifier
-        login = msg_decrypt_json['mail']
-        password = msg_decrypt_json['password']
+            #authentification a verifier
+            login = msg_decrypt_json['login']
+            password = msg_decrypt_json['password']
 
         try:
-            user = authenticate(username=login, password=password)
+            user = auth.authenticate(username=login, password=password)
             if user is None :
                 print("Bad login user")
                 raise APIError("Bad login")
+            auth.login(request, user)
+            print("session key :" + str(request.session._session_key))
+            #print("Apres : "+str(vars(request.session)))
+            id_session = request.session._session_key
         except EpiworkUser.DoesNotExist:
-            print("Bad login user")
             raise APIError("Bad login")
 
         #random IV generation
@@ -160,25 +162,23 @@ class AscorAPI:
         #hash calculation
         hashmsg_dec = self.hash_hmac(data['RSA4096'])
 
-        # Format response, TODO :forunir un token utilisateur
+        # Format response, TODO :fournir un token utilisateur
         resMSG = {
-            'login' : login,
+            'token' : id_session,  #Il faut que
             'hash' : hashmsg_dec,
             }
 
         # AES encryption of the response
         resMSGjson = json.dumps(resMSG)
         resMsgEnc = self.AES256CBC(resMSGjson, aesKeyBin, IV)
+        #HmacObject = HMAC.new(HMACkeyBin, resMsgEnc+IV , "SHA256")
+        HmacObject = HMAC.new(hs.hmacKey, digestmod=SHA256.new())
+        HmacObject.update(hexlify(IV)+hexlify(resMsgEnc))
+        HmacObject_hex = HmacObject.hexdigest()
 
-        response = {
-            'body' : {
-                'MSG_ENC' : hexlify(resMsgEnc)
-            },
+        res = {
+            'ENC' : hexlify(resMsgEnc),
             'IV' : hexlify(IV),
+            'HMAC': HmacObject_hex,
         }
-        return(response)
-
-
-
-
-
+        return(res)

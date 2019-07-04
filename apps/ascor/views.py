@@ -10,7 +10,7 @@ import json
 def index(request):
     response = {}
     status = 501
-
+    
     if request.method == "POST":
         try:
             POST_data = json.loads(request.raw_post_data)
@@ -18,9 +18,9 @@ def index(request):
             action = POST_data['action']
             api = AscorAPI()
             if action == AscorAPI.ACTION_HANDSHAKE:
-                    api_session = api.handshake(body)
-                    #api_session = api.handshake(body['RSA4096'])  Old version, needs of AES256 for authentification
+                    api_session = api.handshake(request, body)
                     request.session['api_session'] = api_session   # allow to persist parameters across requests and also persists cookies across all requests made from the Session instance
+                    #response = api_session['response']
                     response = api_session
                     status= 200
         except APIError, e:
@@ -28,6 +28,7 @@ def index(request):
                 response['message'] = "Error during handshake"
                 if ASCOR_DEBUG:
                     response['exception'] = e.to_json()
+
 
     return render_json(request, response, status=status)
 
