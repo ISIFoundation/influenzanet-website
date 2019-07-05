@@ -74,7 +74,6 @@ $jq(document).ready(function() {
 	        success : function (data){
 	        		console.log(data.action)
 	        		if(data.action =="Creation") {
-	        			console.log("changement de class du panel")
 	        			$panel.removeClass("panel-default");
 	        			$panel.addClass("panel-warning");
 	        		}
@@ -139,8 +138,6 @@ $jq(document).ready(function() {
 		}else{
 			alert('Le service a bien été retiré de votre liste.');
 		}
-		console.log($panel)
-		console.log($collapse)
 		$collapse.toggleClass('in');
 	});
 	$jq('#goto-rank').click(function(e) {

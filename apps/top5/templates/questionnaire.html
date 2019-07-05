@@ -44,12 +44,15 @@
 <div class="panel panel-group" >
 	<div class="panel panel-heading">
 		Veuillez sélectionner les <b>5 services</b> qui selon vous relèvent le plus de la surmédicalisation.
-		<p> Cliquez sur chaque service médical pour obtenir plus d’information et afficher le résumé. Dans chaque résumé, vous trouverez des mots et nombres en bleu. Si vous passez votre souris sur un mot en bleu, sa définition apparaîtra. Si vous cliquez sur un nombre en bleu, le lien de la référence bibliographique utilisée dans le résumé apparaîtra dans une fenêtre. Vous pouvez accéder au lien en cliquant dessus, ou fermer la fenêtre en cliquant à un autre endroit de la page (en dehors de la fenêtre).
-		</p>
-		<p>Pour <b>ajouter</b> un item à votre liste « Top 5 », cliquez sur <b>« J’ajoute à ma Top 5 »</b> en bas de son résumé.
-		La ligne de cet item apparaîtra ensuite en rose.
-		Pour <b>retirer</b> un service de votre « Top 5 », cliquez en bas de son résumé sur <b>« J’enlève de ma Top 5 »</b>.</p>
-		<p>Lorsque vous aurez <b>sélectionné cinq services</b> (les cinq lignes apparaitront en rose), vous pourrez cliquer sur <b>« Accéder à votre classement »</b>. </p>
+		<p>Cliquez sur chaque service médical pour obtenir plus d’information et afficher le résumé. Les services médicaux dont le résumé a été ouvert
+		apparaissent en jaune, ceux dont le résumé n'a pas été ouvert apparaissent en gris.<br/> Dans chaque résumé, vous trouverez des mots et nombres en bleu.
+		Si vous <b>passez votre souris sur un mot en bleu</b>, sa définition apparaîtra.<br/> Si vous <b>cliquez sur un nombre en bleu</b>, le lien de la référence bibliographique
+		utilisée dans le résumé apparaîtra dans une fenêtre. Vous pouvez accéder au lien en cliquant dessus, ou fermer la fenêtre en cliquant à un autre endroit
+		de la page (en dehors de la fenêtre).</p>
+		<p>Pour <b>ajouter</b> un item à votre liste « Top 5 », cliquez sur <b>«&nbsp;J’ajoute à ma Top 5&nbsp;»</b> en bas de son résumé.
+		La ligne de cet item apparaîtra ensuite en rouge.
+		Pour <b>retirer</b> un service de votre « Top 5 », cliquez en bas de son résumé sur <b>«&nbsp;J’enlève de ma Top 5&nbsp;»</b>.</p>
+		<p>Lorsque vous aurez <b>sélectionné cinq services</b> (les cinq lignes apparaitront en rose), vous pourrez cliquer sur <b>«&nbsp;Accéder à votre classement&nbsp;»</b>. </p>
 	</div>
 
 	<!-- mauvaise technique -->
@@ -58,7 +61,6 @@
 			{% if ranking %}
 				<script>var nbRated = {{ranking_size}}</script>
 				{% for service_rank in ranking %}
-				<script>console.log("valeur pertinency : "+ {{service_rank.pertinency}})</script>
 					{% if service_rank.service_id == service %}
 						<script type="text/javascript">
 							$jq(document).ready(function() {
