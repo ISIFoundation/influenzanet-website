@@ -1,0 +1,16 @@
+{% extends "survey/base.html" %}
+{% load i18n %}
+
+{% block col1 %}
+<h2>Vos réponses au questionnaire ont bien été prises en compte !</h2>
+
+<p style="font-size:13px">Toute l’équipe de GrippeNet.fr vous remercie vivement pour votre participation à cette étude « Top 5 ».
+ Nous sommes bien conscients de la longueur de cette étude, et du temps que vous avez pris pour y répondre.</p>
+<p style="font-size:13px">Nous reviendrons prochainement vers vous pour vous présenter les résultats de cette étude.</p>
+<p style="font-size:13px">Nous vous souhaitons un très bel été !</p>
+<p style="font-size:13px">L'équipe GrippeNet.fr</p><br/><br/>
+
+
+<a href="{% url group_management %}" class="button">Retourner à votre espace personnel</a>
+
+{% endblock %}

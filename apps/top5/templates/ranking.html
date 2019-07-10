@@ -20,10 +20,11 @@
 
 <body>
 	{% block col1 %}
-<div class="panel panel-group" >
-	<div class="panel panel-heading">
-		Merci de classer les 5 services que vous avez sélectionnés. <p>Pour cela, cliquez sur chaque ligne, et faites-la glisser vers le bas ou vers le haut en maintenant le clic puis déposez-la à l’emplacement souhaité ("drag and drop"). En « 1 » figure le service pour lequel il est selon vous le plus important de réduire les prescriptions.</p>
-	</div>
+	<h2>Merci de classer les 5 services que vous avez sélectionnés par ordre de priorité.</h2>
+	<p align="justify">Pour cela, cliquez sur chaque ligne, et faites-la glisser vers le bas ou vers le haut en maintenant le clic puis déposez-la à l’emplacement souhaité
+	("drag and drop").<br/> <b>En « 1 » figure le service pour lequel il est selon vous le plus important de réduire les prescriptions</b>.<br/>
+	 Les services apparaissent pour le moment selon l’ordre chronologique dans lequel vous les avez sélectionnés. </p>
+	<div class="panel panel-group" >
 	<div id="accordion-resume" class="panel panel-body" >
 		{% for service in ranking %}
 			<div id="resume-panel-{{service.id}}" class="panel panel-dragable portlet panel-success" data-rank="{{ forloop.counter }}" data-service="{{ service.id }}">

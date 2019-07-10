@@ -6,6 +6,7 @@
 	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css"> <!---->
  	<link rel="stylesheet" type="text/css" href="{{ MEDIA_URL }}top5/top5.css" >
  	<link type="text/css" rel="stylesheet" media="all" href="{{ MEDIA_URL }}assets/base.css?v={{assets_version}}" />
+
 {% endblock %}
 {% block add_js %}
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script> <!-- Grippenet  1.5.2 au max-->
@@ -41,20 +42,31 @@
 
 <body>
 {% block col1 %}
-<div class="panel panel-group" >
-	<div class="panel panel-heading">
-		Veuillez sélectionner les <b>5 services</b> qui selon vous relèvent le plus de la surmédicalisation.
-		<p>Cliquez sur chaque service médical pour obtenir plus d’information et afficher le résumé. Les services médicaux dont le résumé a été ouvert
-		apparaissent en jaune, ceux dont le résumé n'a pas été ouvert apparaissent en gris. Dans chaque résumé, vous trouverez des mots et nombres en bleu.
-		Si vous <b>passez votre souris sur un mot en bleu</b>, sa définition apparaîtra. Si vous <b>cliquez sur un nombre en bleu</b>, le lien de la référence
-		bibliographique utilisée dans le résumé apparaîtra dans une fenêtre. Vous pouvez accéder au lien en cliquant dessus, ou fermer la fenêtre en cliquant
-		à un autre endroit de la page (en dehors de la fenêtre).</p>
-		<p>Pour <b>ajouter</b> un item à votre liste « Top 5 », cliquez sur <b>«&nbsp;J’ajoute à ma Top 5&nbsp;»</b> en bas de son résumé.
-		La ligne de cet item apparaîtra ensuite en rouge.
-		Pour <b>retirer</b> un service de votre « Top 5 », cliquez en bas de son résumé sur <b>«&nbsp;J’enlève de ma Top 5&nbsp;»</b>.</p>
-		<p>Lorsque vous aurez <b>sélectionné cinq services</b> (les cinq lignes apparaitront en rose), vous pourrez cliquer sur <b>«&nbsp;Accéder à votre classement&nbsp;»</b>. </p>
-	</div>
 
+
+		<h2>Veuillez sélectionner les <b>5 services</b> qui selon vous relèvent le plus de la surmédicalisation.</h2>
+		<p align="justify">Cliquez sur chaque service médical pour obtenir plus d’information et afficher son résumé.
+		Pour <b>ajouter</b> un service médical à votre liste « Top 5 », cliquez sur <b>«&nbsp;J’ajoute à ma Top 5&nbsp;»</b> en bas de son résumé.
+		Pour <b>retirer</b> un service de votre « Top 5 », cliquez en bas de son résumé sur <b>«&nbsp;J’enlève de ma Top 5&nbsp;»</b>.
+		Lorsque vous aurez <b>sélectionné cinq services</b>, vous pourrez cliquer sur <b>«&nbsp;Accéder
+		à votre classement&nbsp;»</b>. </p>
+
+		<p align="justify">Les services médicaux sont affichés selon les couleurs suivantes :</p>
+		<ul>
+			<li ><div align="justify">En bleu sur fond gris quand le résumé n’a pas été ouvert ;</div></li>
+			<li><div align="justify">En bleu sur fond jaune quand le résumé a été ouvert ;</div></li>
+			<li><div align="justify"><b>En bleu sur fond rose</b> quand le résumé a été ajouté à votre « Top 5 ».</div></li>
+		</ul>
+
+		<p>Dans chaque résumé, vous trouverez des mots et numéros en bleu :</p>
+		<ul>
+			<li><div align="justify">Si vous passez votre souris sur un mot en bleu, sa définition apparaîtra ;</div></li>
+			<li><div align="justify">Si vous cliquez sur un numéro bleu en exposant, le lien du document scientifique utilisé dans le résumé apparaîtra dans une fenêtre.
+			 Vous pouvez accéder au lien en cliquant dessus, ou fermer la fenêtre en cliquant à un autre endroit de la page (en dehors de la fenêtre).</div></li>
+		</ul>
+
+
+<div class="panel panel-group" >
 	<!-- mauvaise technique -->
 	<div class="panel panel-body" id="accordion">
 		{% for service in services %}

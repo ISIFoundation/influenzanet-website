@@ -170,6 +170,12 @@ ul.main {
   font-size: 0.7em;
 }
 
+li{
+  margin:  0;
+}
+.refnum {
+	cursor:pointer;
+}
 .ref .refbody {
 font-family:  Verdana,Geneva,sans-serif;;
 font-size: .8em;
@@ -192,3 +198,6 @@ overflow: auto;
 }
 
 
+p + ul {
+    margin-top: -10px;
+}

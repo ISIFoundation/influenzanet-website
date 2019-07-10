@@ -152,11 +152,14 @@ $jq(document).ready(function() {
             }
         }
     });
-
 	$jq('#submit-rank').click(function(e) {
         e.preventDefault();
         var $this = $jq(this);
         if (confirm('Vous allez valider définitivement votre classement, confirmer ?')) {
+        	alert("Merci beaucoup d’avoir participé à cette étude « Top 5 » !\n\n " +
+        			"Vous allez être redirigé vers un questionnaire complémentaire, qui nous permettra de mieux comprendre comment vous avez élaboré cette liste. Rassurez-vous, ce questionnaire est très court et ne vous prendra qu’une ou deux minutes de plus !\n\n" +
+        			"Si vous avez plusieurs participants inscrits sur votre compte GrippeNet.fr, ne soyez pas surpris, la page sur laquelle vous allez arriver vous proposera la liste des participants de votre compte. Il vous suffira de cliquer sur votre nom.\n\n" +
+        			"Encore un grand merci !\n\n\n");
             $this.unbind('click');
             $this.click();
 
