@@ -22,7 +22,7 @@
 			if (pertinency == 1) {
 				var $input_chbox = $($btn.data('input'));
 				var $span = $($btn.data('span'));
-				$span.text(" J\’enlève de ma top 5");
+				$span.text(" J\’enlève de ma Top 5");
 				$input_chbox.attr("value", '1');
 				$input_chbox.attr( "checked", true );
 				$btn.toggleClass('btn-warning btn-danger');
@@ -98,7 +98,7 @@
 				    {{service.text_html|safe}}
 			    	<div class="center">
 			    	    <button id="btn-r-{{ service.id }}" data-service="{{ service.id }}" class="btn btn-danger pertinency-revue" data-form="#form-revue-pertinency-{{ service.id }}" data-input="#pertinent-{{ service.id }}" data-panel="#resume-panel-{{ service.id }}" data-span="#span-{{ service.id }}" data-collapse="#resume-collapse-{{ service.id }}">
-							<span id="span-{{ service.id }}" name="span-{{ service.id }}" class="glyphicon glyphicon-star" > J’ajoute à ma top 5 {{text_btn}}</span>
+							<span id="span-{{ service.id }}" name="span-{{ service.id }}" class="glyphicon glyphicon-star" > J’ajoute à ma Top 5 {{text_btn}}</span>
 						</button>
 					</div>
 			    	<div align="right">
@@ -116,7 +116,7 @@
 	</div>
 </div>
 <div class="text-center">
-    <h4><span class="label label-warning"><span class="glyphicon glyphicon-arrow-down">&nbsp;</span>Vous devez sélectionner 5 services avant d'accéder au classement<span class="glyphicon glyphicon-arrow-down">&nbsp;</span></span></h4>
+    <h4><span class="label label-warning"><span class="glyphicon glyphicon-arrow-down">&nbsp;</span>Vous devez sélectionner 5 services médicaux avant d'accéder au classement<span class="glyphicon glyphicon-arrow-down">&nbsp;</span></span></h4>
     <form action="{% url top5_ranking %}" method="post">{% csrf_token %}
     	<button id="goto-rank" class="btn btn-block btn-success" type="submit" value="Submit"><a><span class="glyphicon glyphicon-list">&nbsp;</span>Accéder à votre classement</a></button>
     	<!--

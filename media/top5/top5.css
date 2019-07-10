@@ -199,5 +199,9 @@ overflow: auto;
 
 
 p + ul {
-    margin-top: -10px;
+    margin-top: -15px;
+}
+
+li + li {
+	margin-top: -4px;
 }
