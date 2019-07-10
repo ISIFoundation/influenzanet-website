@@ -30,7 +30,7 @@ def index(request):
             done = True
             break
     if done :
-        return HttpResponseRedirect('/survey/run/top5-patients/')
+        return HttpResponseRedirect('/survey/run/top5_patients/')
 
     nb_ranked = ranking_user.filter(pertinency = 1).count()
     if(nb_ranked == 5):
@@ -192,7 +192,7 @@ def saving_rank(request):
             rank.temporary_rank = post.get("hidden-rank-"+str(rank.id))
             rank.rank = post.get("hidden-rank-"+str(rank.id))
             rank.validation_date = now
-        return HttpResponseRedirect('/survey/run/top5-patients/')
+        return HttpResponseRedirect('/survey/run/top5_patients/')
     else:
         for rank in ranking :
             rank.temporary_rank = post.get("hidden-rank-"+str(rank.id))
