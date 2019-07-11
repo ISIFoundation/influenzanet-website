@@ -205,3 +205,8 @@ p + ul {
 li + li {
 	margin-top: -4px;
 }
+
+	li + ul {
+		margin-top: -1px;
+	}
+
