@@ -192,6 +192,7 @@ def saving_rank(request):
             rank.temporary_rank = post.get("hidden-rank-"+str(rank.id))
             rank.rank = post.get("hidden-rank-"+str(rank.id))
             rank.validation_date = now
+            rank.save()
         return HttpResponseRedirect('/survey/run/top5_patients/')
     else:
         for rank in ranking :
