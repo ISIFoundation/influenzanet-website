@@ -72,21 +72,26 @@ $jq(document).ready(function() {
 			type: $form.attr('method'),
 	        dataType: 'json',
 	        success : function (data){
-	        		console.log(data.action)
 	        		if(data.action =="Creation") {
 	        			$panel.removeClass("panel-default");
 	        			$panel.addClass("panel-warning");
 	        		}
+	        		if(data.action =="Error"){
+	        			alert("Une erreur s'est produite, veuillez vous reconnecter et recommencer. \n\n "+
+	        					"Si jamais l'erreur se reproduit, merci de contacter notre service informatique à l'adresse suivante : rs-dev@u707.jussieu.fr \n\n"+
+	        					"Nous nous excusons pour ce désagrément et vous remercions de l'interêt que vous portez à notre étude.")
+	        		}
+
 	        },
 	        error: function(data){
-	        	console.log("error btn toggle")
-	        	console.log("data : "+Object.keys(data))
-	        	console.log("status : "+data.status +' - '+ data.statusText)
+
+	        	console.log("error during creation of the rank")
 	        }
         });
     });
 
 	$jq('.pertinency-revue').click( function() {
+		var error = 0 ;
 		var $this = $jq(this);
 		var $input_chbox = $($this.data('input'));
 
@@ -124,20 +129,28 @@ $jq(document).ready(function() {
 	        		if (data.exists){
 	        			nbRated = data.nbRated;
 	        		}else{
-	        			alert("Le service n'existe pas");
+	        			error = 1 ;
 	        		}
 	        },
 	        error: function(data){
+    			error = 1 ;
+
 	        	console.log("error pertinency revue")
 	        	console.log("data : "+Object.keys(data))
 	        	console.log("status : "+data.status +' - '+ data.statusText)
 	        }
         });
-		if($pertinency == 1){
-			alert('Le service médical a bien été ajouté à votre liste.');
+		if(error != 1){
+			console.log(error)
+			if($pertinency == 1 ){
+				alert('Le service médical a bien été ajouté à votre liste.');
+			}else{
+				alert('Le service médical a bien été retiré de votre liste.');
+			}
 		}else{
-			alert('Le service médical a bien été retiré de votre liste.');
+			alert("Votre selection n'a pas été prise en compte. Veuillez actualiser la page et vous reconnecter s'il vous plait.");
 		}
+
 		$collapse.toggleClass('in');
 	});
 	$jq('#goto-rank').click(function(e) {

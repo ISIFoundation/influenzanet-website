@@ -9,7 +9,7 @@ from django.views.decorators.csrf import csrf_protect
 from django.contrib.admin.views.decorators import staff_member_required
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth import login as auth_login
-
+from django.db import transaction
 from .models import Service, Ranking, Part, get_service, formating_part
 
 from apps.reminder.views import json_dumps
@@ -18,8 +18,6 @@ from apps.reminder.views import json_dumps
 @login_required
 def index(request):
     user = request.user
-    if user == 'AnonymousUser':
-        redirect(auth_login)
     if Ranking.objects.filter(user = user).count() == 0 :
         return render(request, 'presentation.html')
     ranking_user = Ranking.objects.filter(user = user)
@@ -40,30 +38,31 @@ def index(request):
 
 
 # show the 15 services ordered randomly
+@login_required
 def selection_service(request):
     user = request.user
-    if user == 'AnonymousUser':
-        redirect(auth_login)
     services = list(Service.objects.all())
     shuffle(services)
-    ranking_user = Ranking.objects.filter(user = user)
-    nb_ranked = ranking_user.filter(pertinency = 1).count()
-    context = {
-        'services' : services,
-        'user' : user,
-        'ranking' : ranking_user,
-        'ranking_size' : nb_ranked,
-    }
-
+    try:
+        ranking_user = Ranking.objects.filter(user = user)
+        nb_ranked = ranking_user.filter(pertinency = 1).count()
+        context = {
+                   'services' : services,
+                   'user' : user,
+                   'ranking' : ranking_user,
+                   'ranking_size' : nb_ranked,
+                   }
+    except Exception, e:
+        status = 500
+        context = "An error occurred during the selection of the service :\n" + str(e)
     return render(request, 'questionnaire.html', context)
 
 
 # Used for saving date when user close the tab with
+@login_required
 def closing_tab(request):
     now = datetime.now()
     user = request.user
-    if user == 'AnonymousUser':
-        redirect(auth_login)
     service_id = request.POST.get('service', None)
     try:
         User_ranking = Ranking.objects.filter(user = user)
@@ -83,13 +82,18 @@ def closing_tab(request):
 
 # creation into ranking table of an empty rank for an user and a specific service when opening the tab
 @csrf_protect
+@login_required
 def creation_rank(request):
     now = datetime.now()
     user = request.user
-    if user == 'AnonymousUser':
-        redirect(auth_login)
-
     service_id = request.POST.get('service', None)
+    if str(user) == 'AnonymousUser' :
+        data = {
+            'exists': 0,
+            'action' : "Error",
+        }
+        res = json_dumps(data)
+        return HttpResponse(res, content_type="application/json")
     try:
         ranking_user = Ranking.objects.filter(user = user)
         if(ranking_user.filter(service_id = service_id).count() == 0):
@@ -111,15 +115,19 @@ def creation_rank(request):
 
 # change pertinency of a rank for an user and a specific service when clicking on the main button
 @csrf_protect
+@login_required
 def chgmt_statut_service(request):
     now = datetime.now()
     user = request.user
-    if user == 'AnonymousUser':
-        redirect(auth_login)
+    if str(user) == 'AnonymousUser' :
+        data = {
+            'exists': 0,
+            'action' : "none",
+        }
     service_id = request.POST.get('service', None)
     pertinency = request.POST.get('pertinency', None)
-    User_ranking = Ranking.objects.filter(user = user)
     try :
+        User_ranking = Ranking.objects.filter(user = user)
         data = {
             'exists': 1,
         }
@@ -151,7 +159,7 @@ def chgmt_statut_service(request):
         status = 200
     except Exception, e:
         status = 500
-        data_json = "An error occurred during the changement:\n" + str(e)
+        data_json = "An error occurred during the status change :\n" + str(e)
     return HttpResponse(data_json, content_type="application/json", status=status)
 
 
@@ -159,8 +167,6 @@ def chgmt_statut_service(request):
 @login_required
 def ranking(request): #,action
     user = request.user
-    if user == 'AnonymousUser':
-        redirect(auth_login)
     now = datetime.now()
 
     ranking_user = Ranking.objects.filter(user = user)
@@ -177,29 +183,30 @@ def ranking(request): #,action
 
 
     # Save the rank into temporary_rank or rank
+@login_required
 @csrf_protect
 def saving_rank(request):
     now = datetime.now()
     if request.POST :
         post = request.POST
         user = request.user
-        if user == 'AnonymousUser':
-            redirect(auth_login)
         ranking = Ranking.objects.filter(user = user).filter(pertinency = 1)
 
-    if post.get("save") == 'final' :
-        for rank in ranking :
-            rank.temporary_rank = post.get("hidden-rank-"+str(rank.id))
-            rank.rank = post.get("hidden-rank-"+str(rank.id))
-            rank.validation_date = now
-            rank.save()
-        return HttpResponseRedirect('/survey/run/top5_patients/')
+        if post.get("save") == 'final' :
+            for rank in ranking :
+                rank.temporary_rank = post.get("hidden-rank-"+str(rank.id))
+                rank.rank = post.get("hidden-rank-"+str(rank.id))
+                rank.validation_date = now
+                rank.save()
+            return HttpResponseRedirect('/survey/run/top5_patients/')
+        else:
+            for rank in ranking :
+                rank.temporary_rank = post.get("hidden-rank-"+str(rank.id))
+                rank.modif_date = datetime.now()
+                rank.save()
+            return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
     else:
-        for rank in ranking :
-            rank.temporary_rank = post.get("hidden-rank-"+str(rank.id))
-            rank.modif_date = datetime.now()
-            rank.save()
-        return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
+        return HttpResponseRedirect('/top5/')
     #return render(request, '/survey/top5-patients/')
 
 
