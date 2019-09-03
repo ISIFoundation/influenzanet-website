@@ -26,13 +26,17 @@
 <ul>
 	<li><i class="icon icon-survey"></i><a href="{% url survey_profile%}?gid={{ household_gid }}">Préliminaire</a></li>
 	<li><i class="icon icon-survey"></i><a href="{% url survey_index %}?gid={{ household_gid }}">Hebdomadaire</a></li>
-	<li><i class="icon icon-survey"></i><a href="{% url top5_index %}">Etude Top 5</a></li>
+	<!-- <li><i class="icon icon-survey"></i><a href="{% url top5_index %}">Etude Top 5</a></li>-->
 </ul>
-{%else%}
+
+<!-- {%else%}
+<!--
 	<h3>Mon Questionnaire Top 5</h3>
 	<ul>
 		<li><i class="icon icon-survey"></i><a href="{% url top5_index %}">Etude Top 5</a></li>
 	</ul>
+	-->
+
 {%endif%}
 <h2>Aide</h2>
 <ul id="link-help-pages">

@@ -1,0 +1,14 @@
+{% extends "admin/change_list.html" %}
+{% load i18n %}
+{% block object-tools %}
+  {% if has_add_permission %}
+    <ul class="object-tools">
+          <li>
+      	<a href="{% url top5_participants %}" class="viewsitelink">{% trans "Participants" %}</a>
+      </li>
+      <li>
+      	<a href="{% url top5_results %}" class="viewsitelink">{% trans "Results" %}</a>
+      </li>
+    </ul>
+  {% endif %}
+{% endblock %}

@@ -1,0 +1,34 @@
+{% extends "base/twocol.html" %}
+<!--{% load i18n %} -->
+<head>
+{% block add_css %}
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css"> <!---->
+	<link type="text/css" rel="stylesheet" media="all" href="{{ MEDIA_URL }}assets/base.css?v={{assets_version}}" />
+ 	<link rel="stylesheet" type="text/css" href="{{ MEDIA_URL }}top5/top5.css" >
+
+{% endblock %}
+	{% block add_js %}
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script> <!-- Grippenet  1.5.2 au max-->
+	<script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.10.3/jquery-ui.min.js"></script>
+
+		<script type="text/javascript">
+	    	var $jq = jQuery.noConflict();
+	    </script>
+		<script type="text/javascript" src="{{ MEDIA_URL }}top5/top5.js"></script>
+	    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
+	    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/js/bootstrap.min.js"></script>  <!--pb si 1.5.2, incompatible  -->
+	{% endblock %}
+</head>
+
+<body>
+	{% block col1 %}
+		<p align="justify">L'étude Top5 s'est terminée le 1er septembre 2019. Nous remercions tous les participants d'avoir pris de leur temps pour répondre à cette étude.</p>
+		<p align="justify">Nous reviendrons prochainement vers vous afin de vous communiquer les résultats de cette étude.</b></p>
+		<p align="justify">Le suivi de GrippeNet.fr reprendra en novembre prochain.</p>
+		<br/>
+
+		<p align="justify">Pour toutes questions ou complément d’information, contacter: <a href="mailto:contact@grippenet.fr">contact@grippenet.fr</a>.</p>
+		<p align="justify">&Agrave; bientôt !</p>
+	{% endblock col1 %}
+
+</body>

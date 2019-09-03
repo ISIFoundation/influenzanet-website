@@ -1,7 +1,7 @@
 from datetime import datetime
 from random import shuffle
 
-from django.shortcuts import  render, redirect
+from django.shortcuts import  render, redirect, get_object_or_404
 from django.http import HttpResponse, HttpResponseRedirect
 from django.views.decorators.csrf import csrf_protect
 #from django.template import RequestContext, loader
@@ -11,12 +11,16 @@ from django.contrib.auth.decorators import login_required
 from django.contrib.auth import login as auth_login
 from django.db import transaction
 from .models import Service, Ranking, Part, get_service, formating_part
+import csv
 
 from apps.reminder.views import json_dumps
 
 #Redirection according to the user progress
 @login_required
 def index(request):
+    end = 1
+    if end == 1 :
+        return render(request, 'top5_end.html')
     user = request.user
     if Ranking.objects.filter(user = user).count() == 0 :
         return render(request, 'presentation.html')
@@ -230,16 +234,93 @@ def create_service_html(request, service_id):
 @staff_member_required
 def calcul_score(request, service_id):
     service = get_service(service_id)
-    all_ranked = Ranking.objects.filter(service = service).filter(pertinency = 1)
+    score = 0
+    try :
+        service_all_ranked = Ranking.objects.filter(service_id = service).filter(pertinency = 1)
+    except Exception, e:
+        service_all_ranked.objects.get(service_id = service)
 
-    temp_text = ""
-    for part in all_ranked :
-        part_text = formating_part(part)
-        temp_text = temp_text + part_text
-
-    service.text_html = temp_text
+    for x in range(1, 6):
+        value = -x + 6
+        score = score + service_all_ranked.filter(rank = x).count() * value
+    service.score = score
     service.save()
-
     return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
 
+
+@staff_member_required
+def survey_results_csv(request):
+    ranks = Ranking.objects.all()
+    #fields = ['user','service_id','creation_date','service_selection_date','modif_date','top5_selection_date','validation_date','closing_tab_date','pertinency','rank','temporary_rank']
+    #test = qs_to_dataset(survey,fields)
+    now = datetime.now()
+    response = HttpResponse(mimetype='text/csv')
+    response['Content-Disposition'] = 'attachment; filename=top5-ranking-%s.csv' % (format(now, '%Y%m%d%H%M'))
+    writer = csv.writer(response)
+    legende = ['Utilisateur',
+               'ID utilisateur',
+               'Service',
+               'Date d\'ouverture du panneau',
+               'Date de la selection du service',
+               'Date de la derniere modification',
+               'Date de la fermeture du panneau',
+               'Date de la validation de la top5',
+               'date de la validation du classement',
+               'Rang',
+               'Rank temporaire',
+               'Pertinence',
+               ]
+    writer.writerow(legende)
+    for rank in ranks:
+        writer.writerow([rank.user,
+                         rank.user.id,
+                         rank.service_id,
+                         rank.creation_date,
+                         rank.service_selection_date,
+                         rank.modif_date,
+                         rank.closing_tab_date,
+                         rank.top5_selection_date,
+                         rank.validation_date,
+                         rank.pertinency,
+                         rank.rank,
+                         rank.temporary_rank]
+                        )
+    return response
+
+
+def survey_participants_csv(request):
+    all_users = Ranking.objects.all().values('user').order_by('user').distinct()
+
+    #fields = ['user','service_id','creation_date','service_selection_date','modif_date','top5_selection_date','validation_date','closing_tab_date','pertinency','rank','temporary_rank']
+    #test = qs_to_dataset(survey,fields)
+    now = datetime.now()
+    response = HttpResponse(mimetype='text/csv')
+    response['Content-Disposition'] = 'attachment; filename=top5-participants-%s.csv' % (format(now, '%Y%m%d%H%M'))
+    writer = csv.writer(response)
+
+    for user in all_users:
+        writer.writerow([user])
+    return response
+
+
+@staff_member_required
+def all_calculs(request):
+    services = Service.objects.all()
+    for service in services :
+        score = 0
+        try :
+            service_all_ranked = Ranking.objects.filter(service_id = service).filter(pertinency = 1)
+        except Exception, e:
+            service_all_ranked = Ranking.objects.get(service_id = service)
+
+        print("nb de rank : "+ str(service_all_ranked.count()))
+        for x in range(1, 6):
+            value = -x + 6
+            print("value : "+ str(value))
+            score = score + service_all_ranked.filter(rank = x).count() * value
+            print("le score a l'etape "+str(x)+" est : "+str(score))
+        service.score = score
+        service.save()
+
+    return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
 
