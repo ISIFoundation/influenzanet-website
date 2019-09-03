@@ -267,7 +267,7 @@ def survey_results_csv(request):
                'Date de la validation de la top5',
                'date de la validation du classement',
                'Rang',
-               'Rank temporaire',
+               'Rang temporaire',
                'Pertinence',
                ]
     writer.writerow(legende)
@@ -281,9 +281,9 @@ def survey_results_csv(request):
                          rank.closing_tab_date,
                          rank.top5_selection_date,
                          rank.validation_date,
-                         rank.pertinency,
                          rank.rank,
-                         rank.temporary_rank]
+                         rank.temporary_rank,
+                         rank.pertinency,]
                         )
     return response
 
