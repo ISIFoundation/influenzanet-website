@@ -1,11 +1,14 @@
-from django.core.management.base import CommandError, BaseCommand
+from datetime import date, datetime
 from optparse import make_option
+
+from django.core.management.base import CommandError, BaseCommand
+from django.contrib.auth.models import UNUSABLE_PASSWORD
+from django.utils.translation import activate
+from django.conf import settings
+
 from ...models import EpiworkUser
 from ...anonymize import Anonymizer
-from django.utils.translation import activate
-
-from datetime import date, datetime
-from apps.sw_auth.models import AnonymizeRequest
+from apps.sw_auth.models import AnonymizeRequest, AnonymizeLog
 
 class Command(BaseCommand):
     """
@@ -17,7 +20,7 @@ class Command(BaseCommand):
         2 - Proceed to anonymizing after a user request
 
     """
-    args = "request|delay"
+    args = "request|delay|inactive"
     help = 'Unsubscribing management of old accounts.'
 
     option_list = BaseCommand.option_list + (
@@ -49,6 +52,8 @@ class Command(BaseCommand):
 
     def lookup_old_account(self, fake, limit, user):
 
+        print("Handle account without login")
+
         if user is not None:
             users = [user]
         else:
@@ -68,7 +73,7 @@ class Command(BaseCommand):
 
             if not user.is_active:
                 print("#%d user is already inactive, skip" % user.id)
-                next
+                continue
 
             dju = user.get_django_user()
             login_delay = self.delay(dju.last_login)
@@ -120,6 +125,8 @@ class Command(BaseCommand):
 
     def handle_request(self, fake, limit, user):
 
+        print("Handle account closing request")
+
         if user is not None:
             requests = AnonymizeRequest.objects.filter(user=user)
         else:
@@ -137,7 +144,7 @@ class Command(BaseCommand):
             id = request.id
             if delay < 5:
                 count_waiting += 1
-                next
+                continue
             user = request.user
             if user.is_active:
                 if not fake:
@@ -162,6 +169,124 @@ class Command(BaseCommand):
                     break
 
         print("Requests: %d, %d anonymized, %d waiting, %d skipped" % (count, count_anonymized, count_waiting, count_skip))
+
+    def handle_inactive(self, fake, limit, user):
+        """
+            Handle inactive accounts (never activated)
+        """
+        print("Handle inactive accounts")
+
+        if user is not None:
+            users = [user]
+        else:
+            users = EpiworkUser.objects.filter(is_active=False)
+
+        anonymizer = Anonymizer()
+
+        activation_delay = settings.ACCOUNT_ACTIVATION_DAYS * 5
+
+        count_anonymize = 0
+        count_waiting = 0
+        count_never_active = 0
+        for user in users:
+
+            if user.is_active:
+                continue
+
+            dju = user.get_django_user()
+
+            if dju.is_active:
+                print("Warning: inconsistent is_active for %d %d" % (user.id, dju.id))
+                continue
+
+            if self.delay(user.anonymize_warn) < 365:
+                continue
+
+            login_delay = self.delay(dju.last_login)
+            join_delay = self.delay(dju.date_joined)
+
+            # Already anonymized
+            if user.password == UNUSABLE_PASSWORD:
+
+                ano_prefix = "user%d" % (user.id)
+
+                if not user.login.startswith(ano_prefix):
+                    print("Warning inconsistent login for %d" % (user.id))
+
+                if dju.password != UNUSABLE_PASSWORD:
+                    print("Warning: inconsistent password for %d" % (user.id))
+
+                continue
+
+            if login_delay < activation_delay:
+                count_waiting += 1
+                continue
+
+            if login_delay == join_delay:
+                count_never_active += 1
+
+            count_anonymize += 1
+
+            # print(" %")
+
+            if not fake:
+                user.anonymize()
+                anonymizer.log(user, AnonymizeLog.EVENT_INACTIVE)
+            else:
+                self.fake('anonymize', user)
+
+            count = count_anonymize
+            if limit > 0:
+                if count >= limit:
+                    print('Processed accounts Limit reached. Stopping')
+                    break
+        print(" %d anonymized (%d never activated), %d recent activation" % (count_anonymize, count_never_active, count_waiting))
+
+    def handle_check(self, fake, limit, user):
+        """
+            Handle inactive accounts (never activated)
+        """
+        print("Handle inactive accounts")
+
+        activation_delay = settings.ACCOUNT_ACTIVATION_DAYS * 3
+
+        if user is not None:
+            users = [user]
+        else:
+            users = EpiworkUser.objects.filter(is_active=False)
+
+        exceptions = [5705701869822915378, ]
+
+        for user in users:
+
+            if user.id in exceptions:
+                continue;
+
+            dju = user.get_django_user()
+            problems = []
+            if dju.is_active != user.is_active:
+                problems.append("is_active")
+
+            if not user.is_active:
+
+                login_delay = self.delay(dju.last_login)
+
+                ano_prefix = "user%d" % (user.id)
+
+                if login_delay < activation_delay:
+                    # Still waiting for activation
+                    continue
+
+                if not user.login.startswith(ano_prefix):
+                    print("Warning inconsistent login for %d" % (user.id))
+
+                if dju.password != UNUSABLE_PASSWORD:
+                    print("Warning: inconsistent password for %d" % (user.id))
+
+            if len(problems) > 0:
+                print "User %d :" % (user.id,) + problems.join(',')
+
+
 
 
     def test_mail(self, user):
@@ -200,5 +325,9 @@ class Command(BaseCommand):
                 self.lookup_old_account(fake=fake, limit=limit, user=user)
             elif command == 'mail':
                 self.test_mail(user=user)
+            elif command == 'inactive':
+                self.handle_inactive(fake, limit, user)
+            elif command == 'check':
+                self.handle_check(fake, limit, user)
             else:
                 CommandError("Unknown subcommand %s" % command)

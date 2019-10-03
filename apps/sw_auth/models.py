@@ -260,6 +260,10 @@ class EpiworkUser(models.Model):
         self.is_active = False
         self.email_proposal = None
         self.email_state = EpiworkUser.EMAIL_STATE_INVALID
+        self.token_email = None
+        self.token_activate = ''
+        self.token_password = ''
+
         # get the django user
         user = self.get_django_user()
         # user = django user
@@ -303,6 +307,8 @@ class AnonymizeLog(models.Model):
     EVENT_CONFIRMED = 5 # Account confirmed by user
     EVENT_REQUEST   = 6 # Anonymize requested by user
     EVENT_REACTIVATED = 7
+
+    EVENT_INACTIVE  = 8 # Account anonymized without any registred activity
 
     user = models.ForeignKey(EpiworkUser)
     date = models.DateTimeField(auto_now_add=True)
