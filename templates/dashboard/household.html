@@ -13,6 +13,7 @@
 	L'état de santé de chaque participant est représenté sur une ligne.
  </blockquote>
 </div>
+<!--
 <div class="chart-box">
  <h3>Carte des participants</h3>
  <div class="survey-chart">
@@ -34,6 +35,7 @@
 	carte que nous publions dans la newsletter hebdomadaire (qui concerne de la semaine précédente, et utilise des données plus complètes).
  </p>
 </div>
+-->
 <script type="text/javascript">
  var household_history = {{ history|safe }};
  
@@ -47,9 +49,11 @@
 	story = new StoryRaphael(household_history, users);	
 	story.render('history');
  });
+ /*
  wok.pollster.charts.init(function() {
         $(function() {
             wok.pollster.charts.createCharts('.survey-chart .chart');
         });
  });
+ */
 </script>
