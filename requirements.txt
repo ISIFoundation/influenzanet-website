@@ -2,13 +2,14 @@
 django-cms==2.1.4
 #-e hg+https://bitbucket.org/jespern/django-piston@adeef486579b#egg=django-piston
 south
-django-sekizai
+django-classy_tags==0.8.0
+django-sekizai==0.10
 django-appmedia
 django-contact-form==0.3
 django-haystack==1.2.7
 xapian-haystack==1.1.5beta
 django==1.3.3
-PIL
+#PIL
 wsgiref==0.1.2
 #-e git://github.com/vanschelven/epidb-client-python.git#egg=epidb-client
 -e git://github.com/ojii/django-nani.git@bb47153e05b46b775658887f214a486412fe25a5#egg=django-nani
@@ -18,5 +19,8 @@ html5lib==0.95 # for our ancient version of django-cms
 django-pure-pagination
 psycopg2
 pytils
-django-annoying
-
+django-annoying==0.10.3
+webassets
+cssmin
+johnny-cache
+Pillow==i1.6
