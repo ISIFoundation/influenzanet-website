@@ -17,13 +17,9 @@ DEG_TO_RAD = pi/180
 RAD_TO_DEG = 180/pi
 
 try:
-    import mapnik2 as mapnik
+    import mapnik
     mapnik_version = 2
-except:
-    try:
-        import mapnik
-        mapnik_version = 1
-    except ImportError:
+except ImportError:
         mapnik_version = None
         warnings.warn("No working version for library 'mapnik' found. Continuing without mapnik")
 
