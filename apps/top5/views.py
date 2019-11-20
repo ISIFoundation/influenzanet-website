@@ -1,5 +1,6 @@
 from datetime import datetime
 from random import shuffle
+import json
 
 from django.shortcuts import  render, redirect, get_object_or_404
 from django.http import HttpResponse, HttpResponseRedirect
@@ -14,11 +15,14 @@ from .models import Service, Ranking, Part, get_service, formating_part
 import csv
 
 from apps.reminder.views import json_dumps
+from apps.sw_auth.models import EpiworkUser
+from apps.survey.models import SurveyUser
+from apps.pollster.models import Survey
 
 #Redirection according to the user progress
 @login_required
 def index(request):
-    end = 1
+    end = 0
     if end == 1 :
         return render(request, 'top5_end.html')
     user = request.user
@@ -283,23 +287,37 @@ def survey_results_csv(request):
                          rank.validation_date,
                          rank.rank,
                          rank.temporary_rank,
-                         rank.pertinency,]
+                         rank.pertinency,
+                         ]
                         )
     return response
 
-
+@staff_member_required
 def survey_participants_csv(request):
     all_users = Ranking.objects.all().values('user').order_by('user').distinct()
-
-    #fields = ['user','service_id','creation_date','service_selection_date','modif_date','top5_selection_date','validation_date','closing_tab_date','pertinency','rank','temporary_rank']
-    #test = qs_to_dataset(survey,fields)
+    #print("test : "+ str(all_users.count()))
+    list_user = []
     now = datetime.now()
     response = HttpResponse(mimetype='text/csv')
-    response['Content-Disposition'] = 'attachment; filename=top5-participants-%s.csv' % (format(now, '%Y%m%d%H%M'))
+    response['Content-Disposition'] = 'attachment; filename=top5-list_users-%s.csv'
     writer = csv.writer(response)
+    legende = ['Utilisateur',
+               'ID utilisateur',
+               'ID global',]
+    writer.writerow(legende)
+    for user in list(all_users) :
+        SurveyUsers = SurveyUser.objects.get_active_users(user['user'])
+        if SurveyUsers.count() == 1 :
+            writer.writerow([SurveyUsers[0].user,
+                             SurveyUsers[0].id,
+                             SurveyUsers[0].global_id])
+        else:
+            for SUser in SurveyUsers :
+                writer.writerow([SUser.user,
+                                 SUser.id,
+                         SUser.global_id])
 
-    for user in all_users:
-        writer.writerow([user])
+
     return response
 
 
