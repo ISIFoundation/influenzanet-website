@@ -6,6 +6,11 @@ from apps.partnersites.context_processors import site_context
 import re
 from django.template.base import TemplateDoesNotExist, Context
 from django.core.mail.message import EmailMessage
+from django.core.validators import email_re
+
+
+def is_email(text):
+    return email_re.search(text)
 
 def create_message_from_template(template_name, data, wrap_layout=True):
     """

@@ -12,6 +12,7 @@ from .logger import auth_notify
 from .signals import user_registered, user_activated
 from apps.survey.models import SurveyUser
 from apps.partnersites.models import Site
+from apps.common.mail import is_email
 
 # Connect to login_in signal
 # This allow us to set the real user id in session
@@ -240,7 +241,8 @@ class EpiworkUser(models.Model):
         """
             Switch the account email using the email_proposal
         """
-        if self.login == self.email:
+        if is_email(self.login):
+            # replace login if email was used as login
             self.login = self.email_proposal
         self.email = self.email_proposal
         self.email_proposal = None
