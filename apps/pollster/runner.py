@@ -29,7 +29,7 @@ def get_workflows():
     global WORKFLOWS
     global WORKFLOWS_LOADED
     if not WORKFLOWS_LOADED:
-        print 'loading'
+        # print 'loading'
         for path in CONFIG['workflows']:
             w = load_class_from_path(path)
             WORKFLOWS.append(w)
