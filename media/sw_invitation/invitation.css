@@ -1,7 +1,15 @@
 /* invitation page */
 .form-invitation table { border:1px solid #EEE; margin: 0; border-collapse: collapse; font-size: .8em}
-.form-invitation td { padding: .4em .5em  }
-.form-invitation td.options { font-size: .9em  }
+.form-invitation td { padding: .5em  }
+.form-invitation td.options input{ padding: .6em }
+
+.form-invitation .section td {
+	font-weight: bold;
+	color:white;
+	background-color: #7AB800;
+}
+
+
 #col1 .form-invitation label { font-weight: normal; padding-left: .2em; cursor: pointer }
 .invitations { border-collapse: collapse }
 .invited td { font-size: .8em; border: 1px solid  #EEE; border-width: 1px 0 1px 0; padding: .5em  }
@@ -10,7 +18,7 @@
 #personnal { width: 40em; height: 3em; line-height:1em }
 
 ul#email-fields {
-	margin: 0; 
+	margin: 0;
 	padding: 0;
 }
 
@@ -28,6 +36,11 @@ ul#email-fields {
 .icon {
 	vertical-align:middle;
 	padding-right: .2em;
+}
+
+.warning {
+	font-size: .9em;
+	color: #333;
 }
 
 #preview {

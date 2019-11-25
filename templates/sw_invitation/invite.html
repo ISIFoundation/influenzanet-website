@@ -12,37 +12,58 @@
 <form action="{%url invite_index %}" class="form-invitation" method="post" id="form-invitation">
 	{% csrf_token %}
 	<table>
+	<tbody>
+	<tr class="section">
+		<td>Quelles sont les personnes à inviter</td>
+	</tr>
 	<tr>
 		<td>
 		{%trans "emails you want to be invited" %}
+		. Une seule adresse email par case.
 		<ul id="email-fields">
-			<li id="add-row"><span id="add-button"><img src="{{ MEDIA_URL }}sw_invitation/mail-add.png" class="icon"/>{%trans "add a new email" %}</span></li>
+			<li id="add-row">
+				<span id="add-button" class="button">
+				<img src="{{ MEDIA_URL }}sw_invitation/mail-add.png" class="icon"/>{%trans "add a new email" %}
+				</span>
+			</li>
 		</ul>
 		<input type="hidden" name="emails" id="emails" value=""/>
 		<div id="min-email" class="error" style="display:none">{% trans "Enter at least one email"%}</div>
 		</td>
 	</tr>
+	</tbody>
+	<tbody>
+	<tr class="section">
+		<td >
+			Qui invite ?
+		</td>
+	</tr>
 	{% if not anonymous %}
 	<tr>
 		<td class="options">
-			<input type="checkbox" name="include_email" value="1" id="include_email"/><label for="include_email">{%trans "Include your email address in the invitation (anonymous if not checked)" %} ({{user.email}})</label>
+			<input type="checkbox" name="include_email" value="1" id="include_email"/><label for="include_email">{%trans "Include your email address in the invitation (anonymous if not checked)" %} (<strong>{{user.email}}</strong>)</label>
 		</td>
 	</tr>
 	{% endif %}
 	<tr>
 		<td class="options">
-			<input type="text" name="name" value="{{from_name}}" id="name" placeholder="{% trans "An optional name"%}"/><label for="name">{%trans "You can also include a name which will be included in the invitation email (not stored in this website)" %}</label>
+			<label for="name">
+			<b>Nom de la personne qui invite</b>
+			<br/>
+			<input type="text" name="name" value="{{from_name}}" id="name" placeholder="{% trans "An optional name"%}" style="width: 40em"/>
+			<br/><span class="warning">Merci d'indiquer uniquement <b>votre nom</b> (ou surnom reconnaissable par les personnes invitées) et <b>ne pas indiquer l'identité de quelqu'un d'autre</b>. Cette information ne sera pas stockée sur nos serveurs</span>
 		</td>
 	</tr>
 	<tr>
 		<td class="options">
 			<label for="name">{%trans "You can also include a personnal text (not stored in this website)" %}</label>
 			<textarea name="personnal" id="personnal" placeholder="{% trans "An optional personnal text"%}"></textarea>
+			<br/><span class="warning">Seuls les caractères alphabétiques majuscules ou minuscules sont acceptés</span>
 		</td>
 	</tr>
 	<tr>
 		<td>
-			<button type="button" class="button" id="send-button">{%trans "Send the invitations"%}</button>	
+			<button type="button" class="button" id="send-button">{%trans "Send the invitations"%}</button>
 			<button type="button" class="button" id="preview-button">{%trans "Preview the invitation email"%}</button>
 		</td>
 	</tr>
@@ -79,13 +100,13 @@ $(function() {
 		var row = $('#row-template').html();
 		$('#add-row').before(row);
 	}
-	
+
 	$('#add-button').click(add_row);
-	
+
 	$('#preview .close').click(function(){
 		$('#preview').hide();
 	});
-	
+
 	function prepare_form_data() {
 		$('#min-email').hide();
 		var emails = [];
@@ -104,13 +125,13 @@ $(function() {
 		}
 		return n;
 	}
-	
+
 	$('#send-button').click(function(){
 		if( prepare_form_data() ) {
 			$('#form-invitation').submit();
 		}
 	});
-	
+
 	$('#preview-button').click(function() {
 		if(!prepare_form_data()) {
 			return false;
@@ -127,7 +148,7 @@ $(function() {
 			}
 		})
 	});
-	
+
 	// add first row
 	add_row();
 });
