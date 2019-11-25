@@ -3,11 +3,11 @@ import sys
 
 apache_configuration= os.path.dirname(__file__)
 project = os.path.dirname(apache_configuration)
-#workspace = os.path.dirname(project)
+workspace = os.path.dirname(project)
 workspace=project
 sys.path.append(workspace) 
 
-sys.path.append(workspace+'/lib/python2.6/site-packages')
+sys.path.append(workspace+'/lib/python2.7/site-packages')
 
 os.environ['DJANGO_SETTINGS_MODULE'] = 'settings'
 
