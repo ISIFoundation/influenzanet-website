@@ -3,7 +3,7 @@
 */
 
 DELETE FROM epidb_fr.pollster_results_intake WHERE timestamp >= '2019-11-20';
-DELETE FROM epidb_fr.pollster_results_weekly WHERE timestamp >= '2018-11-20';
+DELETE FROM epidb_fr.pollster_results_weekly WHERE timestamp >= '2019-11-20';
 
 /* 
 * 2019-2020 intake
