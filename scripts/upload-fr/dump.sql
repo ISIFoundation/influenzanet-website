@@ -2,11 +2,11 @@
 * Current season season data
 */
 
-DELETE FROM epidb_fr.pollster_results_intake WHERE timestamp >= '2018-11-21';
-DELETE FROM epidb_fr.pollster_results_weekly WHERE timestamp >= '2018-11-21';
+DELETE FROM epidb_fr.pollster_results_intake WHERE timestamp >= '2019-11-20';
+DELETE FROM epidb_fr.pollster_results_weekly WHERE timestamp >= '2018-11-20';
 
 /* 
-* 2018-2019 data
+* 2019-2020 intake
 */
 
 INSERT INTO epidb_fr.pollster_results_intake
@@ -37,7 +37,7 @@ SELECT 'FR',
 	WHERE channel='';	
 	
 /* 
-* 2017-2018 data
+* 2019-2020 data
 */
 INSERT INTO epidb_fr.pollster_results_weekly
 SELECT 
