@@ -5,7 +5,9 @@ Created on 5 nov. 2018
 @author: ClementTurbelin
 '''
 
-from base64 import  b64decode
+from datetime import datetime
+from datetime import timedelta
+from base64 import  b64encode, b64decode
 from binascii import hexlify, unhexlify
 from Crypto.PublicKey import RSA
 from Crypto.Cipher import PKCS1_OAEP,AES
@@ -15,7 +17,10 @@ from Crypto.Hash import SHA256, HMAC
 from django.conf import settings
 from django.contrib import auth
 
+from apps.dashboard.views import get_badges_context
+from apps.dashboard import badges  #Ou prendre plus précisement dans badges BadgeProvider
 from apps.sw_auth.models import EpiworkUser
+from .models import Session
 
 
 import json
@@ -66,7 +71,7 @@ class AuthData:
 
     def to_json(self):
         return {
-        'ENC': hexlify(self.enc),
+        'ENC': self.enc,
         'IV': hexlify(self.IV),
         'HMAC': hexlify(self.Hmac)
     }
@@ -84,12 +89,33 @@ class AscorAPI:
         f = open(settings.ASCOR_RSA_PRIVATE_KEY, 'r')
         return RSA.importKey(f)
 
-
     def AES256CBC(self, msg, key, iv):
         cipher = AES.new(key, AES.MODE_CBC, iv)
         msg_pad = pad(msg)
         msgEnc = cipher.encrypt(msg_pad)
-        return msgEnc
+        return b64encode(msgEnc)
+
+    #Inutilisé
+    def AES256CBC_dec(self, msgenc, key, iv):
+        msgenc = b64decode(msgenc)
+        cipher = AES.new(key, AES.MODE_CBC, iv)
+        return unpad(cipher.decrypt(msgenc)).decode('utf-8')
+
+    #def create_response(self, resMSG,hs):
+    def create_response(self, resMSG,aesKey, hmacKey):
+        IV = get_random_bytes(IV_LENGTH)
+        resMSGjson = json.dumps(resMSG)
+        resMsgEnc = self.AES256CBC(resMSGjson, unhexlify(aesKey), IV)
+        HmacObject = HMAC.new(hmacKey, digestmod=SHA256.new())
+        HmacObject.update(hexlify(IV)+resMsgEnc)
+        HmacObject_hex = HmacObject.hexdigest()
+        res = {
+            #'ENC' : hexlify(resMsgEnc),
+            'ENC' : resMsgEnc,
+            'IV' : hexlify(IV),
+            'HMAC': HmacObject_hex,
+        }
+        return res
 
     def hash_hmac(self, msg):
         sha_hash = SHA256.new(msg)
@@ -113,17 +139,17 @@ class AscorAPI:
 
     def handshake(self,request, data):
         hs = self._decodeHandshake(data['RSA4096'])
-        #print("hs : "+str(hs))
         aesKeyBin = unhexlify(hs.aesKey)
         HMACkeyBin = unhexlify(hs.hmacKey)
 
+        dateLog = datetime.now() #msg_decrypt_json['dateLog']
         if not len(aesKeyBin) == AES_KEY_LENGTH:
-            print("Bad AES key length, expect %d got %d " % (AES_KEY_LENGTH, len(aesKeyBin), ), hs)
-            raise APIError("Bad AES key length, expect %d got %d " % (AES_KEY_LENGTH,len(aesKeyBin), ), hs)
+            print("Bad AES key length, expect %d got %d " % (AES_KEY_LENGTH, len(aesKeyBin), ), hs.hmacKey)
+            raise APIError("Bad AES key length, expect %d got %d " % (AES_KEY_LENGTH,len(aesKeyBin), ), hs.hmacKey)
 
         if not len(HMACkeyBin) == HMAC_KEY_LENGTH:
-            print("Bad HMAC key length, expect %d got %d " % (HMAC_KEY_LENGTH, len(HMACkeyBin), ), hs)
-            raise APIError("Bad HMAC key length, expect %d got %d " % (HMAC_KEY_LENGTH, len(HMACkeyBin), ), hs)
+            print("Bad HMAC key length, expect %d got %d " % (HMAC_KEY_LENGTH, len(HMACkeyBin), ), hs.hmacKey)
+            raise APIError("Bad HMAC key length, expect %d got %d " % (HMAC_KEY_LENGTH, len(HMACkeyBin), ), hs.hmacKey)
 
         AES256 = data['AES256']
 
@@ -144,41 +170,60 @@ class AscorAPI:
             login = msg_decrypt_json['login']
             password = msg_decrypt_json['password']
 
+
+        user = {}
         try:
             user = auth.authenticate(username=login, password=password)
             if user is None :
                 print("Bad login user")
                 raise APIError("Bad login")
             auth.login(request, user)
-            print("session key :" + str(request.session._session_key))
-            #print("Apres : "+str(vars(request.session)))
             id_session = request.session._session_key
         except EpiworkUser.DoesNotExist:
             raise APIError("Bad login")
 
-        #random IV generation
-        IV = get_random_bytes(IV_LENGTH)
+
 
         #hash calculation
-        hashmsg_dec = self.hash_hmac(data['RSA4096'])
+        #hashmsg_dec = self.hash_hmac(data['RSA4096'])
+        expiration_date = datetime.now()   #TODO donner une bonne valeur
+        session = Session.objects.create(IDSession = id_session,Username = user, AESkey= hs.aesKey,HMACkey = hs.hmacKey,expiration = expiration_date)
 
-        # Format response, TODO :fournir un token utilisateur
+        # Format response, TODO : fournir un token utilisateur
         resMSG = {
-            'token' : id_session,  #Il faut que
-            'hash' : hashmsg_dec,
-            }
-
-        # AES encryption of the response
-        resMSGjson = json.dumps(resMSG)
-        resMsgEnc = self.AES256CBC(resMSGjson, aesKeyBin, IV)
-        #HmacObject = HMAC.new(HMACkeyBin, resMsgEnc+IV , "SHA256")
-        HmacObject = HMAC.new(hs.hmacKey, digestmod=SHA256.new())
-        HmacObject.update(hexlify(IV)+hexlify(resMsgEnc))
-        HmacObject_hex = HmacObject.hexdigest()
-
-        res = {
-            'ENC' : hexlify(resMsgEnc),
-            'IV' : hexlify(IV),
-            'HMAC': HmacObject_hex,
+            'success' : "true",
+            'dateLog' : dateLog.strftime("%d/%m/%Y, %H:%M:%S"),
+            #'hash' : hashmsg_dec, #Pas besoin d'envoyer
+            'token' : id_session,  #  'IDSESSION' ou 'token'?
+            'User' : str(user),
         }
+
+        # AES encryption of the response #TODO tester
+        res = self.create_response(resMSG, hs.aesKey, hs.hmacKey)
+
+        return(res)
+
+
+    def listing_users(self, request,session, household):
+        IV = get_random_bytes(IV_LENGTH)
+        resMSG = {'participants':[]}
+        for (gid, survey_user) in household.participants.items():
+            profile = household.get_simple_profile(gid)
+            context =  {}
+            context['gid'] = gid
+            badges = get_badges_context(survey_user, context)
+            print("gid : "+ str(gid)+". profile : "+str(profile))
+            this_participant = {
+                                'gid': gid,
+                                'badges':badges,
+                                'test' :'test',
+                                }
+
+            resMSG['participants'].append(this_participant)
+
+        #TEMP TODO : rename session object with aesKey and hmacKey
+        #session.aesKey = session.AESkey
+        #session.hmacKey = session.HMACkey
+
+        res = self.create_response(resMSG, session.AESkey, str(session.HMACkey))
         return(res)
