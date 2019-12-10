@@ -82,6 +82,8 @@ class Command(BaseCommand):
                     ano = AnonymizeLog.objects.create(user=user, event=AnonymizeLog.EVENT_REACTIVATED)
                     ano.save()
 
+                if user.login == user.email :
+                    user.login = new_mail
                 user.email = new_mail
                 user.save()
                 print "user email changed to %s" % user.email
