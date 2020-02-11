@@ -1,0 +1,15 @@
+{% extends "survey/base.html" %}
+{% load i18n %}
+
+{% block col1 %}
+<h3>Vos réponses ont bien été prises en compte !</h3>
+
+<p>Toute l'équipe de GrippeNet.fr vous remercie vivement pour le temps que vous avez consacré à ce questionnaire.
+Vos réponses vont servir à améliorer les modélisations qui sont faites par l'Inserm au sujet de cette maladie, et à mieux cibler la communication réalisée par les pouvoirs publics. Nous vous tiendrons bien sûr informés des résultats de cette étude. </p>
+<p>La lettre d'information hebdomadaire de GrippeNet.fr de la semaine prochaine vous présentera une synthèse des informations connues à ce jour sur ce nouveau coronavirus.</p>
+<p>Nous vous souhaitons une bonne semaine,</p>
+<p>L'équipe GrippeNet.fr</p>
+
+<a href="{% url group_management %}" class="button">Retourner à votre espace personnel</a>
+
+{% endblock %}
