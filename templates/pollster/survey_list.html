@@ -93,7 +93,7 @@
                 {% endif %}
 	            </td>	
 				<td>{{survey.shortname }}</td>
-				<td><span class="status">{{survey.status }}</span></td>
+				<td><span class="status">{{survey.status}}</span></td>
 				<td><a class="action" href="{% url pollster_survey_test survey.id %}">test</a></td>
 	            <td><a class="action"  href="{% url pollster_survey_edit survey.id %}">edit</a></td>
 	            <td><a class="action"  href="{% url pollster_survey_translation_list survey.id %}">translate</a></td>
@@ -103,15 +103,24 @@
 				{% if survey.is_draft %}
 	               <form action="{% url pollster_survey_publish survey.id %}" method="POST">{% csrf_token %}<button class="action publish">publish</button></form>
 	            {% endif %}
+				</td>
+				<td>
 				{% if survey.is_unpublished %}
                    <form action="{% url pollster_survey_publish survey.id %}" method="POST">{% csrf_token %}<button class="action re-publish">re-publish</button></form>
 				{% endif %}
-	            {% if survey.is_published %}
+	           </td>
+			    {% if survey.is_published %}
+				<td>
 					<form action="{% url pollster_survey_unpublish survey.id %}" method="POST">{% csrf_token %}<button class="action unpublish">unpublish</button></form>
-	                </td>
-					<td> 
-	                <a class="action"  href="{% url pollster_survey_results_csv survey.id %}">results</a>
-	            {% endif %}
+	            </td>
+				<td>
+				    <a class="action"  href="{% url pollster_survey_results_csv survey.id %}">results</a>
+	            </td>
+				<td>
+					{{ survey.count_responses }}
+	            {% else %}
+				<td colspan="3">
+				{% endif %}
 				</td>
 			</tr>				
             {% endfor %}

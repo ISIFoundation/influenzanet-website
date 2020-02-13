@@ -516,6 +516,11 @@ class Survey(models.Model):
                 row.append(val)
             writer.writerow(row)
 
+    @property
+    def count_responses(self):
+        model = self.as_model()
+        return model.objects.count()
+
 class RuleType(models.Model):
     title = models.CharField(max_length=255, blank=True, default='')
     js_class = models.CharField(max_length=255, unique=True)
