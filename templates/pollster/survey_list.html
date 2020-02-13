@@ -17,7 +17,7 @@
 .status-PUBLISHED .status {
 	background-color:#5cb85c;
 	color: white;
-	
+
 }
 
 .status-UNPUBLISHED .status {
@@ -38,7 +38,7 @@
 
 .status-UNPUBLISHED td.title {
 	font-style: italic;
-	text-decoration:line-through;	
+	text-decoration:line-through;
 }
 
  .action {
@@ -91,7 +91,7 @@
                 {% else %}
                 No Name
                 {% endif %}
-	            </td>	
+	            </td>
 				<td>{{survey.shortname }}</td>
 				<td><span class="status">{{survey.status}}</span></td>
 				<td><a class="action" href="{% url pollster_survey_test survey.id %}">test</a></td>
@@ -113,16 +113,18 @@
 				<td>
 					<form action="{% url pollster_survey_unpublish survey.id %}" method="POST">{% csrf_token %}<button class="action unpublish">unpublish</button></form>
 	            </td>
+				{% comment %}
 				<td>
 				    <a class="action"  href="{% url pollster_survey_results_csv survey.id %}">results</a>
 	            </td>
+	            {% endcomment %}
 				<td>
 					{{ survey.count_responses }}
 	            {% else %}
 				<td colspan="3">
 				{% endif %}
 				</td>
-			</tr>				
+			</tr>
             {% endfor %}
 			</table>
         <ul class="action-list">

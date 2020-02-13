@@ -433,13 +433,19 @@ def survey_chart_map_click(request, id, shortname, lat, lng):
 
 @staff_member_required
 def survey_results_csv(request, id):
-    survey = get_object_or_404(models.Survey, pk=id)
-    now = datetime.datetime.now()
-    response = HttpResponse(mimetype='text/csv')
-    response['Content-Disposition'] = 'attachment; filename=survey-results-%d-%s.csv' % (survey.id, format(now, '%Y%m%d%H%M'))
-    writer = csv.writer(response)
-    survey.write_csv(writer)
-    return response
+    raise Http404()
+
+    """
+     This method must never be used to export data
+    """
+
+    #survey = get_object_or_404(models.Survey, pk=id)
+    #now = datetime.datetime.now()
+    #response = HttpResponse(mimetype='text/csv')
+    #response['Content-Disposition'] = 'attachment; filename=survey-results-%d-%s.csv' % (survey.id, format(now, '%Y%m%d%H%M'))
+    #writer = csv.writer(response)
+    #survey.write_csv(writer)
+    #return response
 
 @staff_member_required
 def survey_export_xml(request, id):
