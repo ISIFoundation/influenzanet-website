@@ -1,0 +1,54 @@
+[
+    {
+        "pk": null,
+		"model": "dashboard.badge",
+        "fields": {
+            "name": "pregnant",
+        	"datasource": "profile",
+            "label": "G-GrippeNet",
+            "description": "Félicitations ! Vous venez de décrocher le badge «G-GrippeNet» pour votre participation au suivi spécifique des femmes enceintes ! Merci !",
+			"attribute_to": "P",
+			"season": 2014,
+			"compute_once": false
+       	}
+    },
+    {
+        "pk": null,
+		"model": "dashboard.badge",
+        "fields": {
+            "name": "pregnant_twins",
+        	"datasource": "profile",
+            "label": "Jumeaux",
+            "description": "Bravo ! Vous venez de décrocher le badge «Jumeaux» ! Vous avez déclaré être enceinte de jumeaux (ou plus). Félicitations ! ",
+			"attribute_to": "P",
+			"season": 2014,
+			"compute_once": false
+       	}
+    },
+    {
+        "pk": null,
+		"model": "dashboard.badge",
+        "fields": {
+            "name": "pregnant_tabac",
+        	"datasource": "profile",
+            "label": "Stop au tabac",
+            "description": "Bravo ! Vous venez de décrocher le badge «Jumeaux» ! Vous avez déclaré être enceinte de jumeaux (ou plus). Félicitations ! ",
+			"attribute_to": "P",
+			"season": 2014,
+			"compute_once": false
+       	}
+    },
+    {
+        "pk": null,
+		"model": "dashboard.badge",
+        "fields": {
+            "name": "pregnant_pioneer",
+        	"datasource": "pregnant_pioneer",
+            "label": "Pionnière G-GrippeNet",
+            "description": "Félicitations ! Vous venez de décrocher le badge «Pionnière» ! Vous êtes la première participante de votre lieu de résidence à prendre part au projet G-GrippeNet. Merci ! ",
+			"attribute_to": "P",
+			"season": 2014,
+			"compute_once": true
+       	}
+    }
+]
