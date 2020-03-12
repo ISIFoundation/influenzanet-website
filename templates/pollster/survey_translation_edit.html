@@ -29,11 +29,12 @@
     <div>
     <h1>{{ survey.title }}<br/>{{ survey.translation.as_form.title }} {{ survey.translation.as_form.status }}</h1>
     </div>
-    
+
     {% for question in survey.questions %}
     {% if not question.is_builtin %}
-    <div class="question-wrapper clearfix">
-        <div id="question-{{ question.id }}-translation-{{ question.translation.id }}" class="question">
+    <div class="question-wrapper clearfix" >
+        <div id="question-{{ question.id }}-translation-{{ question.translation.id }}" class="question" style="width:800px">
+            <p><b>{{question.data_name}}</b></p>
             <h5 class="item-name">Question Title</h5>
             <p title="Question Title">
                 <span class="number"></span>
