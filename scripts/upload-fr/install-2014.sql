@@ -94,6 +94,34 @@ CREATE TABLE epidb_fr.pollster_results_weekly (
     CONSTRAINT "pollster_results_weekly_Q9b_check5" CHECK (("Q9b" >= 0))
 );
 
+ALTER TABLE epidb_fr.pollster_results_weekly
+  ADD COLUMN  "Qcov1b_multi_row1_col1" text,
+  ADD COLUMN  "Qcov1b_multi_row2_col1" text,
+  ADD COLUMN  "Qcov1b_multi_row3_col1" text,
+  ADD COLUMN  "Qcov2b_multi_row1_col1" text,
+  ADD COLUMN  "Qcov2b_multi_row2_col1" text,
+  ADD COLUMN  "Qcov2b_multi_row3_col1" text,
+  ADD COLUMN  "Qcov1" integer,
+  ADD COLUMN  "Qcov2" integer,
+  ADD COLUMN  "Qcov3" integer,
+  ADD COLUMN  "Qcov4" integer,
+  ADD COLUMN  "Qcov5" integer,
+  ADD COLUMN  "Qcov6" integer,
+  ADD COLUMN  "Qcov7_1" boolean,
+  ADD COLUMN  "Qcov7_2" boolean,
+  ADD COLUMN  "Qcov7_3" boolean,
+  ADD COLUMN  "Qcov7_4" boolean,
+  ADD COLUMN  "Qcov7_5" boolean,
+  ADD COLUMN  "Qcov7_6" boolean,
+  ADD COLUMN  "Qcov7_7" boolean,
+  ADD COLUMN  "Qcov7_8" boolean,
+  ADD COLUMN  "Qcov7_9" boolean,
+  ADD COLUMN  "Qcov7_10" boolean,
+  ADD COLUMN  "Qcov7_11" boolean,
+  ADD COLUMN  "Qcov7_12" boolean
+;
+
+
 GRANT ALL ON TABLE epidb_fr.pollster_results_weekly TO postgres;
 GRANT ALL ON TABLE epidb_fr.pollster_results_weekly TO epiwork;
 GRANT ALL ON TABLE epidb_fr.pollster_results_weekly TO "DBA";
@@ -223,6 +251,8 @@ GRANT ALL ON TABLE epidb_fr.pollster_results_intake TO postgres;
 GRANT ALL ON TABLE epidb_fr.pollster_results_intake TO epiwork;
 GRANT ALL ON TABLE epidb_fr.pollster_results_intake TO "DBA";
 GRANT ALL ON TABLE epidb_fr.pollster_results_intake TO "Statistician";
+
+
 
 -- Dump Previous seasons once
 
