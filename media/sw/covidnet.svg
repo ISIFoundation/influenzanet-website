@@ -1,0 +1,136 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg
+   xmlns:dc="http://purl.org/dc/elements/1.1/"
+   xmlns:cc="http://creativecommons.org/ns#"
+   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+   xmlns:svg="http://www.w3.org/2000/svg"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   sodipodi:docname="covidnet.svg"
+   inkscape:version="1.0beta2 (2b71d25, 2019-12-03)"
+   id="svg3758"
+   version="1.1"
+   viewBox="0 0 52.436089 11.327406"
+   height="11.327406mm"
+   width="52.436089mm">
+  <defs
+     id="defs3752" />
+  <sodipodi:namedview
+     fit-margin-bottom="0"
+     fit-margin-right="0"
+     fit-margin-left="0"
+     fit-margin-top="0"
+     inkscape:document-rotation="0"
+     inkscape:window-maximized="0"
+     inkscape:window-y="23"
+     inkscape:window-x="0"
+     inkscape:window-height="880"
+     inkscape:window-width="1600"
+     showgrid="false"
+     inkscape:current-layer="layer1"
+     inkscape:document-units="mm"
+     inkscape:cy="35.577962"
+     inkscape:cx="69.608471"
+     inkscape:zoom="2.8"
+     inkscape:pageshadow="2"
+     inkscape:pageopacity="0.0"
+     borderopacity="1.0"
+     bordercolor="#666666"
+     pagecolor="#ffffff"
+     id="base" />
+  <metadata
+     id="metadata3755">
+    <rdf:RDF>
+      <cc:Work
+         rdf:about="">
+        <dc:format>image/svg+xml</dc:format>
+        <dc:type
+           rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
+        <dc:title></dc:title>
+      </cc:Work>
+    </rdf:RDF>
+  </metadata>
+  <g
+     transform="translate(-26.339551,-122.75298)"
+     id="layer1"
+     inkscape:groupmode="layer"
+     inkscape:label="Calque 1">
+    <flowRoot
+       transform="matrix(0.26458333,0,0,0.26458333,-1.4174107,22.584078)"
+       style="font-style:normal;font-weight:normal;font-size:40px;line-height:25px;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none"
+       id="flowRoot3760"
+       xml:space="preserve"><flowRegion
+         id="flowRegion3762"><rect
+           y="396.80539"
+           x="102.85714"
+           height="162.85715"
+           width="582.85712"
+           id="rect3764" /></flowRegion><flowPara
+         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:40px;font-family:sans-serif;-inkscape-font-specification:'sans-serif, Normal';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-feature-settings:normal;text-align:start;writing-mode:lr-tb;text-anchor:start"
+         id="flowPara3766"><flowSpan
+           id="flowSpan4575"
+           style="fill:#f58220;fill-opacity:1">covid</flowSpan><flowSpan
+           id="flowSpan4581"
+           style="fill:#00599a;fill-opacity:1">net</flowSpan><flowSpan
+           id="flowSpan3768"
+           style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:26.6667px;font-family:sans-serif;-inkscape-font-specification:'sans-serif, Normal';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-feature-settings:normal;text-align:start;writing-mode:lr-tb;text-anchor:start;fill:#899f99;fill-opacity:1">.fr</flowSpan></flowPara></flowRoot>
+  </g>
+  <g
+     transform="translate(-26.339551,-122.75298)"
+     inkscape:label="virus"
+     id="layer2"
+     inkscape:groupmode="layer">
+    <ellipse
+       ry="1.3701636"
+       rx="1.4174107"
+       cy="126.10751"
+       cx="45.31741"
+       id="path4586"
+       style="fill:#f58220;fill-opacity:1;stroke-width:0.264583" />
+    <circle
+       r="0.47247022"
+       cy="127.28867"
+       cx="47.530506"
+       id="path4609"
+       style="fill:#f58220;fill-opacity:1;stroke-width:0.264583" />
+    <circle
+       r="0.47247022"
+       cy="125.58781"
+       cx="42.616814"
+       id="path4609-9"
+       style="fill:#f58220;fill-opacity:1;stroke-width:0.264583" />
+    <circle
+       r="0.47247022"
+       cy="123.22545"
+       cx="44.695686"
+       id="path4609-8"
+       style="fill:#f58220;fill-opacity:1;stroke-width:0.264583" />
+    <circle
+       r="0.47247022"
+       cy="124.64285"
+       cx="47.530506"
+       id="path4609-1"
+       style="fill:#f58220;fill-opacity:1;stroke-width:0.264583" />
+    <path
+       inkscape:connector-curvature="0"
+       id="path4638"
+       d="m 45.462029,126.20268 2.149293,0.96249"
+       style="fill:none;stroke:#f58220;stroke-width:0.269752px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1" />
+    <path
+       inkscape:connector-curvature="0"
+       id="path4638-7"
+       d="m 44.754967,123.21667 0.707062,2.98601"
+       style="fill:none;stroke:#f58220;stroke-width:0.272516px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1" />
+    <path
+       inkscape:connector-curvature="0"
+       id="path4638-6"
+       d="m 42.787606,125.7872 2.897172,0.92681"
+       style="fill:none;stroke:#f58220;stroke-width:0.307325px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1" />
+    <path
+       inkscape:connector-curvature="0"
+       id="path4638-3"
+       d="m 47.190189,124.85718 -2.786494,1.3455"
+       style="fill:none;stroke:#f58220;stroke-width:0.363153px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1" />
+  </g>
+</svg>

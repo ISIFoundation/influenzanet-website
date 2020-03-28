@@ -85,6 +85,11 @@ ADMIN_MEDIA_PREFIX = '/admin/media/'
 CMS_FILE_ICON_PATH = os.path.join(MEDIA_ROOT, 'file_icons/')
 CMS_FILE_ICON_URL = os.path.join(MEDIA_URL, 'file_icons/')
 
+
+SITE_ICON = 'grippenet.ico'
+SITE_HEADLINE = 'Devenez acteur de la surveillance de la grippe'
+SITE_LOGO = 'sw/grippenet.png'
+
 # Make this unique, and don't share it with anybody.
 SECRET_KEY = 'swgm*3%po62mg76m4iq!k8h3j+_)x=8b--7skjc_0wiak^wksr'
 

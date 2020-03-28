@@ -14,12 +14,14 @@ def site_context(with_url=False):
 
     data = {
         'site_name': site.name,
-        'site_logo': settings.logo.url if settings.logo else "",
+        'site_logo': getattr(django_settings, 'SITE_LOGO', ''),
+        'site_headline': getattr(django_settings, 'SITE_HEADLINE', ""),
+        'site_icon': getattr(django_settings, 'SITE_ICON', ''),
         'site_footer': mark_safe(clean_html(settings.footer, full=False)) if settings.footer else None,
         # 'show_cookie_warning': settings.show_cookie_warning,
         'google_analytics': django_settings.GOOGLE_ANALYTICS_ACCOUNT,
         'piwik_server_url': getattr(django_settings,'PIWIK_SERVER_URL', False),
-        'assets_version': getattr(django_settings, 'ASSETS_VERSION', 0)
+        'assets_version': getattr(django_settings, 'ASSETS_VERSION', 0),
     }
 
     if with_url:

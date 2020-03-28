@@ -7,7 +7,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="initial-scale=0.75, user-scalable=yes" />
 <meta name="robots" content="index, follow" />
-<link rel="shortcut icon" href="{{ MEDIA_URL }}sw/grippenet.ico" type="image/x-icon" />
+<link rel="shortcut icon" href="{{ MEDIA_URL }}sw/{{site_icon}}" type="image/x-icon" />
 <title>{% block title %}{{ site_name }}: {% page_attribute page_title %}{% endblock title %}</title>
 <meta name="description" content="{% page_attribute meta_description %}"/>
 <meta name="keywords" content="{% page_attribute meta_keywords %}"/>
@@ -38,12 +38,12 @@
 {% endif %}
 <div id="header">
 	<div id="headerlogo">
-		<a href="/" title="GrippeNet"><img src="{{MEDIA_URL}}/sw/grippenet.png" alt="GrippeNet logo" /></a><br/>
-		<div id="headersub">Devenez acteur de la surveillance de la grippe</div>
+		<a href="/" title="{{site_name}}"><img src="{{MEDIA_URL}}/{{site_logo}}" alt="{{site_name}} logo"  height="83"/></a><br/>
+		<div id="headersub">{{site_headline}}</div>
 	</div>
 	{%if user.is_authenticated %}
 	<div id="header-user">
-	<h2>Vous êtes connecté à GrippeNet.fr</h2>
+	<h2>Vous êtes connecté à {{site_name}}</h2>
 	<div id="feedback">
 		<a href="/feedback" rel="facebox" data-facebox-width="650" data-facebox-height="550" id="feedback-link"><i class="icon icon-feeback"></i>Un commentaire, un problème ?</a>
 	</div>
@@ -87,7 +87,7 @@
 {% block content %}{% endblock content %}
 <div id="footer">{% block footercontent %}
     <div id="footerclose">
-     &copy; {% now "Y" %}  GrippeNet.fr
+     &copy; {% now "Y" %}  {{site_name}}
 	 &nbsp;-&nbsp;<a href="http://www.sentiweb.fr">réseau Sentinelles</a>
 	 &nbsp;-&nbsp;<a href="http://www.iplesp.upmc.fr">Institut Pierre Louis, UMR S 1136</a>
 	 &nbsp;-&nbsp;<a href="/grippenet/contact/">Nous contacter</a>
