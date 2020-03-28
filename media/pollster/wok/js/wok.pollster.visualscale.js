@@ -45,7 +45,7 @@
 								var id = $e.data('question-id');
 								$('#' + id).val(ui.value);
 								$('#' + id + '-vas-response').text('Votre réponse a été prise en compte').addClass('vas-response-ok');
-								$('#' + id + '_slider .ui-slider-handle').css({'background-color': '#7AB800'});
+								$('#' + id + '_slider .ui-slider-handle').addClass('bg-color2');
 							}
 						});
 

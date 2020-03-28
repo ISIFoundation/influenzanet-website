@@ -10,13 +10,13 @@ hr {
 }
 
 #colmask p.title {
- background: #7AB800; /* 7AB800 */
+ background: $gn_color2; 
  color: white;
  font-weight: bold;
 }
 
 #colmask a {
- color: #007AB8; /* Bleu complementaire de 7AB800 */
+ color: $gn_color1; 
  font-weight: bold;
 }
 
@@ -145,7 +145,7 @@ p.centered {
 }
 
 #account ul.anonymous li, #account ul.member li {
-background-color: #7AB800;
+background-color: $gn_color2;
 border: 1px solid #59705D;
 border-radius: 2px 2px 2px 2px;
 text-align: center;
@@ -198,7 +198,7 @@ font-size: .6em;
 
 .counter {
 font-size: 1.4em;
-color: #7AB800;
+color: $gn_color2;
 font-weight: bold;
 }
 

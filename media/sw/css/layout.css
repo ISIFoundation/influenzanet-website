@@ -379,8 +379,8 @@ input#commentsubmit:hover {
 }
 
 .button {
- border: 1px solid #007AB8;
- background-color: #007AB8;
+ border: 1px solid $gn_color1;
+ background-color: $gn_color1;
  color: white;
  padding: 4px;
  cursor: pointer;	
@@ -390,7 +390,7 @@ input#commentsubmit:hover {
 }
 
 a.button {
- background-color: #007AB8;
+ background-color: $gn_color1;
 }
 
 #colmask a.button {
@@ -400,8 +400,8 @@ a.button {
 }
 
 #colmask a.button:hover , .button:hover {
-	background-color: #7AB800;
-	border-color: #7AB800;
+	background-color: $gn_color2;
+	border-color: $gn_color2;
 } 
 
 .button-mini {
@@ -479,6 +479,12 @@ a:link.close {
 .dllink {
  font-size: 0.7em;
  line-height: 1.5em;
+}
+
+.iframe-cookie {
+	border: 2px solid $gn_color1; 
+	margin: 1em auto; height: 200px; 
+	width: 450px;
 }
 
 /* Charts & Maps */
@@ -577,6 +583,21 @@ blockquote {
 /**
  Utils
  */
+.bg-color1 {
+	background-color: $gn_color1;
+}
+
+.bg-color2 {
+	background-color: $gn_color2;
+}
+ 
+.text-color1 {
+	color: $gn_color1;
+} 
+ 
+.text-color2 {
+	color: $gn_color2;
+} 
 
 .left {
  float: left;

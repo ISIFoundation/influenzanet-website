@@ -37,11 +37,28 @@ class TemplateFilter(Filter):
 
 register_filter(TemplateFilter)
 
+css_config = {
+  'gn_color1': '#007AB8',  # Blue #007AB8
+  'gn_color2': '#7AB800',  # Green #7AB800
+  'color_button_tofill': '#FF8C00'
+}
+
+# Very simple
+def apply_config(_in, out,  **kw):
+    
+    template = _in.read()
+    for var in sorted(css_config, key=len, reverse=True):
+        value = css_config[var]
+        v = '$' + var
+        template = template.replace(v, value)
+    out.write(template)
+
 ###
 # Common application Bundles
 ###
 
 js_base = Bundle(
+     Bundle('sw/js/config.js', filters=(apply_config, )),
      'pollster/jquery/js/jquery-1.5.2.min.js',
      'sw/js/jquery-1.7.2.min.js',
      'pollster/jquery/js/jquery.tools.min.js',
@@ -88,5 +105,5 @@ css_base = Bundle(
      'sw/css/pregnant.css',
      'sw/css/introjs.min.css',
      output='assets/base.css',
-     filters='cssrewrite,cssmin'
+     filters=(apply_config, 'cssrewrite','cssmin',)
 )

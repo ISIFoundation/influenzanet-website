@@ -49,13 +49,13 @@ background: #FFF url(../home.png) left center no-repeat;
 
 
 .survey label:hover {
-color: #007AB8;
+color: $gn_color1;
 }
 
 #survey-intro {
  margin: 1em;
  padding: .5em;
- border: 3px solid #7AB800;
+ border: 3px solid $gn_color2;
  font-size: .9em;
 }
 
@@ -63,7 +63,7 @@ color: #007AB8;
  text-align: center;
  margin: 1em;
  font-weight: bold;
- color: #007AB8;
+ color: $gn_color1;
 }
 
 .survey-user-name {
@@ -101,14 +101,14 @@ padding: .3em;
 	font-size: .9em;
 	margin-bottom: 10px; /* align to .question input[type=text] */
 	margin-left: 4px;
-	color: #007AB8;
+	color: $gn_color1;
 	font-weight: bold;
 	display: inline-block;
 }
 
 #colmask .vas-type .ui-slider-handle {
  bakground-image: url();
- background-color:#007AB8;
+ background-color:$gn_color1;
 }
 
 .question-tip-toggle {

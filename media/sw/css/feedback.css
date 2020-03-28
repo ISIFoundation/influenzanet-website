@@ -12,5 +12,5 @@ background-color: #FFF;
 
 #feedback a {
 text-decoration:none;
-color: #007AB8;	
+color: $gn_color1;	
 }
