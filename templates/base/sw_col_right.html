@@ -1,8 +1,8 @@
 {%load i18n user_login  cms_tags %}
 {%if not user.is_authenticated %}
 <form action="/accounts/login/?next=/survey/main/" id="login-form" method="post">{% csrf_token %}
-	{%trans "Username" %}<input type="text" name="username" size="30" maxlength="70"/>
-	{%trans "Password" %}<input type="password" name="password" size="30" maxlength="30"/>
+	{%trans "Username" %}<input type="text" name="username" size="30" maxlength="70" autocomplete="username"/>
+	{%trans "Password" %}<input type="password" name="password" size="30" maxlength="30" autocomplete="current-password" />
 	<div>
 	<button type="submit" class="button">Se connecter</button>
 	</div>
