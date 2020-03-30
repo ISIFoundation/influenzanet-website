@@ -39,7 +39,7 @@ register_filter(TemplateFilter)
 
 css_config = {
   'gn_color1': '#007AB8',  # Blue #007AB8
-  'gn_color2': '#F58220',  # Green #7AB800
+  'gn_color2': '#F58220',  # Green #7AB800 Orange #F58220
   'color_button_tofill': '#FF8C00'
 }
 
