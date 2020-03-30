@@ -75,7 +75,7 @@ class Command(BaseCommand):
         self.headers = {
          'Sender': settings.EMAIL_DEFAULT_SENDER,
          'Return-Path': settings.EMAIL_DEFAULT_SENDER,
-         'Reply-To': 'contact@grippenet.fr'
+         'Reply-To': settings.EMAIL_CONTACT_TEAM
         }
 
     def get_reminder(self):

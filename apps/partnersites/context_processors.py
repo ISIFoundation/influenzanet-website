@@ -17,6 +17,7 @@ def site_context(with_url=False):
         'site_logo': getattr(django_settings, 'SITE_LOGO', ''),
         'site_headline': getattr(django_settings, 'SITE_HEADLINE', ""),
         'site_icon': getattr(django_settings, 'SITE_ICON', ''),
+        'contact_email': getattr(django_settings, 'EMAIL_CONTACT_TEAM', ''),
         'site_footer': mark_safe(clean_html(settings.footer, full=False)) if settings.footer else None,
         # 'show_cookie_warning': settings.show_cookie_warning,
         'google_analytics': django_settings.GOOGLE_ANALYTICS_ACCOUNT,
