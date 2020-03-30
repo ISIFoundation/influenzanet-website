@@ -1,10 +1,11 @@
 $(function() {
+	var name = app_config.name;
 	$.cc.run({
 		target: '#cc-box',
 		types: {
 			'essential': {
-				title: 'Cookies de GrippeNet.fr',
-				desc: 'Ces cookies sont nécessaires au fonctionnement de GrippeNet.fr, il n\'est pas possible de les désactiver.',
+				title: 'Cookies de ' + name,
+				desc: 'Ces cookies sont nécessaires au fonctionnement de '+name+', il n\'est pas possible de les désactiver.',
 				base: true
 			},
 			'social': {

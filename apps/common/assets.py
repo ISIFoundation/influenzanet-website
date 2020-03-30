@@ -2,6 +2,7 @@ from webassets import Bundle, Environment
 from webassets.filter import Filter, register_filter
 from django.conf import settings
 from django.template import Template, Context
+from apps.partnersites.context_processors import site_context
 import os
 
 env = Environment(directory=settings.MEDIA_ROOT, url=settings.MEDIA_URL)
@@ -37,7 +38,10 @@ class TemplateFilter(Filter):
 
 register_filter(TemplateFilter)
 
+context = site_context()
+
 css_config = {
+  'site_name': context['site_name'],
   'gn_color1': '#F58220',  # Blue #007AB8
   'gn_color2': '#007AB8',  # Green #7AB800 Orange #F58220
   'color_button_tofill': '#FF8C00'
