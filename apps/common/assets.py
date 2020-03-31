@@ -2,6 +2,7 @@ from webassets import Bundle, Environment
 from webassets.filter import Filter, register_filter
 from django.conf import settings
 from django.template import Template, Context
+from apps.partnersites.context_processors import site_context
 import os
 
 env = Environment(directory=settings.MEDIA_ROOT, url=settings.MEDIA_URL)
@@ -26,7 +27,7 @@ def optional_file(file):
 
 class TemplateFilter(Filter):
     name = 'from_template'
-    
+
     def output(self, _in, out, **kwargs):
         template = Template(_in.read())
         ctx = Context()
@@ -37,11 +38,31 @@ class TemplateFilter(Filter):
 
 register_filter(TemplateFilter)
 
+context = site_context()
+
+css_config = {
+  'site_name': context['site_name'],
+  'gn_color1': '#F58220',  # Blue #007AB8
+  'gn_color2': '#007AB8',  # Green #7AB800 Orange #F58220
+  'color_button_tofill': '#FF8C00'
+}
+
+# Very simple
+def apply_config(_in, out,  **kw):
+
+    template = _in.read()
+    for var in sorted(css_config, key=len, reverse=True):
+        value = css_config[var]
+        v = '$' + var
+        template = template.replace(v, value)
+    out.write(template)
+
 ###
 # Common application Bundles
 ###
 
 js_base = Bundle(
+     Bundle('sw/js/config.js', filters=(apply_config, )),
      'pollster/jquery/js/jquery-1.5.2.min.js',
      'sw/js/jquery-1.7.2.min.js',
      'pollster/jquery/js/jquery.tools.min.js',
@@ -57,18 +78,18 @@ js_base = Bundle(
 js_mailcheck = Bundle(
    'sw/js/mailcheck.min.js',
    optional_file('assets/domains.js'),
-   output='assets/mailchecker.js'                   
-) 
- 
+   output='assets/mailchecker.js'
+)
+
 js_survey_intro = Bundle(
  'sw/js/intro.min.js',
  'sw/js/survey.intro.js',
- output='assets/survey.intro.js'                         
-) 
- 
+ output='assets/survey.intro.js'
+)
+
 css_base = Bundle(
      'sw/css/_normalize.css',
-     'sw/css/_base.css',                         
+     'sw/css/_base.css',
      'sw/css/layout.css',
      'sw/css/contents.css',
      'sw/css/menu.css',
@@ -88,5 +109,5 @@ css_base = Bundle(
      'sw/css/pregnant.css',
      'sw/css/introjs.min.css',
      output='assets/base.css',
-     filters='cssrewrite,cssmin'
+     filters=(apply_config, 'cssrewrite','cssmin',)
 )

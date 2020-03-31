@@ -121,11 +121,11 @@
 }
 
 .badge.badge-new {
-	border: 2px dashed #7ab800
+	border: 2px dashed $gn_color2
 }
 
 .new-badges { 
-	border: 2px solid #7ab800; 
+	border: 2px solid $gn_color2; 
 	padding: .4em; 
 	font-size: .8em; 
 	font-style: italic; 

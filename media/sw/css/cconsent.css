@@ -4,7 +4,7 @@
 
 #cc-box {
 font-size: .9em;
-border: 2px solid #7AB800;
+border: 2px solid $gn_color2;
 padding: .4em;
 margin: .2em;
 }

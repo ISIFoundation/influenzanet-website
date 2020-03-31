@@ -64,9 +64,9 @@ function prepare_data(data, column, my_group, translation) {
 		labels.push(label);
 		if( n == my_group ) {
 		 	my_group_idx = i;
-			colors.push('#7AB800');
+			colors.push(app_config.color2);
 		} else {
-			colors.push('#007AB8');
+			colors.push(app_config.color1);
 		}
 		++i;
 	}

@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2018-05-22 15:44+0200\n"
-"PO-Revision-Date: 2020-03-23 14:58+0100\n"
+"PO-Revision-Date: 2020-03-30 15:49+0200\n"
 "Last-Translator: Clément Turbelin\n"
 "Language-Team: \n"
 "Language: fr\n"
@@ -16,7 +16,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
-"X-Generator: Poedit 2.0.6\n"
+"X-Generator: Poedit 2.3\n"
 
 #: .\apps\accounts\forms.py:17 .\apps\accounts\forms.py:21
 #: .\apps\accounts\forms.py:26 .\apps\sw_auth\forms.py:25
@@ -289,7 +289,7 @@ msgstr "Saisir une valeur autorisée (lettres, nombres ou tirets bas)."
 
 #: .\apps\pollster\views.py:230
 msgid "Thanks - your diagnosis:"
-msgstr "Merci beaucoup pour votre participation à GrippeNet.fr. D'après les informations fournies, votre état de santé classé par GrippeNet.fr comme : "
+msgstr "Merci beaucoup pour votre participation à COVIDnet.fr. D'après les informations fournies, votre état de santé classé par GrippeNet.fr comme : "
 
 #: .\apps\pollster\views.py:232 .\templates\survey\thanks.html.py:22
 msgid "Thanks for taking the time to fill out this survey."
@@ -451,11 +451,11 @@ msgstr "Se réinscrire"
 
 #: .\apps\reminder\templates\reminder\resubscribe.html.py:7
 msgid "You may resubscribe to the Influenzanet reminder/newsletter by pressing the button below."
-msgstr "Vous pouvez vous réinscrire à la lettre d'information de GrippeNet.fr en cliquant sur le bouton ci-dessous."
+msgstr "Vous pouvez vous réinscrire à la lettre d'information de COVIDnet.fr en cliquant sur le bouton ci-dessous."
 
 #: .\apps\reminder\templates\reminder\resubscribe_successful.html.py:7
 msgid "You have been successfully resubscribed to the mailing list"
-msgstr "Vous avez été désinscrit de la lettre d'information de GrippeNet.fr. Vous ne recevrez plus la lettre lors du prochain envoi."
+msgstr "Vous avez été désinscrit de la lettre d'information de COVIDnet.fr. Vous ne recevrez plus la lettre lors du prochain envoi."
 
 #: .\apps\reminder\templates\reminder\unsubscribe.html.py:6
 #: .\apps\reminder\templates\reminder\unsubscribe.html.py:10
@@ -465,7 +465,7 @@ msgstr "Se désinscrire"
 
 #: .\apps\reminder\templates\reminder\unsubscribe.html.py:7
 msgid "You may unsubscribe from the Influenzanet reminder/newsletter by pressing the button below."
-msgstr "Vous pouvez vous désinscrire de la lettre d'information de GrippeNet.fr en cliquant sur le bouton ci-dessous."
+msgstr "Vous pouvez vous désinscrire de la lettre d'information de COVIDnet.fr en cliquant sur le bouton ci-dessous."
 
 #: .\apps\reminder\templates\reminder\unsubscribe_successful.html.py:7
 msgid "You have been successfully unsubscribed from the mailing list"
@@ -522,7 +522,7 @@ msgstr "Demande de fermeture de compte"
 #: .\apps\sw_auth\anonymize.py:76
 #, python-format
 msgid "A account closing request has been provided for account number %d"
-msgstr "Une demande de fermeture de compte faite pour le compte %d"
+msgstr "Une demande de fermeture de compte a été faite pour le compte %d"
 
 #: .\apps\sw_auth\forms.py:11
 msgid "Enter your password"
@@ -620,7 +620,7 @@ msgstr "Nouveau mot de passe :"
 
 #: .\apps\sw_auth\views.py:86
 msgid "This email is associated with several accounts. Please contact us to regularize"
-msgstr "Cette adresse email est associée à plusieurs compte GrippeNet. Contactez nous pour régulariser cette situation."
+msgstr "Cette adresse email est associée à plusieurs compte COVIDnet. Contactez nous pour régulariser cette situation."
 
 #: .\apps\sw_auth\views.py:92
 msgid "The user associated with this email is already activated"
@@ -632,7 +632,7 @@ msgstr "Un problème est survenu durant l'enregistrement. Veuillez réessayer pl
 
 #: .\apps\sw_auth\views.py:101
 msgid "This email is not associated with any account"
-msgstr "Cet adresse email n'est associée à aucun compte GrippeNet.fr"
+msgstr "Cet adresse email n'est associée à aucun compte COVIDnet.fr"
 
 #: .\apps\sw_auth\views.py:120
 msgid "sorry no corresponding user info was found"
@@ -691,7 +691,7 @@ msgstr "Un problème est survenu durant l'enregistrement. Veuillez réessayer pl
 
 #: .\apps\sw_invitation\utils.py:32
 msgid "An InfluenzaNet user"
-msgstr "Un de vos contacts, utilisateur de GrippeNet.fr"
+msgstr "Un de vos contacts, utilisateur de COVIDnet.fr"
 
 #: .\apps\sw_invitation\views.py:40
 #, python-format
@@ -816,7 +816,7 @@ msgstr "Vous avez été déconnecté"
 #: .\templates\registration\logout.html.py:10
 #: .\templates\sw_auth\logout.html.py:9
 msgid "You have been logged out. Go to "
-msgstr "Vous avez été déconnecté de votre compte GrippeNet.fr"
+msgstr "Vous avez été déconnecté de votre compte COVIDnet.fr"
 
 #: .\templates\accounts\my_profile.html.py:4
 msgid "My profile"
@@ -1004,7 +1004,7 @@ msgstr "Réactivez-les en cliquant ici"
 
 #: .\templates\dashboard\user_badges.html.py:10
 msgid "This is a new feature of this website. You will win badge during the season."
-msgstr "<p>Les badges visent à rendre la participation à GrippeNet.fr un peu plus ludique, sans pour autant en réduire le sérieux. En fonction de vos réponses aux questionnaires vous pourrez obtenir différents badges au cours de la saison (les badges sont attribués à un participant en particulier ou à l'ensemble du compte). </p><p>Vous pouvez nous faire part de votre avis sur cette fonctionnalité (en utilisant par exemple le bouton commentaire en haut de la page). Il est également possible de désactiver cette fonctionnalité pour un participant (ou pour tout le compte) si vous ne souhaitez plus les voir.</p>"
+msgstr "<p>Les badges visent à rendre la participation à COVIDnet.fr un peu plus ludique, sans pour autant en réduire le sérieux. En fonction de vos réponses aux questionnaires vous pourrez obtenir différents badges au cours de la saison (les badges sont attribués à un participant en particulier ou à l'ensemble du compte). </p><p>Vous pouvez nous faire part de votre avis sur cette fonctionnalité (en utilisant par exemple le bouton commentaire en haut de la page). Il est également possible de désactiver cette fonctionnalité pour un participant (ou pour tout le compte) si vous ne souhaitez plus les voir.</p>"
 
 #: .\templates\dashboard\user_badges.html.py:11
 msgid "Disable this feature"
@@ -1012,7 +1012,7 @@ msgstr "Désactiver les badges"
 
 #: .\templates\dashboard\user_badges.html.py:13
 msgid "It's your first badge ! This is a new feature of this website. You will win badge during the season."
-msgstr "<h3>Vous venez d'obtenir vos premiers badges de cette saison !</h3><p>Les badges visent à rendre la participation à GrippeNet.fr un peu plus ludique, sans pour autant en réduire le sérieux. En fonction de vos réponses aux questionnaires vous pourrez obtenir différents badges au cours de la saison (les badges sont attribués à un participant en particulier ou à l'ensemble du compte). </p><p>Si vous ne souhaitez plus voir ces badges, il est possible de désactiver cette fonctionnalité (en cliquant sur le bouton \"désactiver les badges\" au niveau de la section \"Vos badges\").</p>"
+msgstr "<h3>Vous venez d'obtenir vos premiers badges de cette saison !</h3><p>Les badges visent à rendre la participation à COVIDnet.fr un peu plus ludique, sans pour autant en réduire le sérieux. En fonction de vos réponses aux questionnaires vous pourrez obtenir différents badges au cours de la saison (les badges sont attribués à un participant en particulier ou à l'ensemble du compte). </p><p>Si vous ne souhaitez plus voir ces badges, il est possible de désactiver cette fonctionnalité (en cliquant sur le bouton \"désactiver les badges\" au niveau de la section \"Vos badges\").</p>"
 
 #: .\templates\dashboard\user_badges.html.py:17
 #, python-format
@@ -1230,7 +1230,7 @@ msgid ""
 "\n"
 "This activation URL will expire in %(expiration_days)s days."
 msgstr ""
-"Bonjour et bienvenue dans le projet GrippeNet,\n"
+"Bonjour et bienvenue dans le projet COVIDnet,\n"
 "\n"
 "Pour activer votre compte, cliquez sur le lien URL ou copiez-collez le dans la barre d'adresse de votre navigateur.\n"
 "\n"
@@ -1424,7 +1424,7 @@ msgstr "L'équipe %(site_name)s"
 #: .\templates\registration\password_reset_form.html.py:9
 #: .\templates\sw_auth\password_reset_form.html.py:10
 msgid "Forgotten your password? Enter your e-mail address below, and we'll e-mail instructions for setting a new one."
-msgstr "Entrez l'adresse email utilisée pour votre compte ci-dessous, nous vous enverrons par email votre login et des instructions pour mettre en place un nouveau mot de passe (Si vous ne connaissez plus cet email, <a href=\"contact@grippenet.fr\">Contactez nous</a>)."
+msgstr "Entrez l'adresse email utilisée pour votre compte ci-dessous, nous vous enverrons par email votre login et des instructions pour mettre en place un nouveau mot de passe (Si vous ne connaissez plus cet email, <a href=\"contact@covidnet.fr\">Contactez nous</a>)."
 
 #: .\templates\registration\password_reset_form.html.py:14
 #: .\templates\sw_auth\password_reset_form.html.py:14
@@ -1434,17 +1434,17 @@ msgstr "Adresse email :"
 #: .\templates\registration\password_reset_form.html.py:15
 #: .\templates\sw_auth\password_reset_form.html.py:15
 msgid "Reset my password"
-msgstr "Recevoir le mail de réinitalisation"
+msgstr "Recevoir le mail de réinitialisation"
 
 #: .\templates\registration\registration_complete.html.py:4
 #: .\templates\sw_auth\registration_complete.html.py:4
 msgid "Registration complete"
-msgstr "Votre inscription à GrippeNet.fr est terminée."
+msgstr "Votre inscription à COVIDnet.fr est terminée."
 
 #: .\templates\registration\registration_complete.html.py:8
 #: .\templates\sw_auth\registration_complete.html.py:7
 msgid "Registration complete."
-msgstr "Votre inscription à GrippeNet.fr est terminée."
+msgstr "Votre inscription à COVIDnet.fr est terminée."
 
 #: .\templates\registration\registration_complete.html.py:9
 #: .\templates\sw_auth\activation_retry.html.py:6
@@ -1463,7 +1463,7 @@ msgstr "Vérifiez s'il-vous-plaît le dossier \"courrier indésirable\" de votre
 #: .\templates\sw_auth\registration_explanation.html.py:9
 #: .\templates\sw_auth\registration_form.html.py:14
 msgid "Registration Form"
-msgstr "Rejoindre GrippeNet.fr"
+msgstr "Rejoindre COVIDnet.fr"
 
 #: .\templates\registration\registration_form.html.py:23
 msgid "Join the survey"
@@ -1551,11 +1551,11 @@ msgstr "Aucun participant n'est enregistré sur votre compte. Commencez par ajou
 #: .\templates\survey\group_management_sw.html.py:15
 #: .\templates\survey\group_management_sw_vacc.html.py:19
 msgid "Help about this page"
-msgstr "Bien commencer avec GrippeNet.fr"
+msgstr "Bien commencer avec COVIDnet.fr"
 
 #: .\templates\survey\group_management_sw.html.py:20
 msgid "Some users do not have a background questionnaire, please fill this survey for them"
-msgstr "Le questionnaire prélimaire n'est pas rempli pour certains participants. Pour commencer leur participation à GrippeNet.fr, remplissez leur questionnaire préliminaire."
+msgstr "Le questionnaire préliminaire n'est pas rempli pour certains participants. Pour commencer leur participation à COVIDnet.fr, remplissez leur questionnaire préliminaire."
 
 #: .\templates\survey\group_management_sw.html.py:36
 #: .\templates\survey\group_management_sw_vacc.html.py:25
@@ -1569,7 +1569,7 @@ msgstr "Préliminaire"
 #: .\templates\survey\group_management_sw.html.py:39
 msgid "Background survey help"
 msgstr ""
-"Le questionnaire préliminaire permet de décrire un participant : âge, sexe, localisation, etc. Ces informations nous permettent de caractériser la population des participants de GrippeNet.fr et d'en évaluer la représentativité vis à vis de la population française. En regard de plusieurs questions, une petite bulle d'aide vous précisera pourquoi elle est posée.\n"
+"Le questionnaire préliminaire permet de décrire un participant : âge, sexe, localisation, etc. Ces informations nous permettent de caractériser la population des participants de COVIDnet.fr et d'en évaluer la représentativité vis à vis de la population française. En regard de plusieurs questions, une petite bulle d'aide vous précisera pourquoi elle est posée.\n"
 "Il est possible de mettre à jour ce questionnaire au cours de la saison en le modifiant puis en le validant à nouveau (il est pré-rempli avec vos réponses précédentes)."
 
 #: .\templates\survey\group_management_sw.html.py:40
@@ -1578,7 +1578,7 @@ msgstr "Hebdomadaire"
 
 #: .\templates\survey\group_management_sw.html.py:40
 msgid "Weekly survey help"
-msgstr "Le questionnaire hebdomadaire vous permet d'indiquer quels symptômes vous avez présentés depuis la dernière fois que vous avez rempli ce questionnaire (c'est-à-dire depuis la semaine précédente si vous le remplissez toutes les semaines)."
+msgstr "Le questionnaire hebdomadaire vous permet d'indiquer quel(s) symptôme(s) vous avez présenté(s) depuis la dernière fois que vous avez rempli ce questionnaire (c'est-à-dire depuis la semaine précédente si vous le remplissez toutes les semaines)."
 
 #: .\templates\survey\group_management_sw.html.py:61
 #: .\templates\survey\group_management_sw_vacc.html.py:34
@@ -1588,11 +1588,11 @@ msgstr "Editer la fiche de ce participant"
 
 #: .\templates\survey\group_management_sw.html.py:73
 msgid "The project is not started yet for this season"
-msgstr "Le suivi de GrippeNet.fr n'a pas encore débuté cette saison. "
+msgstr "Le suivi de COVIDnet.fr n'a pas encore débuté cette saison. "
 
 #: .\templates\survey\group_management_sw.html.py:75
 msgid "Fill the intake survey for this participant to start his participation"
-msgstr "Remplissez le questionnaire préliminaire pour ce participant pour démarrer sa participation à GrippeNet.fr"
+msgstr "Remplissez le questionnaire préliminaire pour ce participant pour démarrer sa participation à COVIDnet.fr"
 
 #: .\templates\survey\group_management_sw.html.py:76
 #: .\templates\survey\group_management_sw.html.py:85
@@ -1637,13 +1637,13 @@ msgstr "Comment nous informer de votre vaccination anti-grippale ?"
 
 #: .\templates\survey\group_management_sw.html.py:147
 msgid "Update vaccination help"
-msgstr "Si vous avez été vacciné contre la grippe et que vous nous aviez indiqué ne pas être vacciné en début de saison, il vous suffit de cliquer à nouveau sur le bouton de votre questionnaire préliminaire (pour le participant concerné) et de modifier votre réponse à la question concernant la vaccination anti-grippale, puis de valider le questionnaire. Nous prendrons en compte ce changement d'information dans nos analyses."
+msgstr "Si vous avez été vacciné(e) contre la grippe et que vous nous aviez indiqué ne pas être vacciné en début de saison, il vous suffit de cliquer à nouveau sur le bouton de votre questionnaire préliminaire (pour le participant concerné) et de modifier votre réponse à la question concernant la vaccination anti-grippale, puis de valider le questionnaire. Nous prendrons en compte ce changement d'information dans nos analyses."
 
 #: .\templates\survey\group_management_sw.html.py:152
 #: .\templates\survey\wait_launch.html.py:11
 #: .\templates\sw_auth\activation_complete.html.py:14
 msgid "The project has not started yet for the season. We will contact you as soon as the follow-up begin."
-msgstr "Le suivi de GrippeNet.fr n'a pas encore débuté cette saison. Vous recevrez prochainement un email vous informant du lancement de la saison et vous invitant à remplir votre questionnaire préliminaire et votre premier questionnaire hebdomadaire. Pour toute question, n'hésitez pas à nous contacter à <a href=\"mailto:contact@grippenet.fr\">contact@grippenet.fr</a>."
+msgstr "Le suivi de COVIDnet.fr n'a pas encore débuté cette saison. Vous recevrez prochainement un email vous informant du lancement de la saison et vous invitant à remplir votre questionnaire préliminaire et votre premier questionnaire hebdomadaire. Pour toute question, n'hésitez pas à nous contacter à <a href=\"mailto:contact@covidnet.fr\">contact@covidnet.fr</a>."
 
 #: .\templates\survey\group_management_sw.html.py:153
 #: .\templates\survey\wait_launch.html.py:14
@@ -1662,7 +1662,7 @@ msgstr "Mes Participants"
 #: .\templates\survey\group_management_sw_vacc.html.py:18
 msgid "Below is the list of participants currently managed by you. Click the corresponding option next to the participant to complete the background or symptoms questionnaire for that person, or to remove a participant."
 msgstr ""
-"<h2>Bienvenu sur GrippeNet.fr</h2>\n"
+"<h2>Bienvenu sur COVIDnet.fr</h2>\n"
 "<p>Vous trouverez sur cette page la liste des participants inscrits sur votre compte.</p>\n"
 "<h3>Les participants</h3>\n"
 "<p>Vous pouvez inscrire plusieurs participants sur votre compte, par exemple les membres de votre foyer. Si les participants sont mineurs vous devez être détenteur de l'autorité parentale. Le consentement des participants est requis.</p>\n"
@@ -1677,9 +1677,9 @@ msgstr ""
 "<h3>Déclarer aucun symptôme</h3>\n"
 "<p>Si l'un des participants n'a présenté aucun symptôme depuis son dernier questionnaire hebdomadaire, vous pouvez le sélectionner (en cliquant sur la case à cocher à gauche de son surnom), puis cliquer sur \"Déclarer aucun symptôme\" afin de remplir en un clic son questionnaire hebdomadaire.</p>\n"
 "<h3>Mettre à jour sa vaccination</h3>\n"
-"<p>Si un participant a été vacciné après le début de son inscription à GrippeNet.fr, il est possible de mettre à jour son questionnaire \"préliminaire\" pour changer ses information. Cliquez sur le lien du questionnaire préliminaire et mettez à jour la vaccination puis sauvegardez. Nous gardons chaque version du questionnaire que vous enregistrez. Nous saurons ainsi que le participant n'était pas vacciné en début de saison, puis vacciné.</p>\n"
+"<p>Si un participant a été vacciné après le début de son inscription à COVIDnet.fr, il est possible de mettre à jour son questionnaire \"préliminaire\" pour changer ses information. Cliquez sur le lien du questionnaire préliminaire et mettez à jour la vaccination puis sauvegardez. Nous gardons chaque version du questionnaire que vous enregistrez. Nous saurons ainsi que le participant n'était pas vacciné en début de saison, puis vacciné.</p>\n"
 "<h3>Les sous-projets</h3>\n"
-"<p>GrippeNet.fr peut mettre en œuvre des projets ne concernant qu'un petit groupe de participants. Afin de les identifier de manière anonyme au sein des autres participants, nous leur fournissons un code permettant de s'inscrire au sous-projet. Si vous n'appartenez à aucun sous-projet, il est normal que vous ne disposiez d'aucun code.</p>"
+"<p>COVIDnet.fr peut mettre en œuvre des projets ne concernant qu'un petit groupe de participants. Afin de les identifier de manière anonyme au sein des autres participants, nous leur fournissons un code permettant de s'inscrire au sous-projet. Si vous n'appartenez à aucun sous-projet, il est normal que vous ne disposiez d'aucun code.</p>"
 
 #: .\templates\survey\index.html.py:16
 msgid "Survey Form"
@@ -1697,7 +1697,7 @@ msgstr "Ajouter un participant à votre compte"
 #: .\templates\survey\people_add.html.py:5
 #: .\templates\survey\people_edit.html.py:5
 msgid "This form allow you to customize the way this participant is named. In order to preserve privacy we ought you to avoid family name or email. Use surname or given name."
-msgstr "Ce formulaire vous permet de définir le nom attribué à un utilisateur. Afin de préserver l'anonymat des utilisateurs de GrippeNet.fr, nous vous conseillons fortement de n'utiliser que <b>des surnoms et des prénoms et d'éviter tout nom de famille ou email</b>. Ces informations ne sont pas utilisées lors des analyses."
+msgstr "Ce formulaire vous permet de définir le nom attribué à un utilisateur. Afin de préserver l'anonymat des utilisateurs de COVIDnet.fr, nous vous conseillons fortement de n'utiliser que <b>des surnoms et des prénoms et d'éviter tout nom de famille ou email</b>. Ces informations ne sont pas utilisées lors des analyses."
 
 #: .\templates\survey\people_remove.html.py:5
 msgid "Confirm removal"
@@ -1826,7 +1826,7 @@ msgstr "Réactivation de votre compte"
 #: .\templates\sw_auth\deactivate_confirm.html.py:7
 #: .\templates\sw_auth\deactivate_planned.html.py:7
 msgid "Your account was planned to be deactivated because of its lack of activity"
-msgstr "Vous ne vous êtes pas connecté à GrippeNet.fr depuis longtemps. La désactivation automatique de votre compte avait été programmée."
+msgstr "Vous ne vous êtes pas connecté à COVIDnet.fr depuis longtemps. La désactivation automatique de votre compte avait été programmée."
 
 #: .\templates\sw_auth\deactivate_confirm.html.py:11
 msgid "If you want to cancel this closing request, please got to your settings page"
@@ -1910,7 +1910,7 @@ msgstr "Impossible de réinitialiser le mot de passe"
 
 #: .\templates\sw_auth\password_reset_email.html.py:7
 msgid "This e-mail is associated with several active accounts. You will recieve an email like this for each account"
-msgstr "Cette adresse email est associée à plusieurs compte GrippeNet. Vous recevrez un mail comme celui-ci pour chaque compte associé à cet email."
+msgstr "Cette adresse email est associée à plusieurs compte COVIDnet. Vous recevrez un mail comme celui-ci pour chaque compte associé à cet email."
 
 #: .\templates\sw_auth\password_reset_error.html.py:4
 #: .\templates\sw_auth\password_reset_error.html.py:8
@@ -1949,13 +1949,13 @@ msgstr ""
 "\n"
 "<p>Cher/Chère participant(e),</p>\n"
 "\n"
-"<p>Votre compte GrippeNet.fr a été désactivé et les informations de connexion (login, mot de passe, emails, nom des participants) supprimées. Les données que vous avez fournies dans les questionnaires ont été anonymisées.</p>\n"
+"<p>Votre compte COVIDnet.fr a été désactivé et les informations de connexion (login, mot de passe, emails, nom des participants) supprimées. Les données que vous avez fournies dans les questionnaires ont été anonymisées.</p>\n"
 "\n"
 "<p>Si vous souhaitez annuler cette procédure, vous pouvez nous contacter en répondant à cet email en nous indiquant le numéro  ci-dessous.</p>\n"
 " \n"
-"<p>Votre numéro de compte GrippeNet.Fr : <b>%(id)s</b></p>\n"
+"<p>Votre numéro de compte COVIDnet.fr : <b>%(id)s</b></p>\n"
 "\n"
-"<p>L'équipe GrippeNet.fr vous souhaite une bonne continuation.</p>\n"
+"<p>L'équipe COVIDnet.fr vous souhaite une bonne continuation.</p>\n"
 
 #: .\templates\sw_auth\mail\account_deactivated_subject.txt.py:1
 msgid "Your account have been deactivated"
@@ -1975,17 +1975,17 @@ msgid ""
 "<p>After this delay, your account information will be lost and you will need to provide your account number : <b>%(account_id)s</b> to reactivate.</p>\n"
 msgstr ""
 "<p>Cher/Chère participant(e),</p>\n"
-"<p>Vous ne vous êtes pas connecté(e) à votre compte GrippeNet.fr depuis plusieurs mois (%(login_delay)s jours). </p>\n"
-"<p>En l'absence de connexion au site de GrippeNet.fr de votre part, votre compte sera désactivé et vos informations de connexion seront supprimées après <b>%(waiting_delay)s</b> jours.</p>\n"
+"<p>Vous ne vous êtes pas connecté(e) à votre compte COVIDnet.fr depuis plusieurs mois (%(login_delay)s jours). </p>\n"
+"<p>En l'absence de connexion au site de COVIDnet.fr de votre part, votre compte sera désactivé et vos informations de connexion seront supprimées après <b>%(waiting_delay)s</b> jours.</p>\n"
 "<p>Si vous souhaitez conserver votre compte, veuillez cliquer sur le lien ci-dessous afin de vous connecter au site</p>\n"
 "<p style=\"text-align:center\">\n"
 " <a href=\"%(login_token)s\">%(login_token)s</a>\n"
 "</p>\n"
 "<p>Sans action de votre part à l’issue de ce délai vos informations personnelles renseignées (login, mot de passe, email, noms et avatars attribués aux participants) sur votre compte seront supprimées.</p>\n"
-"<p>Seules les données anonymisées fournies lors du remplissage des questionnaires seront conservées sous votre numéro de participant(e) GrippeNet  <b>%(account_id)s</b>.</p>\n"
-"<p>N’hésitez pas à nous contacter à <a href=\"contact@grippenet.fr\">contact@grippenet.fr</a> pour plus d’information.</p>\n"
+"<p>Seules les données anonymisées fournies lors du remplissage des questionnaires seront conservées sous votre numéro de participant(e) COVIDnet : <b>%(account_id)s</b>.</p>\n"
+"<p>N’hésitez pas à nous contacter à <a href=\"contact@covidnet.fr\">contact@grippenet.fr</a> pour plus d’information.</p>\n"
 "<p>Bien cordialement,</p>\n"
-"<p>L'équipe GrippeNet.fr</p>\n"
+"<p>L'équipe COVIDnet.fr</p>\n"
 
 #: .\templates\sw_auth\mail\deactivate_warning_subject.txt.py:1
 #, python-format
@@ -1994,13 +1994,13 @@ msgstr "Votre compte sera désactivé dans %(waiting_delay)s jours"
 
 #: .\templates\sw_cohort\form.html.py:15
 msgid "Register a participant into a cohort"
-msgstr "Inscrire un participant à un sous-projet GrippeNet.fr."
+msgstr "Inscrire un participant à un sous-projet COVIDnet.fr."
 
 #: .\templates\sw_cohort\form.html.py:17
 msgid "cohort register help text"
 msgstr ""
-"Cette page vous permet d'enregistrer un participant à un sous-projet réalisé par GrippeNet.fr.\n"
-"Pour inscrire un participant vous devez vous munir du code d'inscription qui vous a été fourni par l'équipe de GrippeNet.fr (ces sous-projets ne concernent que certains utilisateurs, il est normal de ne pas avoir reçu de code si vous n'avez pas été invité à participer à un sous-projet)."
+"Cette page vous permet d'enregistrer un participant à un sous-projet réalisé par COVIDnet.fr.\n"
+"Pour inscrire un participant vous devez vous munir du code d'inscription qui vous a été fourni par l'équipe de COVIDnet.fr(ces sous-projets ne concernent que certains utilisateurs, il est normal de ne pas avoir reçu de code si vous n'avez pas été invité à participer à un sous-projet)."
 
 #: .\templates\sw_cohort\form.html.py:20
 msgid "Select the participant to register"
@@ -2016,7 +2016,7 @@ msgstr "Valider"
 
 #: .\templates\sw_cohort\register.html.py:6
 msgid "The following participants have been registred in the cohort :"
-msgstr "Les participants ont bien été inscrits au sous-projet GrippeNet.fr"
+msgstr "Les participants ont bien été inscrits au sous-projet COVIDnet.fr"
 
 #: .\templates\sw_cohort\register.html.py:14
 msgid "Problem occured during registration, try later or contact us"
@@ -2038,35 +2038,35 @@ msgid ""
 "register with the membership code : <b>%(key)s</b>\n"
 msgstr ""
 "Bonjour,<br><br>\n"
-"%(sender)s est acteur/actrice de la surveillance de la grippe et de l’épidémie de COVID-19 en France par le biais de <b>GrippeNet.fr</b> et souhaite vous inviter à participer à ce projet de surveillance et de recherche.<br>\n"
+"%(sender)s acteur/actrice de la surveillance de la grippe et de l’épidémie de COVID-19 en France par le biais de <b>COVIDnet.fr</b> et souhaite vous inviter à participer à ce projet de surveillance et de recherche.<br>\n"
 "%(personnal)s\n"
-"<em>GrippeNet.fr</em> est une étude mise en place par une collaboration d'organismes publiques : l'Institut national de la santé et de la recherche médicale (Inserm), Sorbonne Université et Santé publique France.GrippeNet.fr permet de compléter les données issues des cabinets de médecins libéraux, des hôpitaux et urgences, avec des données collectées directement auprès de la population.<br><br>\n"
+"<em>COVIDnet.fr</em> est une étude mise en place par une collaboration d'organismes publiques : l'Institut national de la santé et de la recherche médicale (Inserm), Sorbonne Université et Santé publique France. Elle est financée par des fonds publiques provenant de ces institutions et de l'Agence Nationale de la Recherche.<br><br>\n"
 "\n"
-"<b>Quelques mots sur <em>GrippeNet.fr</em></b> :<br>\n"
-"<em>GrippeNet.fr</em> est un dispositif de surveillance de la grippe en population générale sur Internet mis en place en 2011. Cette étude est ouverte à toute personne résidant en France métropolitaine. Quel que soit votre état de santé, vous pouvez y participer de façon anonyme et volontaire.\n"
-"Dans le contexte sanitaire actuel, les chercheurs ont besoin d’en savoir plus sur le coronavirus, son évolution sur le territoire, l’état de santé de la population. <b>GrippeNet.fr s’adapte pour répondre à ce besoin</b>. En rejoignant <em>GrippeNet.fr</em>, vous contribuerez à la surveillance et aux travaux de recherche sur le COVID-19, et vous serez informés chaque semaine des résultats du suivi réalisé. Cette participation vous permettra également de suivre l'évolution de votre état de santé et de recevoir des informations scientifiques sur le COVID-19 et les maladies infectieuses en générale.\n"
+"<b>Quelques mots sur <em>COVIDnet.fr</em></b> :<br>\n"
+"<em>COVIDnet.fr</em> est un dispositif de surveillance de la grippe en population générale sur Internet mis en place en 2011. Cette étude est ouverte à toute personne résidant en France métropolitaine. Quel que soit votre état de santé, vous pouvez y participer de façon anonyme et volontaire.\n"
+"Dans le contexte sanitaire actuel, les chercheurs ont besoin d’en savoir plus sur le coronavirus, son évolution sur le territoire, l’état de santé de la population. <b>GrippeNet.fr s’est adaptée et est devenu COVIDnet.fr pour répondre à ce besoin</b>. En rejoignant <em>COVIDnet.fr</em>, vous contribuerez à la surveillance et aux travaux de recherche sur le COVID-19, et vous serez informés chaque semaine des résultats du suivi réalisé. Cette participation vous permettra également de suivre l'évolution de votre état de santé et de recevoir des informations scientifiques sur le COVID-19 et les maladies infectieuses en générale.\n"
 "\n"
 "<br><br>\n"
 "\n"
 "Si vous souhaitez vous inscrire cliquez sur le lien ci-dessous :<br><br>\n"
 "<a href=\"%(url)s\">%(url)s</a><br><br>\n"
 "\n"
-"N'hésitez pas aussi à consulter notre site internet <a href=\"https://www.grippenet.fr\">www.grippenet.fr</a> pour plus d'information.\n"
+"N'hésitez pas aussi à consulter notre site internet <a href=\"https://www.covidnet.fr\">www.covidnet.fr</a> pour plus d'information.\n"
 "\n"
 "Vous pouvez également aider la personne qui vous invite à parrainer d'autres personnes en transférant ce mail ou en leur indiquant d'utiliser le code de parrainage suivant lors de leur inscription <b>%(key)s</b>.<br><br>\n"
 "Nous vous remercions d’avance de l’intérêt que vous porterez à ce projet,<br><br>\n"
 "Bien cordialement,<br><br>\n"
-"L’équipe <em>GrippeNet.fr</em>.<br>\n"
-"<a href=\"https://www.grippenet.fr/\">visitez GrippeNet.fr</a><br>\n"
-"Contactez nous à <a href=\"mailto:contact@grippenet.fr\">contact@grippenet.fr</a>\n"
+"L’équipe <em>COVIDnet.fr</em>.<br>\n"
+"<a href=\"https://www.covidnet.fr/\">visitez COVIDnet.fr</a><br>\n"
+"Contactez nous à <a href=\"mailto:contact@covidnet.fr\">contact@covidnet.fr</a>\n"
 
 #: .\templates\sw_invitation\invitation_email_subject.txt.py:1
 msgid "You have been invited to InfluenzaNet"
-msgstr "Vous avez été invité à vous inscrire à GrippeNet.fr"
+msgstr "Vous avez été invité à vous inscrire à COVIDnet.fr"
 
 #: .\templates\sw_invitation\invite.html.py:7
 msgid "Invite people to InfluenzaNet"
-msgstr "Invitez vos contacts à participer à GrippeNet.fr"
+msgstr "Invitez vos contacts à participer à COVIDnet.fr"
 
 #: .\templates\sw_invitation\invite.html.py:8
 msgid "This page allows you to invite people to register to this website. To invite someone add his email address to the box below"
@@ -2098,7 +2098,7 @@ msgstr "Votre nom (optionnel)"
 
 #: .\templates\sw_invitation\invite.html.py:34
 msgid "You can also include a name which will be included in the invitation email (not stored in this website)"
-msgstr "Si vous précisez un nom, il sera inclu dans le mail d'invitation (il ne sera pas stocké par notre site)."
+msgstr "Si vous précisez un nom, il sera inclus dans le mail d'invitation (il ne sera pas stocké par notre site)."
 
 #: .\templates\sw_invitation\invite.html.py:39
 msgid "You can also include a personnal text (not stored in this website)"
@@ -2126,7 +2126,7 @@ msgstr "Masquer cet aperçu"
 
 #: .\templates\sw_invitation\invite.html.py:56
 msgid "Invitations already sent"
-msgstr "Invitations envoyées par votre compte GrippeNet.fr"
+msgstr "Invitations envoyées par votre compte COVIDnet.fr"
 
 #: .\templates\sw_invitation\invite.html.py:60
 msgid "invitation you sent has been used"
@@ -2140,7 +2140,7 @@ msgstr "Entrez une adresse email"
 
 #: .\templates\sw_invitation\invite.html.py:75
 msgid "invitation privacy policy"
-msgstr "Les adresses email invitées seront conservées durant quelques mois jusqu'a la fin de la saison en cours. Nous les supprimerons à la fin de chaque saison."
+msgstr "Les adresses email invitées seront conservées durant quelques mois jusqu'à la fin de la saison en cours. Nous les supprimerons à la fin de chaque saison."
 
 #: .\templates\sw_invitation\max_invitation.html.py:4
 msgid "Max invitations count reached"

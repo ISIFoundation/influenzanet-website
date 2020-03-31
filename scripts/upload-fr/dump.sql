@@ -60,6 +60,16 @@ SELECT
 	"Q9_0", "Q9_1", "Q9_2", "Q9_3", "Q9_4", "Q9_7" OR "Q9_5", "Q9_6", 
 	"Q9b", 
 	"Q10", "Q10b", "Q10c", 
-	"Q11" FROM public.pollster_results_weekly
+	"Q11",
+	"Qcov1b_multi_row1_col1", "Qcov1b_multi_row2_col1", "Qcov1b_multi_row3_col1",
+    "Qcov2b_multi_row1_col1", "Qcov2b_multi_row2_col1", "Qcov2b_multi_row3_col1",
+    "Qcov1",
+    "Qcov2",
+    "Qcov3",
+    "Qcov4",
+    "Qcov5",
+    "Qcov6",
+    "Qcov7_1", "Qcov7_2", "Qcov7_3", "Qcov7_4", "Qcov7_5", "Qcov7_6", "Qcov7_7", "Qcov7_8", "Qcov7_9", "Qcov7_10", "Qcov7_11", "Qcov7_12"  
+	FROM public.pollster_results_weekly
 	WHERE channel='';
 

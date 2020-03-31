@@ -1,4 +1,5 @@
 from webassets import Bundle
+from apps.common.assets import apply_config
 
 js_raphael = Bundle(
     "sw/js/raphael/raphael-min.js",
@@ -10,5 +11,5 @@ js_raphael = Bundle(
 css_dashboard = Bundle(
     "sw/css/dashboard.css",
     output='assets/dashboard.css',
-    filters='cssrewrite,cssmin'
+    filters=(apply_config, 'cssrewrite', 'cssmin',)
 )

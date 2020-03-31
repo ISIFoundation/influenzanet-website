@@ -15,8 +15,8 @@
 #menubar li {
  float: left;
  margin: 0 0 0 4px;
- background-color: #7AB800;
- border: 1px solid #7AB800;
+ background-color: $gn_color2;
+ border: 1px solid $gn_color2;
 }
 
 #menubar li {
@@ -48,7 +48,7 @@
 }
 
 #menubar > li:hover {
- border: 1px solid #7AB800;
+ border: 1px solid $gn_color2;
 }
 
 #menubar li.selected,
@@ -66,14 +66,14 @@
 
 #menubar li.selected, #menubar li.ancestor {
  padding: 0; 
- background-color: #007AB8;
- border: 1px solid #007AB8;
+ background-color: $gn_color1;
+ border: 1px solid $gn_color1;
  color: #FFF;
 }
 
 #menubar li a:hover {
  background: #FFF;
- color: #7AB800;
+ color: $gn_color2;
 }
 
 #submenu {
@@ -105,10 +105,10 @@
 #submenu li a {
  position: relative;
  display: block;
- border: 1px solid #7AB800;
+ border: 1px solid $gn_color2;
  border-bottom: 0;
  padding: .4em .6em .3em .6em;
- background-color: #7AB800;
+ background-color: $gn_color2;
  color: white;
  margin: 0;
  text-decoration: none;
@@ -128,16 +128,16 @@
 }
 
 #submenu li:hover a {
- color: #7AB800;
+ color: $gn_color2;
 }
 
 #submenu li:hover a {
  background-color: #FFF;
- color: #7AB800;
+ color: $gn_color2;
 }
 
 #submenu li.selected a {
- background-color: #007AB8;
- border: 1px solid #007AB8;
+ background-color: $gn_color1;
+ border: 1px solid $gn_color1;
 }
 
