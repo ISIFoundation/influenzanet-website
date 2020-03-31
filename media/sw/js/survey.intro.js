@@ -1,5 +1,7 @@
 function startIntro(){
   var intro = introJs();
+  var name = app_config.name;
+	
   intro.setOptions({
   	tooltipClass: 'survey-intro',
 	nextLabel: 'Suivant',
@@ -8,7 +10,7 @@ function startIntro(){
 	doneLabel: 'Terminé',
     steps: [
       { 
-        intro: "Bienvenu(e) sur l'espace participant de GrippeNet.fr. Cette introduction va vous monter tout ce qu'il y a connaître sur cette page."
+        intro: "Bienvenu(e) sur l'espace participant de "+name +". Cette introduction va vous monter tout ce qu'il y a connaître sur cette page."
       },
       {
         element: '#people-table',
